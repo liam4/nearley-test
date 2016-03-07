@@ -1,24 +1,40 @@
 var C = require('./constants');
+var lib = require('./lib');
 
-var InvalidExpressionType = class extends Error {};
+var InvalidExpressionType = class extends Error {
+  constructor(expr) {
+    super('invalid expression type');
+    this.expr = expr;
+  }
+};
+
+var evaluateExpression = function(expression, variables) {
+  if (expression[0] === C.FUNCTION_CALL) {
+    return evaluateFunctionCall(variables, expression);
+  } else if (expression[0] === C.VARIABLE_IDENTIFIER) {
+    return evaluateVarabileIdentifier(variables, expression);
+  } else {
+    throw new InvalidExpressionType(expression);
+  }
+};
+
+var evaluateFunctionCall = function(variables, [_, fnExpression, args]) {
+  var fn = evaluateExpression(fnExpression, variables);
+  return lib.call(fn, args);
+};
+
+var evaluateVarabileIdentifier = function(variables, [_, variableName]) {
+  return variables[variableName].value;
+};
 
 module.exports = function(ast) {
-
   console.log('');
 
-  var evaluateExpression = function(expression) {
-    if (expression[0] === C.FUNCTION_CALL) return evaluateFunctionCall(expression);
-    else if (expression[0] === C.VARIABLE_IDENTIFIER) return evaluateVarabileIdentifier(expression);
-    else throw 'invalid expression type';
-  };
+  var variables = {};
 
-  var evaluateFunctionCall = function([_, fnExpression, argsExpression]) {
-    var fn = evaluateExpression(fnExpression);
-  };
+  variables['print'] = new lib.Variable(new lib.FunctionToken(function(args) {
+    console.log('{Print}', ...args);
+  }));
 
-  var evaluateVarabileIdentifier = function([_, variableName]) {
-    console.log('get variable', variableName);
-  };
-
-  ast.forEach(evaluateExpression);
+  console.log(ast.map(e => evaluateExpression(e, variables)));
 };
