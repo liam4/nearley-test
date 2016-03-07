@@ -28,8 +28,6 @@ var evaluateVarabileIdentifier = function(variables, [_, variableName]) {
 };
 
 module.exports = function(ast) {
-  console.log('');
-
   var variables = {};
 
   variables['print'] = new lib.Variable(new lib.FunctionToken(function(args) {

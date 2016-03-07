@@ -5,8 +5,8 @@ var ReturnNothing = function(d, l, r) {
   return null;
 };
 
-var JoinFirstLast = function(a) {
-  return [a[0], a[a.length - 1]];
+var JoinRecursive = function(a) {
+  return [a[0], ...a[a.length - 1]];
 };
 
 var ReturnFirstData = function(d) {
@@ -16,9 +16,23 @@ var ReturnFirstData = function(d) {
 
 @builtin "whitespace.ne"
 
+Program -> _Program {% function(d) { return d[0] } %}
+_Program -> Expression _ ";" _ Program {% JoinRecursive %}
+          | Expression
+
 # General expression
-Expression -> _Expression {% function(d) { return d[0][0]; } %}
-_Expression -> VariableGetExpression | CallFunctionExpression | StringExpression
+Expression -> _Expression {% function(d) { return d[0][0] } %}
+_Expression -> VariableAssignExpression
+             | VariableChangeExpression
+             | VariableGetExpression
+             | CallFunctionExpression
+             | StringExpression
+
+# Variable assign
+VariableAssignExpression -> Identifier "=>" Expression {% function(d) { return [C.VARIABLE_ASSIGN, d[0], d[2]] } %}
+
+# Variable change
+VariableChangeExpression -> Identifier "->" Expression {% function(d) { return [C.VARIABLE_CHANGE, d[0], d[2]] } %}
 
 # Variable get, really just an Identifier
 VariableGetExpression -> Identifier {% function(d) { return [C.VARIABLE_IDENTIFIER, d[0]] } %}
@@ -27,7 +41,7 @@ VariableGetExpression -> Identifier {% function(d) { return [C.VARIABLE_IDENTIFI
 # FUNCTION_CALL, function expression, call arguments
 CallFunctionExpression -> Expression PassedArgumentList {% d => [C.FUNCTION_CALL, d[0], d[1]] %}
 PassedArgumentList -> "(" _ PassedArgumentListContents _ ")" {% d => d[2] %}
-PassedArgumentListContents -> Expression _ "," _ PassedArgumentListContents {% JoinFirstLast %}
+PassedArgumentListContents -> Expression _ "," _ PassedArgumentListContents {% JoinRecursive %}
                             | Expression
 
 # String expression

@@ -10,7 +10,7 @@ export class Variable {
 }
 
 // Base token class -----------------------------------------------------------
-// * doesn't do anything
+// * doesn't do anything on its own
 // * use x instanceof Token to check if x is any kind of token
 
 export class Token {
