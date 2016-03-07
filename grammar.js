@@ -10,7 +10,8 @@ var ReturnNothing = function(d, l, r) {
 };
 
 var JoinRecursive = function(a) {
-  return [a[0], ...a[a.length - 1]];
+  var last = a[a.length - 1];
+  return [a[0], ...last];
 };
 
 var ReturnFirstData = function(d) {
