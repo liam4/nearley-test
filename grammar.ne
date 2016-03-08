@@ -16,8 +16,9 @@ var JoinRecursive = function(a) {
 @builtin "whitespace.ne"
 
 Program -> _ _Program:? _ {% function(d) { return d[1] ? d[1] : [] } %}
-_Program -> Expression _ ";" _ _Program {% JoinRecursive %}
-          | Expression
+_Program -> Expression _ ExpressionSeparator _ _Program {% JoinRecursive %}
+          | Expression _ ExpressionSeparator _ {% function(d) { return [d[0]] } %}
+ExpressionSeparator -> ";"
 
 # General expression
 Expression -> _Expression {% function(d) { return d[0][0] } %}
@@ -58,7 +59,13 @@ _BooleanExpression -> "true" | "false"
 
 # String expression
 StringExpression -> "\"" StringExpressionDoubleContents "\"" {% d => [C.STRING_PRIM, d[1]] %}
-StringExpressionDoubleContents -> GenericValidCharacter:* {% d => d[0].join('') %}
+StringExpressionDoubleContents -> DoubleStringValidCharacter:* {% d => d[0].join('') %}
+DoubleStringValidCharacter -> GenericValidCharacter {%
+  function(data, location, reject) {
+    if (data[0] === '"') return reject;
+    else return data[0];
+  }
+%}
 
 # Generic identifier
 Identifier -> GenericValidCharacter:+ {%
@@ -67,4 +74,8 @@ Identifier -> GenericValidCharacter:+ {%
   }
 %}
 
-GenericValidCharacter -> [a-zA-Z0-9]
+GenericValidCharacter -> . {%
+  function(data, location, reject) {
+    return data[0];
+  }
+%}

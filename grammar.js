@@ -27,8 +27,9 @@ var grammar = {
     {"name": "Program$ebnf$1", "symbols": ["_Program"], "postprocess": id},
     {"name": "Program$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
     {"name": "Program", "symbols": ["_", "Program$ebnf$1", "_"], "postprocess": function(d) { return d[1] ? d[1] : [] }},
-    {"name": "_Program", "symbols": ["Expression", "_", {"literal":";"}, "_", "_Program"], "postprocess": JoinRecursive},
-    {"name": "_Program", "symbols": ["Expression"]},
+    {"name": "_Program", "symbols": ["Expression", "_", "ExpressionSeparator", "_", "_Program"], "postprocess": JoinRecursive},
+    {"name": "_Program", "symbols": ["Expression", "_", "ExpressionSeparator", "_"], "postprocess": function(d) { return [d[0]] }},
+    {"name": "ExpressionSeparator", "symbols": [{"literal":";"}]},
     {"name": "Expression", "symbols": ["_Expression"], "postprocess": function(d) { return d[0][0] }},
     {"name": "_Expression", "symbols": ["VariableAssignExpression"]},
     {"name": "_Expression", "symbols": ["VariableChangeExpression"]},
@@ -63,8 +64,14 @@ var grammar = {
     {"name": "_BooleanExpression", "symbols": ["_BooleanExpression$string$2"]},
     {"name": "StringExpression", "symbols": [{"literal":"\""}, "StringExpressionDoubleContents", {"literal":"\""}], "postprocess": d => [C.STRING_PRIM, d[1]]},
     {"name": "StringExpressionDoubleContents$ebnf$1", "symbols": []},
-    {"name": "StringExpressionDoubleContents$ebnf$1", "symbols": ["GenericValidCharacter", "StringExpressionDoubleContents$ebnf$1"], "postprocess": function arrconcat(d) {return [d[0]].concat(d[1]);}},
+    {"name": "StringExpressionDoubleContents$ebnf$1", "symbols": ["DoubleStringValidCharacter", "StringExpressionDoubleContents$ebnf$1"], "postprocess": function arrconcat(d) {return [d[0]].concat(d[1]);}},
     {"name": "StringExpressionDoubleContents", "symbols": ["StringExpressionDoubleContents$ebnf$1"], "postprocess": d => d[0].join('')},
+    {"name": "DoubleStringValidCharacter", "symbols": ["GenericValidCharacter"], "postprocess": 
+        function(data, location, reject) {
+          if (data[0] === '"') return reject;
+          else return data[0];
+        }
+        },
     {"name": "Identifier$ebnf$1", "symbols": ["GenericValidCharacter"]},
     {"name": "Identifier$ebnf$1", "symbols": ["GenericValidCharacter", "Identifier$ebnf$1"], "postprocess": function arrconcat(d) {return [d[0]].concat(d[1]);}},
     {"name": "Identifier", "symbols": ["Identifier$ebnf$1"], "postprocess": 
@@ -72,7 +79,11 @@ var grammar = {
           return data[0].join('');
         }
         },
-    {"name": "GenericValidCharacter", "symbols": [/[a-zA-Z0-9]/]}
+    {"name": "GenericValidCharacter", "symbols": [/./], "postprocess": 
+        function(data, location, reject) {
+          return data[0];
+        }
+        }
 ]
   , ParserStart: "Program"
 }

@@ -1,10 +1,13 @@
 console.log('');
 
 var code = `
-fn() {
-  print("a");
-  print("b")
-}()
+x => "hi";
+f => fn() {
+  x -> "new value!!!###@#$#$@#%$^*&^%(*^)_[]S:DLKFJ\\./<<>?,";
+};
+print(x);
+f();
+print(x);
 `;
 
 var nearley = require('nearley');
@@ -15,7 +18,7 @@ var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
 
 try {
   var ast = parser.feed(code).results[0];
-  interp.interp(ast);
+  console.log(interp.interp(ast));
   // console.log(JSON.stringify(ast, null, 1));
 } catch(e) {
   if (e.offset) {

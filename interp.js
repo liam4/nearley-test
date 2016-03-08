@@ -74,5 +74,5 @@ export function interp(ast) {
 
   Object.assign(variables, builtins.makeBuiltins());
 
-  console.log(evaluateEachExpression(ast, variables));
+  return evaluateEachExpression(ast, variables);
 }
