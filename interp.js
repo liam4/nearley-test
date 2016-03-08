@@ -18,7 +18,7 @@ export function evaluateExpression(expression, variables) {
 
   let temp;
   if (expression instanceof Array && expression.reduce(e => e instanceof Array)) {
-    return evaluateEachExpression(e);
+    return evaluateEachExpression(expression, variables);
   } else if (expression[0] === C.FUNCTION_CALL) {
     temp = evaluateFunctionCall(variables, expression);
   } else if (expression[0] === C.VARIABLE_IDENTIFIER) {
@@ -32,6 +32,10 @@ export function evaluateExpression(expression, variables) {
   } else if (expression[0] === C.STRING_PRIM ||
              expression[0] === C.BOOLEAN_PRIM) {
     return expression;
+  } else if (expression[0] === C.SET_PROP_USING_IDENTIFIER) {
+    temp = evaluateSetPropUsingIdentifier(variables, expression);
+  } else if (expression[0] === C.GET_PROP_USING_IDENTIFIER) {
+    temp = evaluateGetPropUsingIdentifier(variables, expression);
   } else {
     throw new InvalidExpressionType(expression);
   }
@@ -65,8 +69,21 @@ export function evaluateVariableChange(variables, [_, name, value]) {
   variables[name].value = value;
 }
 
+export function evaluateSetPropUsingIdentifier(variables, [_, objExpr, key, valueExpr]) {
+  var obj = evaluateExpression(objExpr, variables);
+  var value = evaluateExpression(valueExpr, variables);
+  obj[key] = value;
+}
+
+export function evaluateGetPropUsingIdentifier(variables, [_, objExpr, key]) {
+  var obj = evaluateExpression(objExpr, variables);
+  var value = obj[key];
+  return value;
+}
+
 export function evaluateEachExpression(expressions, variables) {
-  return expressions.map(e => evaluateExpression(e, variables));
+  var temp = expressions.map(e => evaluateExpression(e, variables));
+  return temp;
 }
 
 export function interp(ast) {

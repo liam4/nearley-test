@@ -21,5 +21,9 @@ export function makeBuiltins() {
     }
   }));
 
+  variables['obj'] = new lib.Variable(new lib.FunctionToken(function(args) {
+    return {};
+  }));
+
   return variables;
 }

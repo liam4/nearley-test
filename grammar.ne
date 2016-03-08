@@ -16,40 +16,51 @@ var JoinRecursive = function(a) {
 @builtin "whitespace.ne"
 
 Program -> _ _Program:? _ {% function(d) { return d[1] ? d[1] : [] } %}
-_Program -> Expression _ ExpressionSeparator _ _Program {% JoinRecursive %}
-          | Expression _ ExpressionSeparator _ {% function(d) { return [d[0]] } %}
-ExpressionSeparator -> ";"
+_Program -> Command _ CommandSeparator _ _Program {% JoinRecursive %}
+          | Command _ CommandSeparator _ {% function(d) { return [d[0]] } %}
+CommandSeparator -> ";"
+
+# Command
+Command -> Expression
+         | SetPropertyUsingIdentifier
+         | VariableAssign
+         | VariableChange
+
+# Variable assign
+VariableAssign -> Identifier _ "=>" _ Expression {% function(d) { return [C.VARIABLE_ASSIGN, d[0], d[4]] } %}
+
+# Variable change
+VariableChange -> Identifier _ "->" _ Expression {% function(d) { return [C.VARIABLE_CHANGE, d[0], d[4]] } %}
 
 # General expression
 Expression -> _Expression {% function(d) { return d[0][0] } %}
-_Expression -> VariableAssignExpression
-             | VariableChangeExpression
-             | VariableGetExpression
-             | CallFunctionExpression
-             | StringExpression
+_Expression -> CallFunctionExpression
+             | GetPropertyUsingIdentifierExpression
              | FunctionExpression
+             | StringExpression
              | BooleanExpression
+             | VariableGetExpression
+
+# Set using identifier expression
+SetPropertyUsingIdentifier -> Expression _ "." _ Identifier _ ">" _ Expression {% function(d) { return [C.SET_PROP_USING_IDENTIFIER, d[0], d[4], d[8]] } %}
+
+# Get using identifier expression
+GetPropertyUsingIdentifierExpression -> Expression _ "." _ Identifier {% function(d) { return [C.GET_PROP_USING_IDENTIFIER, d[0], d[4]] } %}
 
 # Function expression
 FunctionExpression -> "fn" _ ArgumentList _ CodeBlock {% function(d) { return [C.FUNCTION_PRIM, d[2], d[4]] } %}
 ArgumentList -> "(" _ ArgumentListContents:? _ ")" {% function(d) { return d[2] ? d[2] : [] } %}
 ArgumentListContents -> Identifier _ "," _ ArgumentListContents {% JoinRecursive %}
                       | Identifier
-
 CodeBlock -> "{" Program "}" {% function(d) { return d[1] } %}
-
-# Variable assign
-VariableAssignExpression -> Identifier _ "=>" _ Expression {% function(d) { return [C.VARIABLE_ASSIGN, d[0], d[4]] } %}
-
-# Variable change
-VariableChangeExpression -> Identifier _ "->" _ Expression {% function(d) { return [C.VARIABLE_CHANGE, d[0], d[4]] } %}
 
 # Variable get, really just an Identifier
 VariableGetExpression -> Identifier {% function(d) { return [C.VARIABLE_IDENTIFIER, d[0]] } %}
 
 # Function call
-CallFunctionExpression -> Expression _ PassedArgumentList {% d => [C.FUNCTION_CALL, d[0], d[2]] %}
-PassedArgumentList -> "(" _ PassedArgumentListContents:? _ ")" {% d => d[2] ? d[2] : [] %}
+CallFunctionExpression -> Expression _ PassedArgumentList {% function(d) {
+  return [C.FUNCTION_CALL, d[0], d[2]] } %}
+PassedArgumentList -> "(" _ PassedArgumentListContents:? _ ")" {% function(d) { return d[2] ? d[2] : [] } %}
 PassedArgumentListContents -> Expression _ "," _ PassedArgumentListContents {% JoinRecursive %}
                             | Expression
 
