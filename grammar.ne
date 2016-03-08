@@ -47,13 +47,13 @@ VariableChangeExpression -> Identifier _ "->" _ Expression {% function(d) { retu
 VariableGetExpression -> Identifier {% function(d) { return [C.VARIABLE_IDENTIFIER, d[0]] } %}
 
 # Function call
-CallFunctionExpression -> Expression PassedArgumentList {% d => [C.FUNCTION_CALL, d[0], d[1]] %}
+CallFunctionExpression -> Expression _ PassedArgumentList {% d => [C.FUNCTION_CALL, d[0], d[2]] %}
 PassedArgumentList -> "(" _ PassedArgumentListContents:? _ ")" {% d => d[2] ? d[2] : [] %}
 PassedArgumentListContents -> Expression _ "," _ PassedArgumentListContents {% JoinRecursive %}
                             | Expression
 
 # Boolean expression
-BooleanExpression -> _BooleanExpression {% function(d) { return ["BOOLEAN_PRIM", d[0] === "true"] } %}
+BooleanExpression -> _BooleanExpression {% function(d) { return ["BOOLEAN_PRIM", d[0][0] === "true"] } %}
 _BooleanExpression -> "true" | "false"
 
 # String expression

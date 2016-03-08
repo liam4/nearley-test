@@ -71,5 +71,12 @@ export function interp(ast) {
     console.log('{Print}', ...args);
   }));
 
+  variables['if'] = new lib.Variable(new lib.FunctionToken(function(args) {
+    console.log(args);
+    if (args[0] && args[0][0] === 'BOOLEAN_PRIM' && args[0][1] === true) {
+      lib.call(args[1], []);
+    }
+  }));
+
   console.log(ast.map(e => evaluateExpression(e, variables)));
 }

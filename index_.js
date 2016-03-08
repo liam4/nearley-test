@@ -1,7 +1,9 @@
 console.log('');
 
 var code = `
-print(true)
+if (true, fn() {
+  print("Good")
+})
 `;
 
 import * as interp from './interp';
@@ -17,7 +19,20 @@ try {
   // console.log(JSON.stringify(ast, null, 1));
 } catch(e) {
   if (e.offset) {
-    console.error("Error at character " + e.offset);
+    console.error("Syntax error on character " + e.offset);
+    var i = e.offset;
+    var line = '';
+    while (code[i] && code[i] !== '\n') {
+      line = code[i] + line;
+      i--;
+    }
+    var lineStartOff = i + 1;
+    i = e.offset + 1;
+    while (code[i] && code[i] !== '\n') {
+      line = line + code[i];
+      i++;
+    }
+    console.error('line:\n' + line + '\n' + ' '.repeat(e.offset - lineStartOff) + '^');
   } else if (e.expr) {
     console.error(e.stack);
     console.error(e.expr);
