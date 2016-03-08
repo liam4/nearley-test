@@ -36,6 +36,7 @@ var grammar = {
     {"name": "_Expression", "symbols": ["CallFunctionExpression"]},
     {"name": "_Expression", "symbols": ["StringExpression"]},
     {"name": "_Expression", "symbols": ["FunctionExpression"]},
+    {"name": "_Expression", "symbols": ["BooleanExpression"]},
     {"name": "FunctionExpression$string$1", "symbols": [{"literal":"f"}, {"literal":"n"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "FunctionExpression", "symbols": ["FunctionExpression$string$1", "_", "ArgumentList", "_", "CodeBlock"], "postprocess": function(d) { return [C.FUNCTION_PRIM, d[2], d[4]] }},
     {"name": "ArgumentList$ebnf$1", "symbols": ["ArgumentListContents"], "postprocess": id},

@@ -27,6 +27,7 @@ _Expression -> VariableAssignExpression
              | CallFunctionExpression
              | StringExpression
              | FunctionExpression
+             | BooleanExpression
 
 # Function expression
 FunctionExpression -> "fn" _ ArgumentList _ CodeBlock {% function(d) { return [C.FUNCTION_PRIM, d[2], d[4]] } %}

@@ -1,7 +1,7 @@
 console.log('');
 
 var code = `
-true
+print(true)
 `;
 
 import * as interp from './interp';
@@ -13,8 +13,8 @@ var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
 
 try {
   var ast = parser.feed(code).results[0];
-  // interp.interp(ast);
-  console.log(JSON.stringify(ast, null, 1));
+  interp.interp(ast);
+  // console.log(JSON.stringify(ast, null, 1));
 } catch(e) {
   if (e.offset) {
     console.error("Error at character " + e.offset);
