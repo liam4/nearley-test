@@ -20,6 +20,23 @@ export class Token {
   constructor() {}
 }
 
+// Object token class ---------------------------------------------------------
+
+export class ObjectToken extends Token {
+  constructor() {
+    super();
+    this.map = new Map();
+  }
+
+  __get__(key) {
+    return defaultGet(this, key);
+  }
+
+  __set__(key, value) {
+    return defaultSet(this, key, value);
+  }
+}
+
 // Function token class -------------------------------------------------------
 // * takes one paramater, fn, which is stored in inst.fn and represents the
 //     function that will be called
@@ -58,13 +75,27 @@ export class FunctionToken extends Token {
 
 // Converting language primatives to JS prims ---------------------------------
 
-export function toBoolean(bool) {
+export function toJString(str) {
+  if (str && str[0] === C.STRING_PRIM) {
+    return str[1];
+  } else {
+    return '';
+  }
+}
+
+export function toJBoolean(bool) {
   if (bool && bool[0] === C.BOOLEAN_PRIM && bool[1] === true) {
     return true;
   } else {
     return false;
   }
 }
+
+// Converting JS prims to language primitives ---------------------------------
+
+export function toLString(string) {
+  return [C.STRING_PRIM, string.toString()];
+};
 
 // Call function --------------------------------------------------------------
 
@@ -85,4 +116,24 @@ export function defaultCall(fnToken, args) {
     }
     return interp.evaluateEachExpression(fnToken.fn, scope);
   }
+}
+
+// Get function ---------------------------------------------------------------
+
+export function get(obj, key) {
+  return obj['__get__'](key);
+}
+
+export function defaultGet(obj, key) {
+  return obj.map.get(toJString(key));
+}
+
+// Set function ---------------------------------------------------------------
+
+export function set(obj, key, value) {
+  return obj['__set__'](key, value);
+}
+
+export function defaultSet(obj, key, value) {
+  return obj.map.set(toJString(key), value);
 }

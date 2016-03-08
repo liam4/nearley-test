@@ -72,13 +72,13 @@ export function evaluateVariableChange(variables, [_, name, value]) {
 export function evaluateSetPropUsingIdentifier(variables, [_, objExpr, key, valueExpr]) {
   var obj = evaluateExpression(objExpr, variables);
   var value = evaluateExpression(valueExpr, variables);
+  lib.set(obj, key, value);
   obj[key] = value;
 }
 
 export function evaluateGetPropUsingIdentifier(variables, [_, objExpr, key]) {
   var obj = evaluateExpression(objExpr, variables);
-  var value = obj[key];
-  return value;
+  return lib.get(obj, key);
 }
 
 export function evaluateEachExpression(expressions, variables) {

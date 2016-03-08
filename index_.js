@@ -1,11 +1,22 @@
 console.log('');
 
 var code = `
-x => obj();
-x.y > obj();
-x.y.z > "42";
-print(x.y.z);
+x_descriptor => obj();
+x_descriptor.foo > fn() {
+  print("Hello!");
+};
+x => class(x_descriptor);
+i => construct(x);
+i.foo();
 `;
+
+/*
+var code = `
+x => obj();
+x . y > "Hi";
+print(x.y);
+`;
+*/
 
 var nearley = require('nearley');
 var grammar = require('./grammar');
