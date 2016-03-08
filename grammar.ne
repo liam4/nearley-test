@@ -6,18 +6,16 @@ var ReturnNothing = function(d, l, r) {
 };
 
 var JoinRecursive = function(a) {
+  // not really sure how this works but it's magic and fixes everything
+  // todo: figure out how it works
   var last = a[a.length - 1];
   return [a[0], ...last];
-};
-
-var ReturnFirstData = function(d) {
-  return d[0];
 };
 %}
 
 @builtin "whitespace.ne"
 
-Program -> _ _Program _ {% function(d) { return d[1] } %}
+Program -> _ _Program:? _ {% function(d) { return d[1] ? d[1] : [] } %}
 _Program -> Expression _ ";" _ _Program {% JoinRecursive %}
           | Expression
 
@@ -28,6 +26,15 @@ _Expression -> VariableAssignExpression
              | VariableGetExpression
              | CallFunctionExpression
              | StringExpression
+             | FunctionExpression
+
+# Function expression
+FunctionExpression -> "fn" _ ArgumentList _ CodeBlock {% function(d) { return [C.FUNCTION_PRIM, d[2], d[4]] } %}
+ArgumentList -> "(" _ ArgumentListContents:? _ ")" {% function(d) { return d[2] ? d[2] : [] } %}
+ArgumentListContents -> Identifier _ "," _ ArgumentListContents {% JoinRecursive %}
+                      | Identifier
+
+CodeBlock -> "{" Program "}" {% function(d) { return d[1] } %}
 
 # Variable assign
 VariableAssignExpression -> Identifier _ "=>" _ Expression {% function(d) { return [C.VARIABLE_ASSIGN, d[0], d[4]] } %}
@@ -39,7 +46,6 @@ VariableChangeExpression -> Identifier _ "->" _ Expression {% function(d) { retu
 VariableGetExpression -> Identifier {% function(d) { return [C.VARIABLE_IDENTIFIER, d[0]] } %}
 
 # Function call
-# FUNCTION_CALL, function expression, call arguments
 CallFunctionExpression -> Expression PassedArgumentList {% d => [C.FUNCTION_CALL, d[0], d[1]] %}
 PassedArgumentList -> "(" _ PassedArgumentListContents _ ")" {% d => d[2] %}
 PassedArgumentListContents -> Expression _ "," _ PassedArgumentListContents {% JoinRecursive %}

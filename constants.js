@@ -5,6 +5,7 @@ var defineConstant = function(name) {
 };
 
 defineConstant('FUNCTION_CALL');
+defineConstant('FUNCTION_PRIM');
 defineConstant('STRING_PRIM');
 defineConstant('VARIABLE_ASSIGN');
 defineConstant('VARIABLE_CHANGE');

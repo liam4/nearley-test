@@ -10,12 +10,10 @@ var ReturnNothing = function(d, l, r) {
 };
 
 var JoinRecursive = function(a) {
+  // not really sure how this works but it's magic and fixes everything
+  // todo: figure out how it works
   var last = a[a.length - 1];
   return [a[0], ...last];
-};
-
-var ReturnFirstData = function(d) {
-  return d[0];
 };
 var grammar = {
     ParserRules: [
@@ -26,7 +24,9 @@ var grammar = {
     {"name": "__$ebnf$1", "symbols": ["wschar", "__$ebnf$1"], "postprocess": function arrconcat(d) {return [d[0]].concat(d[1]);}},
     {"name": "__", "symbols": ["__$ebnf$1"], "postprocess": function(d) {return null;}},
     {"name": "wschar", "symbols": [/[ \t\n\v\f]/], "postprocess": id},
-    {"name": "Program", "symbols": ["_", "_Program", "_"], "postprocess": function(d) { return d[1] }},
+    {"name": "Program$ebnf$1", "symbols": ["_Program"], "postprocess": id},
+    {"name": "Program$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
+    {"name": "Program", "symbols": ["_", "Program$ebnf$1", "_"], "postprocess": function(d) { return d[1] ? d[1] : [] }},
     {"name": "_Program", "symbols": ["Expression", "_", {"literal":";"}, "_", "_Program"], "postprocess": JoinRecursive},
     {"name": "_Program", "symbols": ["Expression"]},
     {"name": "Expression", "symbols": ["_Expression"], "postprocess": function(d) { return d[0][0] }},
@@ -35,6 +35,15 @@ var grammar = {
     {"name": "_Expression", "symbols": ["VariableGetExpression"]},
     {"name": "_Expression", "symbols": ["CallFunctionExpression"]},
     {"name": "_Expression", "symbols": ["StringExpression"]},
+    {"name": "_Expression", "symbols": ["FunctionExpression"]},
+    {"name": "FunctionExpression$string$1", "symbols": [{"literal":"f"}, {"literal":"n"}], "postprocess": function joiner(d) {return d.join('');}},
+    {"name": "FunctionExpression", "symbols": ["FunctionExpression$string$1", "_", "ArgumentList", "_", "CodeBlock"], "postprocess": function(d) { return [C.FUNCTION_PRIM, d[2], d[4]] }},
+    {"name": "ArgumentList$ebnf$1", "symbols": ["ArgumentListContents"], "postprocess": id},
+    {"name": "ArgumentList$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
+    {"name": "ArgumentList", "symbols": [{"literal":"("}, "_", "ArgumentList$ebnf$1", "_", {"literal":")"}], "postprocess": function(d) { return d[2] ? d[2] : [] }},
+    {"name": "ArgumentListContents", "symbols": ["Identifier", "_", {"literal":","}, "_", "ArgumentListContents"], "postprocess": JoinRecursive},
+    {"name": "ArgumentListContents", "symbols": ["Identifier"]},
+    {"name": "CodeBlock", "symbols": [{"literal":"{"}, "Program", {"literal":"}"}], "postprocess": function(d) { return d[1] }},
     {"name": "VariableAssignExpression$string$1", "symbols": [{"literal":"="}, {"literal":">"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "VariableAssignExpression", "symbols": ["Identifier", "_", "VariableAssignExpression$string$1", "_", "Expression"], "postprocess": function(d) { return [C.VARIABLE_ASSIGN, d[0], d[4]] }},
     {"name": "VariableChangeExpression$string$1", "symbols": [{"literal":"-"}, {"literal":">"}], "postprocess": function joiner(d) {return d.join('');}},

@@ -18,14 +18,19 @@ export class Token {
 }
 
 // Function token class -------------------------------------------------------
-// * takes one paramater, fn, which is stored in inst.fn and represents the
-//   function that will be called
+// * takes two paramaters:
+//   - fn, which is stored in inst.fn and represents the function that will be
+//     called
+//   - scopeVariables, which is generally only used for internal creation of
+//     function expressions; it represents the closure variables that can be
+//     accessed from within the function and is stored in inst.scopeVariables
 // * use inst.__call__ to call the function (with optional arguments)
 
 export class FunctionToken extends Token {
-  constructor(fn) {
+  constructor(fn, scopeVariables) {
     super();
     this.fn = fn;
+    this.scopeVariables = scopeVariables;
   }
 
   __call__(args) {
