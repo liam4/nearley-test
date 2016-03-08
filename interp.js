@@ -9,15 +9,26 @@ var InvalidExpressionType = class extends Error {
 };
 
 var evaluateExpression = function(expression, variables) {
+
+  let temp;
   if (expression[0] === C.FUNCTION_CALL) {
-    return evaluateFunctionCall(variables, expression);
+    temp = evaluateFunctionCall(variables, expression);
   } else if (expression[0] === C.VARIABLE_IDENTIFIER) {
-    return evaluateVarabileIdentifier(variables, expression);
+    temp = evaluateVarabileIdentifier(variables, expression);
   } else if (expression[0] === C.VARIABLE_ASSIGN) {
-    return evaluateVariableAssign(variables, expression);
+    temp = evaluateVariableAssign(variables, expression);
   } else {
     throw new InvalidExpressionType(expression);
   }
+
+  // fixes "pointer" issue
+  // guess this is bad code but idk/c :)
+  if (temp && temp[0] === C.VARIABLE_IDENTIFIER) {
+    return evaluateExpression(temp, variables);
+  }
+
+  return temp;
+
 };
 
 var evaluateFunctionCall = function(variables, [_, fnExpression, args]) {

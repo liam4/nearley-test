@@ -1,9 +1,8 @@
 console.log('');
 
 var code = `
+a => a;
 
-b => "x";
-a => b;
 print(a)
 
 `;
