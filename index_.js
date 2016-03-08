@@ -1,6 +1,12 @@
 console.log('');
 
-var code = `print("a");print("b");print("c","d","e")`;
+var code = `
+
+print("a");
+print("b");
+print("c", "d", "e")
+
+`;
 
 var nearley = require('nearley');
 var grammar = require('./grammar');

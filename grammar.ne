@@ -17,8 +17,8 @@ var ReturnFirstData = function(d) {
 
 @builtin "whitespace.ne"
 
-Program -> _Program {% function(d) { return d[0] } %}
-_Program -> Expression _ ";" _ Program {% JoinRecursive %}
+Program -> _ _Program _ {% function(d) { return d[1] } %}
+_Program -> Expression _ ";" _ _Program {% JoinRecursive %}
           | Expression
 
 # General expression
@@ -30,10 +30,10 @@ _Expression -> VariableAssignExpression
              | StringExpression
 
 # Variable assign
-VariableAssignExpression -> Identifier "=>" Expression {% function(d) { return [C.VARIABLE_ASSIGN, d[0], d[2]] } %}
+VariableAssignExpression -> Identifier _ "=>" _ Expression {% function(d) { return [C.VARIABLE_ASSIGN, d[0], d[2]] } %}
 
 # Variable change
-VariableChangeExpression -> Identifier "->" Expression {% function(d) { return [C.VARIABLE_CHANGE, d[0], d[2]] } %}
+VariableChangeExpression -> Identifier _ "->" _ Expression {% function(d) { return [C.VARIABLE_CHANGE, d[0], d[2]] } %}
 
 # Variable get, really just an Identifier
 VariableGetExpression -> Identifier {% function(d) { return [C.VARIABLE_IDENTIFIER, d[0]] } %}
@@ -47,11 +47,13 @@ PassedArgumentListContents -> Expression _ "," _ PassedArgumentListContents {% J
 
 # String expression
 StringExpression -> "\"" StringExpressionDoubleContents "\"" {% d => [C.STRING_PRIM, d[1]] %}
-StringExpressionDoubleContents -> [a-zA-Z]:* {% d => d[0].join('') %}
+StringExpressionDoubleContents -> GenericValidCharacter:* {% d => d[0].join('') %}
 
 # Generic identifier
-Identifier -> [a-zA-Z]:+ {%
+Identifier -> GenericValidCharacter:+ {%
   function(data, location, reject) {
     return data[0].join('');
   }
 %}
+
+GenericValidCharacter -> [a-zA-Z0-9]
