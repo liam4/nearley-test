@@ -68,14 +68,15 @@ DoubleStringValidCharacter -> GenericValidCharacter {%
 %}
 
 # Generic identifier
-Identifier -> GenericValidCharacter:+ {%
+Identifier -> GenericValidIdentifierCharacter:+ {%
   function(data, location, reject) {
     return data[0].join('');
   }
 %}
-
-GenericValidCharacter -> . {%
+GenericValidIdentifierCharacter -> GenericValidCharacter {%
   function(data, location, reject) {
-    return data[0];
+    return data[0] && C.SPECIAL_CHARS.indexOf(data[0]) === -1 ? data[0] : reject;
   }
 %}
+
+GenericValidCharacter -> .

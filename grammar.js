@@ -72,18 +72,19 @@ var grammar = {
           else return data[0];
         }
         },
-    {"name": "Identifier$ebnf$1", "symbols": ["GenericValidCharacter"]},
-    {"name": "Identifier$ebnf$1", "symbols": ["GenericValidCharacter", "Identifier$ebnf$1"], "postprocess": function arrconcat(d) {return [d[0]].concat(d[1]);}},
+    {"name": "Identifier$ebnf$1", "symbols": ["GenericValidIdentifierCharacter"]},
+    {"name": "Identifier$ebnf$1", "symbols": ["GenericValidIdentifierCharacter", "Identifier$ebnf$1"], "postprocess": function arrconcat(d) {return [d[0]].concat(d[1]);}},
     {"name": "Identifier", "symbols": ["Identifier$ebnf$1"], "postprocess": 
         function(data, location, reject) {
           return data[0].join('');
         }
         },
-    {"name": "GenericValidCharacter", "symbols": [/./], "postprocess": 
+    {"name": "GenericValidIdentifierCharacter", "symbols": ["GenericValidCharacter"], "postprocess": 
         function(data, location, reject) {
-          return data[0];
+          return data[0] && C.SPECIAL_CHARS.indexOf(data[0]) === -1 ? data[0] : reject;
         }
-        }
+        },
+    {"name": "GenericValidCharacter", "symbols": [/./]}
 ]
   , ParserStart: "Program"
 }

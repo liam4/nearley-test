@@ -1,13 +1,11 @@
 console.log('');
 
 var code = `
-x => "hi";
-f => fn() {
-  x -> "new value!!!###@#$#$@#%$^*&^%(*^)_[]S:DLKFJ\\./<<>?,";
+x => fn() {
+  print("hi");
 };
-print(x);
-f();
-print(x);
+
+x();
 `;
 
 var nearley = require('nearley');
@@ -17,9 +15,9 @@ var interp = require('./interp');
 var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
 
 try {
-  var ast = parser.feed(code).results[0];
-  console.log(interp.interp(ast));
-  // console.log(JSON.stringify(ast, null, 1));
+  var ast = parser.feed(code).results;
+  console.log(interp.interp(ast[0]));
+  // console.log('code:', JSON.stringify(ast, null, 1));
 } catch(e) {
   if (e.offset) {
     console.error("Syntax error on character " + e.offset);
