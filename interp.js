@@ -35,14 +35,6 @@ export function evaluateExpression(expression, variables) {
     throw new InvalidExpressionType(expression);
   }
 
-  // fixes "pointer" issue
-  // guess this is bad code but idk/c :)
-  /*
-  if (temp && temp[0] === C.VARIABLE_IDENTIFIER) {
-    return evaluateExpression(temp, variables);
-  }
-  */
-
   return temp;
 
 }
