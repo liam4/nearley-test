@@ -4,6 +4,7 @@ var defineConstant = function(name) {
   allExports[name] = name;
 };
 
+defineConstant('BOOLEAN_PRIM');
 defineConstant('FUNCTION_CALL');
 defineConstant('FUNCTION_PRIM');
 defineConstant('STRING_PRIM');

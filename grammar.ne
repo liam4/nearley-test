@@ -51,6 +51,10 @@ PassedArgumentList -> "(" _ PassedArgumentListContents:? _ ")" {% d => d[2] ? d[
 PassedArgumentListContents -> Expression _ "," _ PassedArgumentListContents {% JoinRecursive %}
                             | Expression
 
+# Boolean expression
+BooleanExpression -> _BooleanExpression {% function(d) { return ["BOOLEAN_PRIM", d[0] === "true"] } %}
+_BooleanExpression -> "true" | "false"
+
 # String expression
 StringExpression -> "\"" StringExpressionDoubleContents "\"" {% d => [C.STRING_PRIM, d[1]] %}
 StringExpressionDoubleContents -> GenericValidCharacter:* {% d => d[0].join('') %}

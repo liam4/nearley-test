@@ -24,7 +24,8 @@ export function evaluateExpression(expression, variables) {
     temp = evaluateVariableAssign(variables, expression);
   } else if (expression[0] === C.FUNCTION_PRIM) {
     temp = evaluateFunctionPrim(variables, expression);
-  } else if (expression[0] === C.STRING_PRIM) {
+  } else if (expression[0] === C.STRING_PRIM ||
+             expression[0] === C.BOOLEAN_PRIM) {
     return expression;
   } else {
     throw new InvalidExpressionType(expression);
@@ -59,8 +60,8 @@ export function evaluateVarabileIdentifier(variables, [_, variableName]) {
   else throw `variable ${variableName} not in [${Object.keys(variables)}]`;
 }
 
-export function evaluateVariableAssign(variables, [_, variableName, variableValue]) {
-  variables[variableName] = new lib.Variable(evaluateExpression(variableValue, variables));
+export function evaluateVariableAssign(variables, [_, name, value]) {
+  variables[name] = new lib.Variable(evaluateExpression(value, variables));
 }
 
 export function interp(ast) {
