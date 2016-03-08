@@ -9,13 +9,16 @@ export function makeBuiltins() {
 
   variables['if'] = new lib.Variable(new lib.FunctionToken(function(args) {
     if (lib.toBoolean(args[0])) {
-    // if (args[0] && args[0][0] === 'BOOLEAN_PRIM' && args[0][1] === true) {
       lib.call(args[1], []);
     }
   }));
 
   variables['ifel'] = new lib.Variable(new lib.FunctionToken(function(args) {
-    // TODO
+    if (lib.toBoolean(args[0])) {
+      lib.call(args[1], []);
+    } else {
+      lib.call(args[2], []);
+    }
   }));
 
   return variables;

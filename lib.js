@@ -1,4 +1,5 @@
 var interp = require('./interp');
+var C = require('./constants');
 
 // Variable class -------------------------------------------------------------
 // * this should never *ever* be accessed through anywhere except set/get
@@ -52,6 +53,16 @@ export class FunctionToken extends Token {
 
   setArguments(fnArguments) {
     this.fnArguments = fnArguments;
+  }
+}
+
+// Converting language primatives to JS prims ---------------------------------
+
+export function toBoolean(bool) {
+  if (bool && bool[0] === C.BOOLEAN_PRIM && bool[1] === true) {
+    return true;
+  } else {
+    return false;
   }
 }
 

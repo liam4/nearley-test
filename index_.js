@@ -1,11 +1,11 @@
 console.log('');
 
 var code = `
-x => fn() {
-  print("hi");
-};
-
-x();
+ifel (false, fn() {
+  print ("good");
+}, fn() {
+  print ("bad");
+});
 `;
 
 var nearley = require('nearley');
