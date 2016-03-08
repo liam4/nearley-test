@@ -7,10 +7,9 @@ fn() {
 }()
 `;
 
-import * as interp from './interp';
-
 var nearley = require('nearley');
 var grammar = require('./grammar');
+var interp = require('./interp');
 
 var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
 

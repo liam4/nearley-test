@@ -1,5 +1,6 @@
 var C = require('./constants');
 var lib = require('./lib');
+var builtins = require('./builtins');
 
 export class InvalidExpressionType extends Error {
   constructor(expr) {
@@ -71,16 +72,7 @@ export function evaluateEachExpression(expressions, variables) {
 export function interp(ast) {
   var variables = {};
 
-  variables['print'] = new lib.Variable(new lib.FunctionToken(function(args) {
-    console.log('{Print}', ...args);
-  }));
-
-  variables['if'] = new lib.Variable(new lib.FunctionToken(function(args) {
-    console.log(args);
-    if (args[0] && args[0][0] === 'BOOLEAN_PRIM' && args[0][1] === true) {
-      lib.call(args[1], []);
-    }
-  }));
+  Object.assign(variables, builtins.makeBuiltins());
 
   console.log(evaluateEachExpression(ast, variables));
 }
