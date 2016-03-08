@@ -13,6 +13,8 @@ var evaluateExpression = function(expression, variables) {
     return evaluateFunctionCall(variables, expression);
   } else if (expression[0] === C.VARIABLE_IDENTIFIER) {
     return evaluateVarabileIdentifier(variables, expression);
+  } else if (expression[0] === C.VARIABLE_ASSIGN) {
+    return evaluateVariableAssign(variables, expression);
   } else {
     throw new InvalidExpressionType(expression);
   }
@@ -20,11 +22,15 @@ var evaluateExpression = function(expression, variables) {
 
 var evaluateFunctionCall = function(variables, [_, fnExpression, args]) {
   var fn = evaluateExpression(fnExpression, variables);
-  return lib.call(fn, args);
+  return lib.call(fn, args.map(arg => evaluateExpression(arg, variables)));
 };
 
 var evaluateVarabileIdentifier = function(variables, [_, variableName]) {
   return variables[variableName].value;
+};
+
+var evaluateVariableAssign = function(variables, [_, variableName, variableValue]) {
+  variables[variableName] = new lib.Variable(variableValue);
 };
 
 module.exports = function(ast) {

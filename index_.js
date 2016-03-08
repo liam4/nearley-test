@@ -2,9 +2,9 @@ console.log('');
 
 var code = `
 
-print("a");
-print("b");
-print("c", "d", "e")
+b => "x";
+a => b;
+print(a)
 
 `;
 

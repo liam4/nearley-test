@@ -6,6 +6,8 @@ var defineConstant = function(name) {
 
 defineConstant('FUNCTION_CALL');
 defineConstant('STRING_PRIM');
+defineConstant('VARIABLE_ASSIGN');
+defineConstant('VARIABLE_CHANGE');
 defineConstant('VARIABLE_IDENTIFIER');
 
 module.exports = allExports;
