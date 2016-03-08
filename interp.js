@@ -23,9 +23,11 @@ var evaluateExpression = function(expression, variables) {
 
   // fixes "pointer" issue
   // guess this is bad code but idk/c :)
+  /*
   if (temp && temp[0] === C.VARIABLE_IDENTIFIER) {
     return evaluateExpression(temp, variables);
   }
+  */
 
   return temp;
 
@@ -41,7 +43,7 @@ var evaluateVarabileIdentifier = function(variables, [_, variableName]) {
 };
 
 var evaluateVariableAssign = function(variables, [_, variableName, variableValue]) {
-  variables[variableName] = new lib.Variable(variableValue);
+  variables[variableName] = new lib.Variable(evaluateExpression(variableValue));
 };
 
 module.exports = function(ast) {
