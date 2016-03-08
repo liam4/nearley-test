@@ -67,7 +67,11 @@ export function defaultCall(fnToken, args) {
     return fnToken.fn(args);
   } else {
     var scope = Object.assign({}, fnToken.scopeVariables);
-    // TODO: arguments
+    var fnArgs = fnToken.fnArguments;
+    for (var i = 0; i < fnArgs.length; i++) {
+      var value = args[i];
+      scope[fnArgs[i]] = new Variable(value);
+    }
     return interp.evaluateExpression(fnToken.fn, scope);
   }
 }

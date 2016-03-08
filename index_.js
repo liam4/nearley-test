@@ -1,6 +1,10 @@
 console.log('');
 
-var code = `a => fn() {print("Hello")};a()
+var code = `
+a => fn(x) {
+  print(x)
+};
+a("foo")
 `;
 
 import * as interp from './interp';
