@@ -1,14 +1,19 @@
 var C = require('./constants');
 var lib = require('./lib');
 
-var InvalidExpressionType = class extends Error {
+export class InvalidExpressionType extends Error {
   constructor(expr) {
     super('invalid expression type');
     this.expr = expr;
   }
-};
+}
 
-var evaluateExpression = function(expression, variables) {
+export function evaluateExpression(expression, variables) {
+
+  /*
+  console.log(`Evaluating expression ${expression[0]} using` +
+              `variables [${variables?Object.keys(variables):'UNDEFINED'}]`);
+  */
 
   let temp;
   if (expression[0] === C.FUNCTION_CALL) {
@@ -19,6 +24,8 @@ var evaluateExpression = function(expression, variables) {
     temp = evaluateVariableAssign(variables, expression);
   } else if (expression[0] === C.FUNCTION_PRIM) {
     temp = evaluateFunctionPrim(variables, expression);
+  } else if (expression[0] === C.STRING_PRIM) {
+    return expression;
   } else {
     throw new InvalidExpressionType(expression);
   }
@@ -33,29 +40,30 @@ var evaluateExpression = function(expression, variables) {
 
   return temp;
 
-};
+}
 
-var evaluateFunctionPrim = function(variables, [_, args, fnExpression]) {
-  var fn = new lib.FunctionToken(fnExpression);
+export function evaluateFunctionPrim(variables, [_, args, fnExpression]) {
+  var fn = new lib.FunctionToken(fnExpression[0]);
   fn.setScopeVariables(Object.assign({}, variables));
   fn.setArguments(args);
   return fn;
-};
+}
 
-var evaluateFunctionCall = function(variables, [_, fnExpression, args]) {
+export function evaluateFunctionCall(variables, [_, fnExpression, args]) {
   var fn = evaluateExpression(fnExpression, variables);
   return lib.call(fn, args.map(arg => evaluateExpression(arg, variables)));
-};
+}
 
-var evaluateVarabileIdentifier = function(variables, [_, variableName]) {
-  return variables[variableName].value;
-};
+export function evaluateVarabileIdentifier(variables, [_, variableName]) {
+  if (variableName in variables) return variables[variableName].value;
+  else throw `variable ${variableName} not in [${Object.keys(variables)}]`;
+}
 
-var evaluateVariableAssign = function(variables, [_, variableName, variableValue]) {
-  variables[variableName] = new lib.Variable(evaluateExpression(variableValue));
-};
+export function evaluateVariableAssign(variables, [_, variableName, variableValue]) {
+  variables[variableName] = new lib.Variable(evaluateExpression(variableValue, variables));
+}
 
-module.exports = function(ast) {
+export function interp(ast) {
   var variables = {};
 
   variables['print'] = new lib.Variable(new lib.FunctionToken(function(args) {
@@ -63,4 +71,4 @@ module.exports = function(ast) {
   }));
 
   console.log(ast.map(e => evaluateExpression(e, variables)));
-};
+}

@@ -1,3 +1,5 @@
+var interp = require('./interp');
+
 // Variable class -------------------------------------------------------------
 // * this should never *ever* be accessed through anywhere except set/get
 //   variable functions
@@ -60,5 +62,12 @@ export function call(fn, args) {
 }
 
 export function defaultCall(fnToken, args) {
-  return fnToken.fn(args);
+  if (fnToken.fn instanceof Function) {
+    // it's a javascript function so just call it
+    return fnToken.fn(args);
+  } else {
+    var scope = Object.assign({}, fnToken.scopeVariables);
+    // TODO: arguments
+    return interp.evaluateExpression(fnToken.fn, scope);
+  }
 }
