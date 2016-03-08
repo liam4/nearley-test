@@ -16,12 +16,16 @@ export function evaluateExpression(expression, variables) {
   */
 
   let temp;
-  if (expression[0] === C.FUNCTION_CALL) {
+  if (expression instanceof Array && expression.reduce(e => e instanceof Array)) {
+    return evaluateEachExpression(e);
+  } else if (expression[0] === C.FUNCTION_CALL) {
     temp = evaluateFunctionCall(variables, expression);
   } else if (expression[0] === C.VARIABLE_IDENTIFIER) {
     temp = evaluateVarabileIdentifier(variables, expression);
   } else if (expression[0] === C.VARIABLE_ASSIGN) {
     temp = evaluateVariableAssign(variables, expression);
+  } else if (expression[0] === C.VARIABLE_CHANGE) {
+    temp = evaluateVariableChange(variables, expression);
   } else if (expression[0] === C.FUNCTION_PRIM) {
     temp = evaluateFunctionPrim(variables, expression);
   } else if (expression[0] === C.STRING_PRIM ||
@@ -44,7 +48,7 @@ export function evaluateExpression(expression, variables) {
 }
 
 export function evaluateFunctionPrim(variables, [_, args, fnExpression]) {
-  var fn = new lib.FunctionToken(fnExpression[0]);
+  var fn = new lib.FunctionToken(fnExpression);
   fn.setScopeVariables(Object.assign({}, variables));
   fn.setArguments(args);
   return fn;
@@ -64,6 +68,14 @@ export function evaluateVariableAssign(variables, [_, name, value]) {
   variables[name] = new lib.Variable(evaluateExpression(value, variables));
 }
 
+export function evaluateVariableChange(variables, [_, name, value]) {
+  variables[name].value = value;
+}
+
+export function evaluateEachExpression(expressions, variables) {
+  return expressions.map(e => evaluateExpression(e, variables));
+}
+
 export function interp(ast) {
   var variables = {};
 
@@ -78,5 +90,5 @@ export function interp(ast) {
     }
   }));
 
-  console.log(ast.map(e => evaluateExpression(e, variables)));
+  console.log(evaluateEachExpression(ast, variables));
 }

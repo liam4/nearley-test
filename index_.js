@@ -1,9 +1,10 @@
 console.log('');
 
 var code = `
-if (true, fn() {
-  print("Good")
-})
+fn() {
+  print("a");
+  print("b")
+}()
 `;
 
 import * as interp from './interp';

@@ -72,6 +72,7 @@ export function defaultCall(fnToken, args) {
       var value = args[i];
       scope[fnArgs[i]] = new Variable(value);
     }
-    return interp.evaluateExpression(fnToken.fn, scope);
+    interp.evaluateEachExpression(fnToken.fn, scope);
+    return;
   }
 }
