@@ -17,6 +17,8 @@ var evaluateExpression = function(expression, variables) {
     temp = evaluateVarabileIdentifier(variables, expression);
   } else if (expression[0] === C.VARIABLE_ASSIGN) {
     temp = evaluateVariableAssign(variables, expression);
+  } else if (expression[0] === C.FUNCTION_PRIM) {
+    temp = evaluateFunctionPrim(variables, expression);
   } else {
     throw new InvalidExpressionType(expression);
   }
@@ -31,6 +33,13 @@ var evaluateExpression = function(expression, variables) {
 
   return temp;
 
+};
+
+var evaluateFunctionPrim = function(variables, [_, args, fnExpression]) {
+  var fn = new lib.FunctionToken(fnExpression);
+  fn.setScopeVariables(Object.assign({}, variables));
+  fn.setArguments(args);
+  return fn;
 };
 
 var evaluateFunctionCall = function(variables, [_, fnExpression, args]) {

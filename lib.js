@@ -18,25 +18,38 @@ export class Token {
 }
 
 // Function token class -------------------------------------------------------
-// * takes two paramaters:
-//   - fn, which is stored in inst.fn and represents the function that will be
-//     called
-//   - scopeVariables, which is generally only used for internal creation of
-//     function expressions; it represents the closure variables that can be
-//     accessed from within the function and is stored in inst.scopeVariables
+// * takes one paramater, fn, which is stored in inst.fn and represents the
+//     function that will be called
+// * you can also set scopeVariables (using setScopeVariables), which is
+//     generally only used for internal creation of function expressions; it
+//     represents the closure variables that can be accessed from within the
+//     function
+// * you can also set fnArguments (using setArguments), which is generally also
+//     only used for internal creation of function expressions; it tells what
+//     call arguments should be mapped to in the variables context of running
+//     the code block
 // * use inst.__call__ to call the function (with optional arguments)
 
 export class FunctionToken extends Token {
-  constructor(fn, scopeVariables) {
+  constructor(fn) {
     super();
     this.fn = fn;
-    this.scopeVariables = scopeVariables;
+    this.scopeVariables = null;
+    this.fnArguments = null;
   }
 
   __call__(args) {
     // Call this function. By default uses defaultCall, but can be overriden
     // by subclasses.
     return defaultCall(this, args);
+  }
+
+  setScopeVariables(scopeVariables) {
+    this.scopeVariables = scopeVariables;
+  }
+
+  setArguments(fnArguments) {
+    this.fnArguments = fnArguments;
   }
 }
 

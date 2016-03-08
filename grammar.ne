@@ -47,7 +47,7 @@ VariableGetExpression -> Identifier {% function(d) { return [C.VARIABLE_IDENTIFI
 
 # Function call
 CallFunctionExpression -> Expression PassedArgumentList {% d => [C.FUNCTION_CALL, d[0], d[1]] %}
-PassedArgumentList -> "(" _ PassedArgumentListContents _ ")" {% d => d[2] %}
+PassedArgumentList -> "(" _ PassedArgumentListContents:? _ ")" {% d => d[2] ? d[2] : [] %}
 PassedArgumentListContents -> Expression _ "," _ PassedArgumentListContents {% JoinRecursive %}
                             | Expression
 
