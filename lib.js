@@ -71,7 +71,18 @@ export function defaultGet(obj, key) {
       prototype = current ? current['__prototype__'] : null;
     }
     if (current) {
-      return prototype[keyString];
+      var value = prototype[keyString];
+      if (value instanceof FunctionToken) {
+        // I was going to just bind to obj, but that generally involves using
+        // the oh so terrible `this`.
+        //return new FunctionToken(value.fn.bind(obj));
+        // Instead it returns a function that calls the given function with
+        // obj as the first paramater.
+        return new FunctionToken(function(...args) {
+          return value.fn(obj, ...args);
+        });
+      }
+      return value;
     }
   }
 }
@@ -127,6 +138,7 @@ export class ArrayToken extends ObjectToken {
   constructor() {
     super();
     this['__constructor__'] = ArrayToken;
+    this.data.length = 0;
   }
 }
 
@@ -168,12 +180,13 @@ export class FunctionToken extends ObjectToken {
 
 // ETC. that requires above definitions ---------------------------------------
 
-export var ObjectTokenPrototype = {
-  x: toLString('haha')
-}
+export var ObjectTokenPrototype = {}
 
 export var ArrayTokenPrototype = {
-  y: toLString('lololk')
+  push: new FunctionToken(function(self, what) {
+    self.data[self.data.length] = what;
+    self.data.length = self.data.length + 1;
+  })
 }
 
 ObjectToken['__prototype__'] = ObjectTokenPrototype;
