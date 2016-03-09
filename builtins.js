@@ -1,4 +1,5 @@
 var lib = require('./lib');
+var C = require('./constants');
 
 export function makeBuiltins() {
   var variables = {};
@@ -34,11 +35,18 @@ export function makeBuiltins() {
 
   variables['construct'] = new lib.Variable(new lib.FunctionToken(function(args) {
     const cls = args[0];
-    return {
+    const self = {
       '__get__': function(what) {
-        return lib.get(cls.descriptor, what);
+        var gotten = lib.get(cls.descriptor, what);
+        if (gotten instanceof lib.FunctionToken) {
+          return new lib.FunctionToken(function(args) {
+            return lib.call(gotten, [self, ...args]);
+          });
+        }
+        return gotten;
       }
     };
+    return self;
   }));
 
   return variables;

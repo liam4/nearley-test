@@ -2,8 +2,9 @@ console.log('');
 
 var code = `
 x_descriptor => obj();
-x_descriptor.foo > fn() {
-  print("Hello!");
+x_descriptor.foo > fn(self) {
+  print("y");
+  self.foo();
 };
 x => class(x_descriptor);
 i => construct(x);
