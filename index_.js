@@ -5,52 +5,6 @@ x => array();
 print(x.y);
 `;
 
-/*
-var code = `
-thing_descriptor => obj();
-thing_descriptor.init > fn(self, name) {
-  self.name > name;
-  print("You set my name to");
-  print(name);
-};
-thing_descriptor.msg > fn(self) {
-  print("Hello! My name is");
-  print(self.name);
-};
-thing => class(thing_descriptor);
-instance => construct(thing);
-instance.init("Foo");
-instance.msg();
-`;
-*/
-
-/*
-var code = `
-
-thing_descriptor => obj();
-thing_descriptor.x > fn() {
-  print("x");
-};
-declared_after_x => "hi";
-thing_descriptor.y > fn() {
-  print("y");
-};
-thing => class(thing_descriptor);
-instance => construct(thing);
-instance.x();
-instance.y();
-
-`;
-*/
-
-/*
-var code = `
-x => obj();
-x . y > "Hi";
-print(x.y);
-`;
-*/
-
 var nearley = require('nearley');
 var grammar = require('./grammar');
 var interp = require('./interp');
