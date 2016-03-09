@@ -5,7 +5,7 @@ export function makeBuiltins() {
   var variables = {};
 
   variables['print'] = new lib.Variable(new lib.FunctionToken(function(args) {
-    console.log('{Print}', ...args);
+    console.log('{Print}', ...args.map(arg => lib.toJString(arg)));
   }));
 
   variables['if'] = new lib.Variable(new lib.FunctionToken(function(args) {

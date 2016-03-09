@@ -1,16 +1,9 @@
 console.log('');
 
 var code = `
-a => array();
-a.push("Item 0");
-a.push("Item 1");
-a.push("Item 2");
-print(a.0);
-print(a.1);
-print(a.2);
-a.pop();
-print(a.2);
-print(a.length);
+print("Hello!");
+print(true);
+print(fn() {});
 `;
 
 var nearley = require('nearley');

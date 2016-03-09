@@ -1,18 +1,54 @@
 var interp = require('./interp');
 var C = require('./constants');
 
+export class StringPrim {
+  constructor(str) {
+    this.str = str;
+  }
+
+  set str(str) {
+    this._str = String(str);
+  }
+
+  get str() {
+    return String(this._str);
+  }
+
+  toString() {
+    return this.str;
+  }
+}
+
+export class BooleanPrim {
+  constructor(bool) {
+    this.bool = bool;
+  }
+
+  set bool(bool) {
+    this._bool = Boolean(bool);
+  }
+
+  get bool() {
+    return Boolean(this._bool);
+  }
+
+  toString() {
+    return `<Boolean ${this.bool}>`
+  }
+}
+
 // Converting language primatives to JS prims ---------------------------------
 
 export function toJString(str) {
-  if (str && str[0] === C.STRING_PRIM) {
-    return String(str[1]);
+  if (str instanceof StringPrim) {
+    return str.str;
   } else {
     return String(str);
   }
 }
 
 export function toJBoolean(bool) {
-  if (bool && bool[0] === C.BOOLEAN_PRIM && bool[1] === true) {
+  if (bool instanceof BooleanPrim && bool.bool === true) {
     return true;
   } else {
     return false;
@@ -21,9 +57,13 @@ export function toJBoolean(bool) {
 
 // Converting JS prims to language primitives ---------------------------------
 
-export function toLString(string) {
-  return [C.STRING_PRIM, string.toString()];
+export function toLString(str) {
+  return new StringPrim(str);
 };
+
+export function toLBoolean(bool) {
+  return new BooleanPrim(bool);
+}
 
 // Call function --------------------------------------------------------------
 
@@ -175,6 +215,10 @@ export class FunctionToken extends ObjectToken {
 
   setArguments(fnArguments) {
     this.fnArguments = fnArguments;
+  }
+
+  toString() {
+    return '<Object Function>';
   }
 }
 
