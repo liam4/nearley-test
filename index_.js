@@ -1,6 +1,12 @@
 console.log('');
 
 var code = `
+x => array();
+print(x.y);
+`;
+
+/*
+var code = `
 thing_descriptor => obj();
 thing_descriptor.init > fn(self, name) {
   self.name > name;
@@ -16,6 +22,7 @@ instance => construct(thing);
 instance.init("Foo");
 instance.msg();
 `;
+*/
 
 /*
 var code = `

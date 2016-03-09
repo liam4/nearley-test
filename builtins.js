@@ -1,28 +1,6 @@
 var lib = require('./lib');
 var C = require('./constants');
 
-export class ClassInstance extends lib.ObjectToken {
-  constructor(cls) {
-    super();
-    this.cls = cls;
-  }
-
-  __get__(what) {
-    // TODO: inheritence
-    if (lib.has(this.cls.descriptor, what)) {
-      var gotten = lib.get(this.cls.descriptor, what);
-      if (gotten instanceof lib.FunctionToken) {
-        return new lib.FunctionToken(args => { // arrow ftw :)
-          return lib.call(gotten, [this, ...args]);
-        });
-      }
-      return gotten;
-    } else {
-      return this.map.get(what);
-    }
-  }
-}
-
 export function makeBuiltins() {
   var variables = {};
 
@@ -48,17 +26,8 @@ export function makeBuiltins() {
     return new lib.ObjectToken();
   }));
 
-  variables['class'] = new lib.Variable(new lib.FunctionToken(function(args) {
-    const descriptor = args[0];
-    return {
-      descriptor
-    };
-  }));
-
-  variables['construct'] = new lib.Variable(new lib.FunctionToken(function(args) {
-    const cls = args[0];
-    const self = new ClassInstance(cls);
-    return self;
+  variables['array'] = new lib.Variable(new lib.FunctionToken(function(args) {
+    return new lib.ArrayToken();
   }));
 
   return variables;
