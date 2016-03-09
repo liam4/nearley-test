@@ -186,6 +186,10 @@ export var ArrayTokenPrototype = {
   push: new FunctionToken(function(self, what) {
     self.data[self.data.length] = what;
     self.data.length = self.data.length + 1;
+  }),
+  pop: new FunctionToken(function(self) {
+    delete self.data[self.data.length - 1];
+    self.data.length = self.data.length - 1;
   })
 }
 
