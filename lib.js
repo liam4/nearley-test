@@ -77,9 +77,9 @@ export class FunctionToken extends Token {
 
 export function toJString(str) {
   if (str && str[0] === C.STRING_PRIM) {
-    return str[1];
+    return String(str[1]);
   } else {
-    return '';
+    return String(str);
   }
 }
 
@@ -116,6 +116,12 @@ export function defaultCall(fnToken, args) {
     }
     return interp.evaluateEachExpression(fnToken.fn, scope);
   }
+}
+
+// Has function ---------------------------------------------------------------
+
+export function has(obj, key) {
+  return key in obj;
 }
 
 // Get function ---------------------------------------------------------------

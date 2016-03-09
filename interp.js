@@ -18,6 +18,7 @@ export function evaluateExpression(expression, variables) {
 
   let temp;
   if (expression instanceof Array && expression.reduce(e => e instanceof Array)) {
+    // console.log('THIS IS BAD', expression);
     return evaluateEachExpression(expression, variables);
   } else if (expression[0] === C.FUNCTION_CALL) {
     temp = evaluateFunctionCall(variables, expression);
@@ -87,9 +88,13 @@ export function evaluateEachExpression(expressions, variables) {
 }
 
 export function interp(ast) {
-  var variables = {};
+  if (ast) {
+    var variables = {};
 
-  Object.assign(variables, builtins.makeBuiltins());
+    Object.assign(variables, builtins.makeBuiltins());
 
-  return evaluateEachExpression(ast, variables);
+    return evaluateEachExpression(ast, variables);
+  } else {
+    console.error('Haha, you didn\'t past me a tree!');
+  }
 }

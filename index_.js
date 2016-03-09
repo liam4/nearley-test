@@ -1,15 +1,40 @@
 console.log('');
 
 var code = `
-x_descriptor => obj();
-x_descriptor.foo > fn(self) {
-  print("y");
-  self.foo();
+thing_descriptor => obj();
+thing_descriptor.init > fn(self, name) {
+  self.name > name;
+  print("You set my name to");
+  print(name);
 };
-x => class(x_descriptor);
-i => construct(x);
-i.foo();
+thing_descriptor.msg > fn(self) {
+  print("Hello! My name is");
+  print(self.name);
+};
+thing => class(thing_descriptor);
+instance => construct(thing);
+instance.init("Foo");
+instance.msg();
 `;
+
+/*
+var code = `
+
+thing_descriptor => obj();
+thing_descriptor.x > fn() {
+  print("x");
+};
+declared_after_x => "hi";
+thing_descriptor.y > fn() {
+  print("y");
+};
+thing => class(thing_descriptor);
+instance => construct(thing);
+instance.x();
+instance.y();
+
+`;
+*/
 
 /*
 var code = `
@@ -26,10 +51,12 @@ var interp = require('./interp');
 var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
 
 try {
-  var ast = parser.feed(code).results[0];
+  var asts = parser.feed(code).results;
+  var ast = asts[0];
   var result = interp.interp(ast);
-  // console.log('result:', interp.interp(ast));
-  // console.log('code:', JSON.stringify(ast, null, 4));
+  // console.log('result:', result);
+  // console.log('all ASTs:', JSON.stringify(asts, null, 1));
+  // console.log('AST:', JSON.stringify(ast, null, 1));
 } catch(e) {
   if (e.offset) {
     console.error("Syntax error on character " + e.offset);

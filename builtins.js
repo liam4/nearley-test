@@ -8,13 +8,18 @@ export class ClassInstance extends lib.ObjectToken {
   }
 
   __get__(what) {
-    var gotten = lib.get(this.cls.descriptor, what);
-    if (gotten instanceof lib.FunctionToken) {
-      return new lib.FunctionToken(args => { // arrow ftw :)
-        return lib.call(gotten, [this, ...args]);
-      });
+    // TODO: inheritence
+    if (lib.has(this.cls.descriptor, what)) {
+      var gotten = lib.get(this.cls.descriptor, what);
+      if (gotten instanceof lib.FunctionToken) {
+        return new lib.FunctionToken(args => { // arrow ftw :)
+          return lib.call(gotten, [this, ...args]);
+        });
+      }
+      return gotten;
+    } else {
+      return this.map.get(what);
     }
-    return gotten;
   }
 }
 
