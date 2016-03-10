@@ -79,6 +79,7 @@ DoubleStringValidCharacter -> GenericValidCharacter {%
   }
 %}
 
+# Number expression
 NumberExpression -> _Number {% function(d) { return [C.NUMBER_PRIM, d[0]] } %}
 _Number -> "-":? (Digits "."):? Digits {% function(d) {
   var result = "";

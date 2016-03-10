@@ -30,5 +30,21 @@ export function makeBuiltins() {
     return new lib.ArrayToken();
   }));
 
+  variables['+'] = new lib.Variable(new lib.FunctionToken(function([x, y]) {
+    return lib.toLNumber(lib.toJNumber(x) + lib.toJNumber(y));
+  }));
+
+  variables['-'] = new lib.Variable(new lib.FunctionToken(function([x, y]) {
+    return lib.toLNumber(lib.toJNumber(x) - lib.toJNumber(y));
+  }));
+
+  variables['/'] = new lib.Variable(new lib.FunctionToken(function([x, y]) {
+    return lib.toLNumber(lib.toJNumber(x) / lib.toJNumber(y));
+  }));
+
+  variables['*'] = new lib.Variable(new lib.FunctionToken(function([x, y]) {
+    return lib.toLNumber(lib.toJNumber(x) * lib.toJNumber(y));
+  }));
+
   return variables;
 }

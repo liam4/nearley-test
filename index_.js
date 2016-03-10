@@ -1,10 +1,7 @@
 console.log('');
 
 var code = `
-print("Hello!");
-print(true);
-print(fn() {});
-print(-3.14);
+print(-(/(3,4),0.25));
 `;
 
 var nearley = require('nearley');
