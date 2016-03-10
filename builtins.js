@@ -4,17 +4,17 @@ var C = require('./constants');
 export function makeBuiltins() {
   var variables = {};
 
-  variables['print'] = new lib.Variable(new lib.FunctionToken(function(args) {
+  variables['print'] = new lib.Variable(new lib.LFunction(function(args) {
     console.log('{Print}', ...args.map(arg => lib.toJString(arg)));
   }));
 
-  variables['if'] = new lib.Variable(new lib.FunctionToken(function(args) {
+  variables['if'] = new lib.Variable(new lib.LFunction(function(args) {
     if (lib.toJBoolean(args[0])) {
       lib.call(args[1], []);
     }
   }));
 
-  variables['ifel'] = new lib.Variable(new lib.FunctionToken(function(args) {
+  variables['ifel'] = new lib.Variable(new lib.LFunction(function(args) {
     if (lib.toJBoolean(args[0])) {
       lib.call(args[1], []);
     } else {
@@ -22,27 +22,27 @@ export function makeBuiltins() {
     }
   }));
 
-  variables['obj'] = new lib.Variable(new lib.FunctionToken(function(args) {
-    return new lib.ObjectToken();
+  variables['obj'] = new lib.Variable(new lib.LFunction(function(args) {
+    return new lib.LObject();
   }));
 
-  variables['array'] = new lib.Variable(new lib.FunctionToken(function(args) {
-    return new lib.ArrayToken();
+  variables['array'] = new lib.Variable(new lib.LFunction(function(args) {
+    return new lib.LArray();
   }));
 
-  variables['+'] = new lib.Variable(new lib.FunctionToken(function([x, y]) {
+  variables['+'] = new lib.Variable(new lib.LFunction(function([x, y]) {
     return lib.toLNumber(lib.toJNumber(x) + lib.toJNumber(y));
   }));
 
-  variables['-'] = new lib.Variable(new lib.FunctionToken(function([x, y]) {
+  variables['-'] = new lib.Variable(new lib.LFunction(function([x, y]) {
     return lib.toLNumber(lib.toJNumber(x) - lib.toJNumber(y));
   }));
 
-  variables['/'] = new lib.Variable(new lib.FunctionToken(function([x, y]) {
+  variables['/'] = new lib.Variable(new lib.LFunction(function([x, y]) {
     return lib.toLNumber(lib.toJNumber(x) / lib.toJNumber(y));
   }));
 
-  variables['*'] = new lib.Variable(new lib.FunctionToken(function([x, y]) {
+  variables['*'] = new lib.Variable(new lib.LFunction(function([x, y]) {
     return lib.toLNumber(lib.toJNumber(x) * lib.toJNumber(y));
   }));
 

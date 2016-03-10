@@ -192,11 +192,11 @@ export class Token {
 
 // Object token class ---------------------------------------------------------
 
-export class ObjectToken extends Token {
+export class LObject extends Token {
   constructor() {
     super();
     this.data = {};
-    this['__constructor__'] = ObjectToken;
+    this['__constructor__'] = LObject;
   }
 
   __get__(key) {
@@ -208,10 +208,10 @@ export class ObjectToken extends Token {
   }
 }
 
-export class ArrayToken extends ObjectToken {
+export class LArray extends LObject {
   constructor() {
     super();
-    this['__constructor__'] = ArrayToken;
+    this['__constructor__'] = LArray;
     this.data.length = 0;
   }
 }
@@ -229,9 +229,10 @@ export class ArrayToken extends ObjectToken {
 //     the code block
 // * use inst.__call__ to call the function (with optional arguments)
 
-export class FunctionToken extends ObjectToken {
+export class LFunction extends LObject {
   constructor(fn) {
     super();
+    this['__constructor__'] = LFunction;
     this.fn = fn;
     this.scopeVariables = null;
     this.fnArguments = null;
@@ -258,21 +259,21 @@ export class FunctionToken extends ObjectToken {
 
 // ETC. that requires above definitions ---------------------------------------
 
-export var ObjectTokenPrototype = {}
+export var LObjectPrototype = {}
 
-export var ArrayTokenPrototype = {
-  push: new FunctionToken(function(self, what) {
+export var LArrayPrototype = {
+  push: new LFunction(function(self, what) {
     self.data[self.data.length] = what;
     self.data.length = self.data.length + 1;
   }),
-  pop: new FunctionToken(function(self) {
+  pop: new LFunction(function(self) {
     delete self.data[self.data.length - 1];
     self.data.length = self.data.length - 1;
   })
 }
 
-ObjectToken['__prototype__'] = ObjectTokenPrototype;
-ObjectToken['__super__'] = null;
+LObject['__prototype__'] = LObjectPrototype;
+LObject['__super__'] = null;
 
-ArrayToken['__prototype__'] = ArrayTokenPrototype;
-ArrayToken['__super__'] = ObjectToken;
+LArray['__prototype__'] = LArrayPrototype;
+LArray['__super__'] = LObject;
