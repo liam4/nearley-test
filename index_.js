@@ -1,5 +1,3 @@
-console.log('');
-
 var code = `
 print(-(/(3,4),0.25));
 `;
