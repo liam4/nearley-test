@@ -4,6 +4,7 @@ var code = `
 print("Hello!");
 print(true);
 print(fn() {});
+print(-3.14);
 `;
 
 var nearley = require('nearley');

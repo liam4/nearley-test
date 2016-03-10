@@ -10,6 +10,7 @@ defineConstant('FUNCTION_PRIM');
 defineConstant('GET_PROP_USING_IDENTIFIER');
 defineConstant('SET_PROP_USING_IDENTIFIER');
 defineConstant('STRING_PRIM');
+defineConstant('NUMBER_PRIM');
 defineConstant('VARIABLE_ASSIGN');
 defineConstant('VARIABLE_CHANGE');
 defineConstant('VARIABLE_IDENTIFIER');

@@ -31,7 +31,8 @@ export function evaluateExpression(expression, variables) {
   } else if (expression[0] === C.FUNCTION_PRIM) {
     temp = evaluateFunctionPrim(variables, expression);
   } else if (expression[0] === C.STRING_PRIM ||
-             expression[0] === C.BOOLEAN_PRIM) {
+             expression[0] === C.BOOLEAN_PRIM ||
+             expression[0] === C.NUMBER_PRIM) {
     return evaluatePrim(variables, expression);
   } else if (expression[0] === C.SET_PROP_USING_IDENTIFIER) {
     temp = evaluateSetPropUsingIdentifier(variables, expression);
@@ -50,6 +51,8 @@ export function evaluatePrim(variables, [type, data]) {
     return lib.toLString(data);
   } else if (type === C.BOOLEAN_PRIM) {
     return lib.toLBoolean(data);
+  } else if (type === C.NUMBER_PRIM) {
+    return lib.toLNumber(data);
   }
 }
 

@@ -39,6 +39,7 @@ _Expression -> CallFunctionExpression
              | FunctionExpression
              | StringExpression
              | BooleanExpression
+             | NumberExpression
              | VariableGetExpression
 
 # Set using identifier expression
@@ -77,6 +78,24 @@ DoubleStringValidCharacter -> GenericValidCharacter {%
     else return data[0];
   }
 %}
+
+NumberExpression -> _Number {% function(d) { return [C.NUMBER_PRIM, d[0]] } %}
+_Number -> "-":? (Digits "."):? Digits {% function(d) {
+  var result = "";
+
+  if (d[1]) {
+    result = d[1][0] + "." + result;
+  }
+
+  result = result + d[2];
+
+  if (d[0] === "-") {
+    result = "-" + result;
+  }
+
+  return parseFloat(result);
+} %}
+Digits -> [0-9]:+ {% function(d) { return d[0].join('') } %}
 
 # Generic identifier
 Identifier -> GenericValidIdentifierCharacter:+ {%

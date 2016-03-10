@@ -37,6 +37,28 @@ export class BooleanPrim {
   }
 }
 
+export class NumberPrim {
+  constructor(num) {
+    this.num = num;
+  }
+
+  set num(num) {
+    this._num = Number(num);
+  }
+
+  get num() {
+    return Number(this._num);
+  }
+
+  valueOf() {
+    return this.num;
+  }
+
+  toString() {
+    return this.num;
+  }
+}
+
 // Converting language primatives to JS prims ---------------------------------
 
 export function toJString(str) {
@@ -55,14 +77,26 @@ export function toJBoolean(bool) {
   }
 }
 
+export function toJNumber(num) {
+  if (num instanceof NumberPrim) {
+    return num.num;
+  } else {
+    return Number(num);
+  }
+}
+
 // Converting JS prims to language primitives ---------------------------------
 
 export function toLString(str) {
   return new StringPrim(str);
-};
+}
 
 export function toLBoolean(bool) {
   return new BooleanPrim(bool);
+}
+
+export function toLNumber(num) {
+  return new NumberPrim(num);
 }
 
 // Call function --------------------------------------------------------------
