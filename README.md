@@ -84,3 +84,7 @@ Here's an example of a program using all the things I showed above. Please excus
 No. Its syntax is pretty similar to JavaScript, so why aren't you using JavaScript?
 
 On the other hand, if you're just looking at it as a fun project I made as an experiment, go ahead and use it. I have nothing against you using it - I'd enjoy it if you used it! - but it's not a very good programming language, so don't expect something amazing.
+
+## Can I have a specification?
+
+No. [Cool languages have specifications.](http://www.ecma-international.org/publications/standards/Ecma-262.htm) But I'm not sure making a specification for this simple experimental project is either worth it or my style.
