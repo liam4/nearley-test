@@ -1,5 +1,9 @@
 var code = `
-print(-(/(3,4),0.25));
+foo => fn(x) {
+  return(+(x, 3));
+};
+
+print(foo(4));
 `;
 
 var nearley = require('nearley');

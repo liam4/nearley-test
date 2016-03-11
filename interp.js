@@ -9,17 +9,11 @@ export class InvalidExpressionType extends Error {
   }
 }
 
-export function evaluateExpression(expression, variables) {
-
-  /*
-  console.log(`Evaluating expression ${expression[0]} using` +
-              `variables [${variables?Object.keys(variables):'UNDEFINED'}]`);
-  */
-
+export function evaluateExpression(expression, variables) {  
   let temp;
   if (expression instanceof Array && expression.reduce(e => e instanceof Array)) {
     // console.log('THIS IS BAD', expression);
-    return evaluateEachExpression(expression, variables);
+    temp = evaluateEachExpression(expression, variables);
   } else if (expression[0] === C.FUNCTION_CALL) {
     temp = evaluateFunctionCall(variables, expression);
   } else if (expression[0] === C.VARIABLE_IDENTIFIER) {
@@ -38,13 +32,18 @@ export function evaluateExpression(expression, variables) {
     temp = evaluateSetPropUsingIdentifier(variables, expression);
   } else if (expression[0] === C.GET_PROP_USING_IDENTIFIER) {
     temp = evaluateGetPropUsingIdentifier(variables, expression);
+  } else if (expression[0] === C.RETURN_COMMAND) {
+    temp = evaluateReturn(variables, expression);
   } else {
     throw new InvalidExpressionType(expression);
   }
-
   return temp;
-
 }
+
+export function evaluateReturn(variables, [_, returnExpression]) {
+  var res = evaluateExpression(returnExpression, variables);
+  console.log('got return:', res);
+};
 
 export function evaluatePrim(variables, [type, data]) {
   if (type === C.STRING_PRIM) {
@@ -57,7 +56,7 @@ export function evaluatePrim(variables, [type, data]) {
 }
 
 export function evaluateFunctionPrim(variables, [_, args, fnExpression]) {
-  var fn = new lib.FunctionToken(fnExpression);
+  var fn = new lib.LFunction(fnExpression);
   fn.setScopeVariables(Object.assign({}, variables));
   fn.setArguments(args);
   return fn;
