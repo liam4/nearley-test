@@ -17,7 +17,9 @@ var JoinRecursive = function(a) {
 
 Program -> _ _Program:? _ {% function(d) { return d[1] ? d[1] : [] } %}
 _Program -> Command _ CommandSeparator _ _Program {% JoinRecursive %}
-          | Command _ CommandSeparator _ {% function(d) { return [d[0]] } %}
+          | Command _ CommandSeparator {% function(d) { return [d[0]] } %}
+          | Comment _ _Program {% function(d) { return d[2] } %}
+          | Comment
 CommandSeparator -> ";"
 
 # Command
@@ -111,3 +113,5 @@ GenericValidIdentifierCharacter -> GenericValidCharacter {%
 %}
 
 GenericValidCharacter -> .
+
+Comment -> "#" [^#]:* "#" {% function(d) { return [C.COMMENT] } %}

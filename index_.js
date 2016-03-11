@@ -1,10 +1,4 @@
-var code = `
-foo => fn(x) {
-  return(+(x, 3));
-};
-
-print(foo(4));
-`;
+var code = ``;
 
 var nearley = require('nearley');
 var grammar = require('./grammar');

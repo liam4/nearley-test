@@ -11,8 +11,9 @@ export class InvalidExpressionType extends Error {
 
 export function evaluateExpression(expression, variables) {  
   let temp;
-  if (expression instanceof Array && expression.reduce(e => e instanceof Array)) {
-    // console.log('THIS IS BAD', expression);
+  if (expression[0] === C.COMMENT) {
+    return;
+  } else if (expression instanceof Array && expression.reduce(e => e instanceof Array)) {
     temp = evaluateEachExpression(expression, variables);
   } else if (expression[0] === C.FUNCTION_CALL) {
     temp = evaluateFunctionCall(variables, expression);
