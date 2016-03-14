@@ -99,6 +99,14 @@ export function toLNumber(num) {
   return new NumberPrim(num);
 }
 
+export function toLObject(data) {
+  var obj = new LObject();
+  for (var key in data) {
+    set(obj, key, data[key]);
+  }
+  return obj;
+}
+
 // Call function --------------------------------------------------------------
 
 export function call(fn, args) {

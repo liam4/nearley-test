@@ -1,5 +1,16 @@
+var fs = require('fs');
 var lib = require('./lib');
 var C = require('./constants');
+
+function exists(p) {
+  // warning, this is synchronous
+  try {
+    fs.accessSync(p, fs.F_OK);
+    return true;
+  } catch(err) {
+    return false;
+  }
+}
 
 export function makeBuiltins() {
   var variables = {};
@@ -44,6 +55,18 @@ export function makeBuiltins() {
 
   variables['*'] = new lib.Variable(new lib.LFunction(function([x, y]) {
     return lib.toLNumber(lib.toJNumber(x) * lib.toJNumber(y));
+  }));
+
+  variables['use'] = new lib.Variable(new lib.LFunction(function([pathStr]) {
+    var p = lib.toJString(pathStr);
+    var locationInBuiltins = './builtin_lib/' + p;
+    if (exists(locationInBuiltins)) {
+      var used = require(locationInBuiltins);
+      var usedObj = lib.toLObject(used);
+      return usedObj;
+    } else {
+      console.log('file not found');
+    }
   }));
 
   return variables;

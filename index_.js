@@ -1,24 +1,6 @@
 var code = `
 
-# Variable assign..                             #
-#  v--- Variable identifier                     #
-#  v    vvvv--- A boolean literal.              #
-   x => true;
-
-#  v--- Get a variable using identifier "if",   #
-#  |    this is built-in so all programs will   #
-#  |    automatically have "if" as a variable.  #
-#  |  v--- Get a variable using identifier "x", #
-#  |  |    which we assigned earlier.           #
-#  |  |  vvvvvv--- A function literal.          #
-   if(x, fn() {
-
-#    vvvvv--- Get a variable using identifier   #
-#    |||||    "print", which is also built-in.  #
-#    ||||| vvvvvvvv--- A string literal.        #
-     print("Hello!");
-
-   });
+print(use("hello.js").lol());
 
 `;
 
