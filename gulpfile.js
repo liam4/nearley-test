@@ -32,3 +32,7 @@ gulp.task('compile-grammar', function(cb) {
 gulp.task('default', ['compile-grammar'], function() {
   require('./index.js');
 });
+
+gulp.task('watch', ['default'], function() {
+  gulp.watch('./*/**/*.tul', ['default']);
+});
