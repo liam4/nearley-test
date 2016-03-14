@@ -72,8 +72,8 @@ BooleanExpression -> _BooleanExpression {% function(d) { return ["BOOLEAN_PRIM",
 _BooleanExpression -> "true" | "false"
 
 # String expression
-StringExpression -> "\"" StringExpressionDoubleContents "\"" {% d => [C.STRING_PRIM, d[1]] %}
-StringExpressionDoubleContents -> DoubleStringValidCharacter:* {% d => d[0].join('') %}
+StringExpression -> "\"" StringExpressionDoubleContents "\"" {% function(d) { return [C.STRING_PRIM, d[1]] } %}
+StringExpressionDoubleContents -> DoubleStringValidCharacter:* {% function(d) { return d[0].join('') } %}
 DoubleStringValidCharacter -> GenericValidCharacter {%
   function(data, location, reject) {
     if (data[0] === '"') return reject;
