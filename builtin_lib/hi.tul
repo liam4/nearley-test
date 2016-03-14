@@ -1,0 +1,5 @@
+exports => obj();
+exports.say > fn(msg) {
+  print("They say:");
+  print(msg);
+};

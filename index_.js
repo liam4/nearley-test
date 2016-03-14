@@ -1,19 +1,18 @@
 var code = `
 
-print(use("hello.js").lol());
+hi => use("hi.tul");
+hi.say("Foo");
 
 `;
 
 var nearley = require('nearley');
 var grammar = require('./grammar');
-var interp = require('./interp');
+var run = require('./run');
 
 var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
 
 try {
-  var asts = parser.feed(code).results;
-  var ast = asts[0];
-  var result = interp.interp(ast);
+  var result = run.run(code);
   // console.log('result:', result);
   // console.log('all ASTs:', JSON.stringify(asts, null, 1));
   // console.log('AST:', JSON.stringify(ast, null, 1));

@@ -104,7 +104,9 @@ export function interp(ast) {
 
     Object.assign(variables, builtins.makeBuiltins());
 
-    return evaluateEachExpression(ast, variables);
+    var result = evaluateEachExpression(ast, variables);
+
+    return {result, variables};
   } else {
     console.error('Haha, you didn\'t past me a tree!');
   }

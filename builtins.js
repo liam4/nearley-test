@@ -1,4 +1,7 @@
 var fs = require('fs');
+var path = require('path');
+var run = require('./run');
+var interp = require('./interp');
 var lib = require('./lib');
 var C = require('./constants');
 
@@ -60,10 +63,23 @@ export function makeBuiltins() {
   variables['use'] = new lib.Variable(new lib.LFunction(function([pathStr]) {
     var p = lib.toJString(pathStr);
     var locationInBuiltins = './builtin_lib/' + p;
+    var ext = path.parse(p).ext;
     if (exists(locationInBuiltins)) {
-      var used = require(locationInBuiltins);
-      var usedObj = lib.toLObject(used);
-      return usedObj;
+      if (ext === '.js') {
+        var used = require(locationInBuiltins);
+        var usedObj = lib.toLObject(used);
+        return usedObj;
+      } else if (ext === '.tul') {
+        var program = fs.readFileSync(locationInBuiltins).toString();
+        var result = run.run(program);
+        if ('exports' in result.variables) {
+          return result.variables.exports.value;
+        } else {
+          return new lib.LObject();
+        }
+      } else {
+        throw 'Invalid use extension of ' + p;
+      }
     } else {
       console.log('file not found');
     }
