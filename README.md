@@ -1,6 +1,6 @@
 # The Language Nobody Could Come Up With A Good Name For
 
-(Pronounced "Tul-uh-qweh-wag-nuf", call it Tuluh for short.)
+(Pronounced "Tul-un-qweh-wag-nuf", call it Tulun for short.)
 
 [![Join the chat at https://gitter.im/liam4/tlnccupwagf](https://badges.gitter.im/liam4/tlnccupwagf.svg)](https://gitter.im/liam4/nearley-test?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
