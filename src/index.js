@@ -1,6 +1,6 @@
 var code = `
 
-true;
+9001;
 
 `;
 

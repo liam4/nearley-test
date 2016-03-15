@@ -105,6 +105,9 @@ Digits -> [0-9]:+ {% function(d) { return d[0].join('') } %}
 Identifier -> GenericValidIdentifierCharacter:+ {%
   function(data, location, reject) {
     var id = data[0].join('');
+    if (/[0-9]/.test(id[0])) {
+      return reject;
+    }
     if (C.KEYWORDS.indexOf(id) === -1) {
       return id;
     }
