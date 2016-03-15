@@ -22,6 +22,10 @@ export function makeBuiltins() {
     console.log('{Print}', ...args.map(arg => lib.toJString(arg)));
   }));
 
+  variables['concat'] = new lib.Variable(new lib.LFunction(function(args) {
+    return lib.toLString(lib.toJString(args[0]) + lib.toJString(args[1]));
+  }));
+
   variables['if'] = new lib.Variable(new lib.LFunction(function(args) {
     if (lib.toJBoolean(args[0])) {
       lib.call(args[1], []);

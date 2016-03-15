@@ -1,5 +1,6 @@
 var code = `
 
+#
 http => use("http.js");
 server => http.server(fn(req, res) {
   print("Got a request");
@@ -9,6 +10,9 @@ server => http.server(fn(req, res) {
   print("Done responding");
 });
 server.listen(8080);
+#
+
+print(concat("hello", " world"));
 
 `;
 
