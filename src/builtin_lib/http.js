@@ -32,6 +32,9 @@ export class LHTTPRequest extends lib.LObject {
 var LHTTPRequestPrototype = {
   url: new lib.LFunction(function(self) {
     return lib.toLString(self.req.url);
+  }),
+  method: new lib.LFunction(function(self) {
+    return lib.toLString(self.req.method);
   })
 };
 
@@ -44,9 +47,7 @@ export class LHTTPServer extends lib.LObject {
     this['__constructor__'] = LHTTPServer;
 
     this.server = http.createServer(function(req, res) {
-      var result = lib.call(
-        handle, [new LHTTPRequest(req), new LHTTPResponse(res)]);
-      console.log(result);
+      lib.call(handle, [new LHTTPRequest(req), new LHTTPResponse(res)]);
     });
   }
 }

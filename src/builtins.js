@@ -23,7 +23,7 @@ export function makeBuiltins() {
   }));
 
   variables['concat'] = new lib.Variable(new lib.LFunction(function(args) {
-    return lib.toLString(lib.toJString(args[0]) + lib.toJString(args[1]));
+    return lib.toLString(args.map(lib.toJString).join(''));
   }));
 
   variables['if'] = new lib.Variable(new lib.LFunction(function(args) {

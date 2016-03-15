@@ -1,18 +1,11 @@
 var code = `
 
-#
 http => use("http.js");
 server => http.server(fn(req, res) {
-  print("Got a request");
-  print(req.url());
-  res.write("Hello world!");
+  res.write(concat("I see you want to ", req.method(), " ", req.url(), "."));
   res.end();
-  print("Done responding");
 });
 server.listen(8080);
-#
-
-print(concat("hello", " world"));
 
 `;
 
