@@ -62,7 +62,8 @@ export function makeBuiltins() {
 
   variables['use'] = new lib.Variable(new lib.LFunction(function([pathStr]) {
     var p = lib.toJString(pathStr);
-    var locationInBuiltins = './builtin_lib/' + p;
+    var locationInBuiltins = __dirname + '/builtin_lib/' + p;
+    console.log('location in bulitins:', locationInBuiltins);
     var ext = path.parse(p).ext;
     if (exists(locationInBuiltins)) {
       if (ext === '.js') {

@@ -1,10 +1,16 @@
 var code = `
 
-hi => use("hi.tul");
-hi.say("Foo");
+my_var => 9001;
+my_add_ten => fn(x){
+    return(+(x, 10));
+};
+if(true, fn(){
+    print(my_add_ten(my_var));
+});
 
 `;
 
+require('source-map-support').install();
 var nearley = require('nearley');
 var grammar = require('./grammar');
 var run = require('./run');

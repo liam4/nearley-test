@@ -159,13 +159,12 @@ export function defaultGet(obj, key) {
     }
     if (current) {
       var value = prototype[keyString];
-      if (value instanceof FunctionToken) {
+      if (value instanceof LFunction) {
         // I was going to just bind to obj, but that generally involves using
         // the oh so terrible `this`.
-        //return new FunctionToken(value.fn.bind(obj));
         // Instead it returns a function that calls the given function with
         // obj as the first paramater.
-        return new FunctionToken(function(...args) {
+        return new LFunction(function(...args) {
           return value.fn(obj, ...args);
         });
       }
