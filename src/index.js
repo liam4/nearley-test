@@ -1,12 +1,6 @@
 var code = `
 
-my_var => 9001;
-my_add_ten => fn(x){
-    return(+(x, 10));
-};
-if(true, fn(){
-    print(my_add_ten(my_var));
-});
+true;
 
 `;
 

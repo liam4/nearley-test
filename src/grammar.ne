@@ -11,6 +11,7 @@ var JoinRecursive = function(a) {
   var last = a[a.length - 1];
   return [a[0], ...last];
 };
+
 %}
 
 @builtin "whitespace.ne"
@@ -103,7 +104,11 @@ Digits -> [0-9]:+ {% function(d) { return d[0].join('') } %}
 # Generic identifier
 Identifier -> GenericValidIdentifierCharacter:+ {%
   function(data, location, reject) {
-    return data[0].join('');
+    var id = data[0].join('');
+    if (C.KEYWORDS.indexOf(id) === -1) {
+      return id;
+    }
+    return reject;
   }
 %}
 GenericValidIdentifierCharacter -> GenericValidCharacter {%
