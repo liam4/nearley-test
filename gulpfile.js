@@ -38,15 +38,9 @@ gulp.task('copy-all', ['compile-grammar'], function() {
 });
 
 gulp.task('build', ['copy-all'], function() {
+  console.log('Building...');
   return gulp.src('src/**/*.js')
-    .pipe(sourcemaps.init({
-        'loadMaps': false
-      }))
-      .pipe(babel())
-    .pipe(sourcemaps.write('maps', {
-      includeContent: false,
-      destPath: 'dist'
-    }))
+    .pipe(babel())
     .pipe(gulp.dest("dist"));
 });
 
