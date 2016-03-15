@@ -77,8 +77,8 @@ StringExpression -> "\"" StringExpressionDoubleContents "\"" {% function(d) { re
 StringExpressionDoubleContents -> DoubleStringValidCharacter:* {% function(d) { return d[0].join('') } %}
 DoubleStringValidCharacter -> GenericValidCharacter {%
   function(data, location, reject) {
-    if (data[0] === '"') return reject;
-    else return data[0];
+    if (data[0][0] === '"') return reject;
+    else return data[0][0];
   }
 %}
 

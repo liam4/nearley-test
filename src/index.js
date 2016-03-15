@@ -1,6 +1,11 @@
 var code = `
 
-9001;
+foo => fn(x, y) {
+  print(x);
+  print(y);
+};
+
+foo("bar", "grill");
 
 `;
 

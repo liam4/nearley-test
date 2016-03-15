@@ -13,11 +13,13 @@ export function run(code) {
       console.warn(JSON.stringify(ast, null, 0));
       console.warn('\n----------------------------\n');
     });
+    console.warn('A total of ' + asts.length + ' ASTs were generated.');
     console.warn('Please report this on the official issue tracker:');
     console.warn('https://github.com/liam4/tlnccuwagnf/issues');
     console.warn('Using first AST.');
   }
-
+  // console.log('Using AST:');
+  // console.log(JSON.stringify(asts, null, 1));
   var result = interp.interp(asts);
   return result;
 }
