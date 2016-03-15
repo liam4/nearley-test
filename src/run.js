@@ -18,8 +18,10 @@ export function run(code) {
     console.warn('https://github.com/liam4/tlnccuwagnf/issues');
     console.warn('Using first AST.');
   }
-  // console.log('Using AST:');
-  // console.log(JSON.stringify(asts, null, 1));
+  /*
+  console.log('Using AST:');
+  console.log(JSON.stringify(asts, null, 1));
+  */
   var result = interp.interp(asts);
   return result;
 }

@@ -13,7 +13,7 @@ export function evaluateExpression(expression, variables) {
   let temp;
   if (expression[0] === C.COMMENT) {
     return;
-  } else if (expression instanceof Array && expression.reduce(e => e instanceof Array)) {
+  } else if (expression instanceof Array && expression.every(e => e instanceof Array)) {
     temp = evaluateEachExpression(expression, variables);
   } else if (expression[0] === C.FUNCTION_CALL) {
     temp = evaluateFunctionCall(variables, expression);

@@ -1,11 +1,14 @@
 var code = `
 
-foo => fn(x, y) {
-  print(x);
-  print(y);
-};
-
-foo("bar", "grill");
+http => use("http.js");
+server => http.server(fn(req, res) {
+  print("Got a request");
+  print(req.url());
+  res.write("Hello world!");
+  res.end();
+  print("Done responding");
+});
+server.listen(8080);
 
 `;
 
