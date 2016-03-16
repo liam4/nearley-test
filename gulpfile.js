@@ -5,7 +5,6 @@ var fs = require('fs');
 var gulp = require('gulp');
 
 var babel = require('gulp-babel');
-var sourcemaps = require('gulp-sourcemaps');
 
 var nearley = require('./node_modules/nearley/lib/nearley.js');
 var generate = require('./node_modules/nearley/lib/generate.js');

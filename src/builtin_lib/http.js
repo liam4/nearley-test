@@ -1,15 +1,17 @@
 var lib = require('../lib');
 var http = require('http');
+var https = require('https');
+var url = require('url');
 
-export class LHTTPResponse extends lib.LObject {
+export class LHTTPServerResponse extends lib.LObject {
   constructor(res) {
     super();
-    this['__constructor__'] = LHTTPResponse;
+    this['__constructor__'] = LHTTPServerResponse;
     this.res = res;
   }
 }
 
-var LHTTPResponsePrototype = {
+var LHTTPServerResponsePrototype = {
   write: new lib.LFunction(function(self, [what]) {
     self.res.write(lib.toJString(what));
   }),
@@ -18,18 +20,18 @@ var LHTTPResponsePrototype = {
   })
 };
 
-LHTTPResponse['__prototype__'] = LHTTPResponsePrototype;
-LHTTPResponse['__super__'] = lib.LObject;
+LHTTPServerResponse['__prototype__'] = LHTTPServerResponsePrototype;
+LHTTPServerResponse['__super__'] = lib.LObject;
 
-export class LHTTPRequest extends lib.LObject {
+export class LHTTPServerRequest extends lib.LObject {
   constructor(req) {
     super();
-    this['__constructor__'] = LHTTPRequest;
+    this['__constructor__'] = LHTTPServerRequest;
     this.req = req;
   }
 }
 
-var LHTTPRequestPrototype = {
+var LHTTPServerRequestPrototype = {
   url: new lib.LFunction(function(self) {
     return lib.toLString(self.req.url);
   }),
@@ -38,8 +40,8 @@ var LHTTPRequestPrototype = {
   })
 };
 
-LHTTPRequest['__prototype__'] = LHTTPRequestPrototype;
-LHTTPRequest['__super__'] = lib.LObject;
+LHTTPServerRequest['__prototype__'] = LHTTPServerRequestPrototype;
+LHTTPServerRequest['__super__'] = lib.LObject;
 
 export class LHTTPServer extends lib.LObject {
   constructor(handle) {
@@ -47,7 +49,8 @@ export class LHTTPServer extends lib.LObject {
     this['__constructor__'] = LHTTPServer;
 
     this.server = http.createServer(function(req, res) {
-      lib.call(handle, [new LHTTPRequest(req), new LHTTPResponse(res)]);
+      lib.call(handle, [
+          new LHTTPServerRequest(req), new LHTTPServerResponse(res)]);
     });
   }
 }
@@ -62,6 +65,57 @@ var LHTTPServerPrototype = {
 LHTTPServer['__prototype__'] = LHTTPServerPrototype;
 LHTTPServer['__super__'] = lib.LObject;
 
+export class LHTTPRequest extends lib.LObject {
+  constructor(method, url, callback) {
+    super();
+    this['__constructor__'] = LHTTPRequest;
+    this.method = method;
+    this.url = url;
+    this.cb = callback;
+  }
+}
+
+
+var LHTTPRequestPrototype = {
+  send: new lib.LFunction(function(self) {
+    var handle = function(response) {
+      var body = '';
+      response.setEncoding('utf8');
+      response.on('data', function(d) {
+        body += d.toString();
+      });
+      response.on('end', function() {
+        lib.call(self.cb, [lib.toLString(body)]);
+      });
+    };
+
+    var u = url.parse(lib.toJString(self.url));
+    var isGet = lib.toJString(self.method).toLowerCase() === 'get';
+    if (u.protocol === 'http:') {
+      if (isGet) {
+        http.get(lib.toJString(self.url), handle);
+      } else {
+        console.log('Invalid method:', lib.toJString(self.method));
+      }
+    } else if (u.protocol === 'https:') {
+      if (isGet) {
+        https.get(lib.toJString(self.url), handle);
+      } else {
+        console.log('Invalid method:', lib.toJString(self.method))
+      }
+    } else {
+      console.log('Invalid protocol:', u.protocol);
+    }
+  })
+};
+
+LHTTPRequest['__prototype__'] = LHTTPRequestPrototype;
+LHTTPRequest['__super__'] = lib.LObject;
+
 export var server = new lib.LFunction(function([handle]) {
   return new LHTTPServer(handle);
+});
+
+export var request = new lib.LFunction(function([method, url, callback]) {
+  return new LHTTPRequest(method, url, callback);
 });

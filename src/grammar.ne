@@ -73,11 +73,20 @@ BooleanExpression -> _BooleanExpression {% function(d) { return ["BOOLEAN_PRIM",
 _BooleanExpression -> "true" | "false"
 
 # String expression
-StringExpression -> "\"" StringExpressionDoubleContents "\"" {% function(d) { return [C.STRING_PRIM, d[1]] } %}
+StringExpression -> _StringExpression {% function(d) { return [C.STRING_PRIM, d[0][1]] } %}
+_StringExpression -> "\"" StringExpressionDoubleContents "\""
+                   | "'" StringExpressionSingleContents "'"
 StringExpressionDoubleContents -> DoubleStringValidCharacter:* {% function(d) { return d[0].join('') } %}
 DoubleStringValidCharacter -> GenericValidCharacter {%
   function(data, location, reject) {
     if (data[0][0] === '"') return reject;
+    else return data[0][0];
+  }
+%}
+StringExpressionSingleContents -> SingleStringValidCharacter:* {% function(d) { return d[0].join('') } %}
+SingleStringValidCharacter -> GenericValidCharacter {%
+  function(data, location, reject) {
+    if (data[0][0] === '\'') return reject;
     else return data[0][0];
   }
 %}

@@ -33,6 +33,11 @@ function main(f) {
       process.exit();
     }
 
-    require('./dist/run').run(data.toString());
+    try {
+      require('./dist/run').run(data.toString());
+      console.log('Done!');
+    } catch(err) {
+      console.error(err);
+    }
   });
 }
