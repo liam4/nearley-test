@@ -1,1 +1,5 @@
-print('hello single quote strings');
+http => use('http.js');
+
+http.request('get', 'http://moome.org/random.php', fn(text) {
+  print(text);
+}).send();
