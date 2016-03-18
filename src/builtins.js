@@ -76,6 +76,22 @@ export function makeBuiltins() {
     return lib.toLBoolean(lib.toJBoolean(b1) || lib.toJBoolean(b2));
   }));
 
+  variables['lt'] = new lib.Variable(new lib.LFunction(function([x, y]) {
+    return lib.toLBoolean(lib.toJNumber(x) < lib.toJNumber(y));
+  }));
+
+  variables['gt'] = new lib.Variable(new lib.LFunction(function([x, y]) {
+    return lib.toLBoolean(lib.toJNumber(x) > lib.toJNumber(y));
+  }));
+
+  variables['eq'] = new lib.Variable(new lib.LFunction(function([x, y]) {
+    return lib.toLBoolean(lib.toJNumber(x) === lib.toJNumber(y));
+  }));
+
+  // todo
+  variables['loop'] = new lib.Variable(new lib.LFunction(function(fn) {
+  }));
+
   variables['use'] = new lib.Variable(new lib.LFunction(function([pathStr]) {
     var p = lib.toJString(pathStr);
     var locationInBuiltins = __dirname + '/builtin_lib/' + p;

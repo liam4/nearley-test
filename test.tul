@@ -1,14 +1,17 @@
-print('`not` tests:');
-print(not(true));
-print(not(false));
-print(not(not(true)));
+print('`lt` tests:');
+print(lt(3, 4));
+print(lt(2.125, 1.85));
+print(lt(2.2, 2));
+print(lt(0.995, 1));
 
-print('`and` tests:');
-print(and(true, false));
-print(and(false, false));
-print(and(true, not(false)));
+print('`gt` tests:');
+print(gt(8, 2));
+print(gt(3, 5));
+print(gt(1.775, 1));
+print(gt(0.8, 2));
 
-print('`or` tests:');
-print(or(false, true));
-print(or(false, and(true, false)));
-print(or(false, false));
+print('`eq` tests:');
+print(eq(3, 2));
+print(eq(2, 2));
+print(eq(2, -(3, 1)));
+print(eq(7.3, 7));
