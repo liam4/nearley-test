@@ -32,6 +32,10 @@ export class BooleanPrim {
     return Boolean(this._bool);
   }
 
+  valueOf() {
+    return this.bool;
+  }
+
   toString() {
     return `<Boolean ${this.bool}>`
   }
@@ -120,7 +124,7 @@ export function defaultCall(fnToken, args) {
   } else {
     var scope = Object.assign({}, fnToken.scopeVariables);
     var returnValue = null;
-    scope.return = new Variable(new LFunction(function(val) {
+    scope.return = new Variable(new LFunction(function([val]) {
       returnValue = val;
     }));
     var fnArgs = fnToken.fnArguments;

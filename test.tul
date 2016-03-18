@@ -1,17 +1,44 @@
-print('`lt` tests:');
-print(lt(3, 4));
-print(lt(2.125, 1.85));
-print(lt(2.2, 2));
-print(lt(0.995, 1));
+# Repeat until the given function returns not true. #
+x => 0;
+loop(fn() {
+  x -> +(x, 1);
+  print(concat('Currently x is: ', x));
+  return(lt(x, 5));
+});
 
-print('`gt` tests:');
-print(gt(8, 2));
-print(gt(3, 5));
-print(gt(1.775, 1));
-print(gt(0.8, 2));
+# Note this gets called just once. Because the contents returns false it
+  doesn't get called again. #
+loop(fn() {
+  print('This should get called once');
+  return(false);
+});
 
-print('`eq` tests:');
-print(eq(3, 2));
-print(eq(2, 2));
-print(eq(2, -(3, 1)));
-print(eq(7.3, 7));
+# You can define a while function using just the builtin loop function. #
+while => fn(test, f) {
+  if(test(), fn() {
+    loop(fn() {
+      f();
+      return(test());
+    });
+  });
+};
+x => 7;
+while(fn() { return(not(eq(x, 7))); }, fn() {
+  print('This should not get called');
+});
+while(fn() { return(not(eq(x, 10))); }, fn() {
+  x -> +(x, 1);
+  print('This should get called three times');
+});
+
+# Until is a reverse while. #
+until => fn(test, f) {
+  while(fn() {
+    return(not(test()));
+  }, f);
+};
+x => 8;
+until(fn() { return(eq(x, 3)); }, fn() {
+  x -> -(x, 1);
+  print('This should get called five times');
+});

@@ -43,7 +43,6 @@ export function evaluateExpression(expression, variables) {
 
 export function evaluateReturn(variables, [_, returnExpression]) {
   var res = evaluateExpression(returnExpression, variables);
-  console.log('got return:', res);
 };
 
 export function evaluatePrim(variables, [type, data]) {
@@ -78,7 +77,7 @@ export function evaluateVariableAssign(variables, [_, name, value]) {
 }
 
 export function evaluateVariableChange(variables, [_, name, value]) {
-  variables[name].value = value;
+  variables[name].value = evaluateExpression(value, variables);
 }
 
 export function evaluateSetPropUsingIdentifier(variables, [_, objExpr, key, valueExpr]) {

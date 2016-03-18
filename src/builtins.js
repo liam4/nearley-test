@@ -88,8 +88,8 @@ export function makeBuiltins() {
     return lib.toLBoolean(lib.toJNumber(x) === lib.toJNumber(y));
   }));
 
-  // todo
-  variables['loop'] = new lib.Variable(new lib.LFunction(function(fn) {
+  variables['loop'] = new lib.Variable(new lib.LFunction(function([fn]) {
+    while (lib.toJBoolean(lib.call(fn, [])));
   }));
 
   variables['use'] = new lib.Variable(new lib.LFunction(function([pathStr]) {
