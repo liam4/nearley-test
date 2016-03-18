@@ -64,6 +64,18 @@ export function makeBuiltins() {
     return lib.toLNumber(lib.toJNumber(x) * lib.toJNumber(y));
   }));
 
+  variables['not'] = new lib.Variable(new lib.LFunction(function([bool]) {
+    return lib.toLBoolean(!lib.toJBoolean(bool));
+  }));
+
+  variables['and'] = new lib.Variable(new lib.LFunction(function([b1, b2]) {
+    return lib.toLBoolean(lib.toJBoolean(b1) && lib.toJBoolean(b2));
+  }));
+
+  variables['or'] = new lib.Variable(new lib.LFunction(function([b1, b2]) {
+    return lib.toLBoolean(lib.toJBoolean(b1) || lib.toJBoolean(b2));
+  }));
+
   variables['use'] = new lib.Variable(new lib.LFunction(function([pathStr]) {
     var p = lib.toJString(pathStr);
     var locationInBuiltins = __dirname + '/builtin_lib/' + p;
