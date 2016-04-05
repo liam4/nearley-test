@@ -27,7 +27,7 @@ gulp.task('compile-grammar', function(cb) {
     .on('finish', function() {
       var c = Compile(parser.results[0], {});
       output.write(generate(c, 'grammar'));
-      setTimeout(cb, 1000);
+      cb();
     });
 });
 

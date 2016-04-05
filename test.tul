@@ -42,3 +42,10 @@ until(fn() { return(eq(x, 3)); }, fn() {
   x -> -(x, 1);
   print('This should get called five times');
 });
+
+o => obj();
+o.f > fn() {
+  print(o.y);
+};
+o.y > 42;
+o.f();
