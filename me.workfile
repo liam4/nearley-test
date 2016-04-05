@@ -1,5 +1,7 @@
 * current goal *
 
+No goal.. :(
+
 * future goals *
 
 Rename all uses of function "primitives" to function "literals", because really
@@ -15,6 +17,10 @@ Use const and let when necessary instead of var; change all the vars to lets
 and consts later.
 
 * completed goals *
+
+Get rid of the InvalidExpressionType class and just throw an error string.
+
+---
 
 Make the interpreter code overall better by replacing functions only used in
 one place with their actual code where they are used, i.e. instead of this:

@@ -2,13 +2,6 @@ var C = require('./constants');
 var lib = require('./lib');
 var builtins = require('./builtins');
 
-export class InvalidExpressionType extends Error {
-  constructor(expr) {
-    super('invalid expression type: ' + expr);
-    this.expr = expr;
-  }
-}
-
 export function evaluateExpression(expression, variables) {  
   if (expression[0] === C.COMMENT) {
     return;
@@ -148,7 +141,7 @@ export function evaluateExpression(expression, variables) {
     // Return the gotten value.
     return value;
   } else {
-    throw new InvalidExpressionType(expression);
+    throw 'invalid expression type: ' + epression[0];
   }
 }
 
