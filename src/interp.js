@@ -18,8 +18,14 @@ export function evaluateExpression(expression, variables) {
     // Evaluate the function expression to get the actual function.
     const fn = evaluateExpression(fnExpression, variables);
 
+    /* This code *used* to work but it doesn't any more, because some
+     * parameters of the function could be unevaluated. Now argument evaluation
+     * is done from within the call method of the function.
+     */
     // Evaluate all of the arguments passed to the function.
-    const args = argExpressions.map(arg => evaluateExpression(arg, variables));
+    //const args = argExpressions.map(arg => evaluateExpression(arg, variables));
+    fn.argumentScope = variables;
+    const args = argExpressions;
 
     // Use lib.call to call the function with the evaluated arguments.
     return lib.call(fn, args);
@@ -68,8 +74,8 @@ export function evaluateExpression(expression, variables) {
   } else if (expression[0] === C.FUNCTION_PRIM) {
     // A function literal: "fn(arg1, arg2, arg3...) { code }"
 
-    // Get the code and arguments from the expression list.
-    const args = expression[1];
+    // Get the code and paramaters from the expression list.
+    const paramaters = expression[1];
     const code = expression[2];
 
     // Create the function using the given code.
@@ -79,9 +85,9 @@ export function evaluateExpression(expression, variables) {
     // variables.
     fn.setScopeVariables(Object.assign({}, variables));
 
-    // Set the arguments for the function to the arguments taken from the
+    // Set the paramaters for the function to the paramaters taken from the
     // expression list.
-    fn.setArguments(args);
+    fn.setParamaters(paramaters);
 
     // Return the function.
     return fn;

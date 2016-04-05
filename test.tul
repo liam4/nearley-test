@@ -1,51 +1,22 @@
-# Repeat until the given function returns not true. #
-x => 0;
-loop(fn() {
-  x -> +(x, 1);
-  print(concat('Currently x is: ', x));
-  return(lt(x, 5));
-});
-
-# Note this gets called just once. Because the contents returns false it
-  doesn't get called again. #
-loop(fn() {
-  print('This should get called once');
-  return(false);
-});
-
-# You can define a while function using just the builtin loop function. #
-while => fn(test, f) {
-  if(test(), fn() {
-    loop(fn() {
-      f();
-      return(test());
-    });
+reporter_ifel => fn(b, unevaluated x, unevaluated y) {
+  ret => '';
+  ifel(b, fn() {
+    ret -> x();
+  }, fn() {
+    ret -> y();
   });
+  return(ret);
 };
-x => 7;
-while(fn() { return(not(eq(x, 7))); }, fn() {
-  print('This should not get called');
-});
-while(fn() { return(not(eq(x, 10))); }, fn() {
-  x -> +(x, 1);
-  print('This should get called three times');
-});
 
-# Until is a reverse while. #
-until => fn(test, f) {
-  while(fn() {
-    return(not(test()));
-  }, f);
+x => fn() {
+  print("this should not get called");
+  return("bad");
 };
-x => 8;
-until(fn() { return(eq(x, 3)); }, fn() {
-  x -> -(x, 1);
-  print('This should get called five times');
-});
 
-o => obj();
-o.f > fn() {
-  print(o.y);
+y => fn() {
+  print("this should get called");
+  return("good");
 };
-o.y > 42;
-o.f();
+
+result => reporter_ifel(false, x(), y());
+print(result);

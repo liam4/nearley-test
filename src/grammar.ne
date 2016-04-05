@@ -54,8 +54,10 @@ GetPropertyUsingIdentifierExpression -> Expression _ "." _ Identifier {% functio
 # Function expression
 FunctionExpression -> "fn" _ ArgumentList _ CodeBlock {% function(d) { return [C.FUNCTION_PRIM, d[2], d[4]] } %}
 ArgumentList -> "(" _ ArgumentListContents:? _ ")" {% function(d) { return d[2] ? d[2] : [] } %}
-ArgumentListContents -> Identifier _ "," _ ArgumentListContents {% JoinRecursive %}
-                      | Identifier
+ArgumentListContents -> Argument _ "," _ ArgumentListContents {% JoinRecursive %}
+                      | Argument
+Argument -> Identifier {% function(d) { return {type: "normal", name: d[0]} } %}
+          | "unevaluated" __ Identifier {% function(d) { return {type: "unevaluated", name: d[2]} } %}
 CodeBlock -> "{" Program "}" {% function(d) { return d[1] } %}
 
 # Variable get, really just an Identifier
