@@ -6,3 +6,6 @@ gitter-cli.log
 # Maybe I'll enable grammar.js at some point but for now it's just annoying
 # and causes commit issues and stuff.
 grammar.js
+
+# Workfile, nobody needs to see this :)
+me.workfile
