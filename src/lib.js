@@ -1,5 +1,6 @@
 var interp = require('./interp');
 var C = require('./constants');
+var entries = require('object.entries');
 
 export class StringPrim {
   constructor(str) {
@@ -282,6 +283,25 @@ export class LFunction extends LObject {
 
   toString() {
     return '<Object Function>';
+  }
+}
+
+export class LEnvironment {
+  constructor(variables) {
+    this['__constructor__'] = LEnvironment;
+    this.vars = variables;
+  }
+
+  __set__(variableName, value) {
+    this.vars[variableName] = new Variable(value);
+  }
+
+  __get__(variableName) {
+    return this.vars[variableName].value;
+  }
+
+  toString() {
+    return JSON.stringify(Object.keys(this.vars));
   }
 }
 

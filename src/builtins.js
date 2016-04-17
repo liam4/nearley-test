@@ -88,6 +88,10 @@ export function makeBuiltins() {
     return lib.toLBoolean(lib.toJNumber(x) === lib.toJNumber(y));
   }));
 
+  variables['is'] = new lib.Variable(new lib.LFunction(function([x, y]) {
+    return Object.is(x, y);
+  }));
+
   variables['loop'] = new lib.Variable(new lib.LFunction(function([fn]) {
     while (lib.toJBoolean(lib.call(fn, [])));
   }));
@@ -117,6 +121,34 @@ export function makeBuiltins() {
       console.log('file not found');
     }
   }));
+
+  variables['variable_make'] = new lib.Variable(new lib.LFunction(function([env, name, value]) {
+    var v = new lib.Variable(value);
+    env.vars[lib.toJString(name)] = v;
+    return v;
+  }));
+
+  variables['variable_change'] = new lib.Variable(new lib.LFunction(function([variable, newValue]) {
+    variable.value = newValue;
+  }));
+
+  variables['variable_value'] = new lib.Variable(new lib.LFunction(function([variable]) {
+    return variable.value;
+  }));
+
+  variables['variable_raw'] = new lib.Variable(new lib.LFunction(function([env, name]) {
+    return env.vars[lib.toJString(name)];
+  }));
+
+  variables['variable_exists'] = new lib.Variable(new lib.LFunction(function([env, name]) {
+    return lib.toLBoolean(env.vars.hasOwnProperty(lib.toJString(name)));
+  }));
+
+  // variables['set_timeout'] = new lib.Variable(new lib.LFunction(function([fn, ms]) {
+  //   setTimeout(function() {
+  //     lib.call(fn);
+  //   }, lib.toJNumber(ms));
+  // }));
 
   return variables;
 }

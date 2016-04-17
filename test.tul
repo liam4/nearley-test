@@ -1,22 +1,34 @@
-reporter_ifel => fn(b, unevaluated x, unevaluated y) {
-  ret => '';
-  ifel(b, fn() {
-    ret -> x();
-  }, fn() {
-    ret -> y();
+baz => 'baz';
+bar => 'old bar';
+env => environment;
+bar_var => variable_raw(env, 'bar');
+
+k => fn() {
+  new_bar_var => variable_raw(env, 'bar');
+  print('One and the same?');
+  print(is(bar_var, new_bar_var));
+  print('And the value is?');
+  print(variable_value(bar_var));
+  print('And in our scope the value is?');
+  print(bar);
+};
+
+variable_change(bar_var, 'test bar');
+k();
+
+published_env => 0;
+f => fn() {
+  published_env -> environment;
+  return(fn() {
+    print('The magically defined variable:');
+    magic_var => variable_raw(published_env, 'magically_defined_variable');
+    magic_value => variable_value(magic_var);
+    print(magic_value);
   });
-  return(ret);
 };
+res => f();
+variable_make(published_env, 'magically_defined_variable', 'magic!');
+# same as published_env.magically_defined_variable > 'magic!'; #
+res();
 
-x => fn() {
-  print("this should not get called");
-  return("bad");
-};
-
-y => fn() {
-  print("this should get called");
-  return("good");
-};
-
-result => reporter_ifel(false, x(), y());
-print(result);
+print(variable_exists(environment, 'fake_variable'));

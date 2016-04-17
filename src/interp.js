@@ -8,6 +8,8 @@ export function evaluateExpression(expression, variables) {
   } else if (expression instanceof Array &&
              expression.every(e => e instanceof Array)) {
     return evaluateEachExpression(variables, expression);
+  } if (expression[0] === C.VARIABLE_IDENTIFIER && expression[1] === 'environment') {
+    return new lib.LEnvironment(variables);
   } else if (expression[0] === C.FUNCTION_CALL) {
     // Call a function: "function(arg1, arg2, arg3...)"
 
@@ -34,10 +36,12 @@ export function evaluateExpression(expression, variables) {
 
     // Get the name from the expression list.
     const name = expression[1];
+    // console.log('get variable:', name);
 
     // Return the variable's value, or, if the variable doesn't exist, throw an
     // error.
     if (name in variables) {
+      // if(name==='bar')console.log('value:', variables[name],variables);
       return variables[name].value;
     } else {
       // FIXME: Change this message not to include *all* the variables within
