@@ -206,6 +206,10 @@ export class Variable {
   constructor(value) {
     this.value = value;
   }
+
+  toString() {
+    return '<Variable>';
+  }
 }
 
 // Base token class -----------------------------------------------------------

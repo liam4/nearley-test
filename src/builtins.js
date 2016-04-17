@@ -137,7 +137,13 @@ export function makeBuiltins() {
   }));
 
   variables['variable_raw'] = new lib.Variable(new lib.LFunction(function([env, name]) {
-    return env.vars[lib.toJString(name)];
+    var name = lib.toJString(name);
+    var variable = env.vars[name];
+    if (typeof variable === 'undefined') {
+      throw new Error(`Can't access raw variable ${name} because it doesn't exist`);
+    } else {
+      return variable;
+    }
   }));
 
   variables['variable_exists'] = new lib.Variable(new lib.LFunction(function([env, name]) {

@@ -31,4 +31,13 @@ variable_make(published_env, 'magically_defined_variable', 'magic!');
 # same as published_env.magically_defined_variable > 'magic!'; #
 res();
 
+print('Does fake variable exist?');
 print(variable_exists(environment, 'fake_variable'));
+
+print('A raw variable:');
+print(variable_raw(environment, 'baz'));
+
+#
+print('Attempt to get fake variable:');
+print(variable_raw(environment, 'fake_variable'));
+#
