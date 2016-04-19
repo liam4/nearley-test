@@ -1,10 +1,33 @@
 {
-  "devDependencies": {
+  "dependencies": {
     "babel-preset-es2015": "^6.6.0",
     "babel-register": "^6.6.5",
     "babel-runtime": "^6.6.1",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "nearley": "^2.4.0"
-  }
+  },
+  "name": "tulun",
+  "description": "(Pronounced \"Tul-un-qweh-wag-nuf\", call it Tulun for short.)",
+  "version": "0.1.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GrannyCookies/tlnccuwagnf.git"
+  },
+  "scripts": {
+    "postinstall": "npm install gulp && ./node_modules/.bin/gulp build"
+  },
+  "bin": {
+    "tulun": "./tulun"
+  },
+  "keywords": [
+    "language"
+  ],
+  "author": "Humankind",
+  "license": "UNLICENCED",
+  "bugs": {
+    "url": "https://github.com/GrannyCookies/tlnccuwagnf/issues"
+  },
+  "homepage": "https://github.com/GrannyCookies/tlnccuwagnf#readme"
 }

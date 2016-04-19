@@ -10,9 +10,19 @@ It's one of those silly interpret-on-the-go programming languages that don't com
 
 It's a functional programming language (i.e. functions are first class).
 
-That's about it. If you're interested in running it, you can just clone this repository and use `gulp` (while `cd`'d into the repository obviously [also don't forget to `npm install`]).
-
 It doesn't make sense. Please ignore the fact that it doesn't make sense? Also, hide, far, far away from the source code. It might lash out and hurt somebody's brain.
+
+## Installation
+- `git clone` this repository
+- `cd` into this repository's folder
+- Install Node.js (if you haven't already!)
+- `npm install -g`
+
+Or if you're lazy:
+`git clone https://github.com/GrannyCookies/tlnccuwagnf && cd tlnccuwagnf && npm install -g`
+
+## Usage
+`tulun <file>`
 
 ## Examples
 
@@ -35,12 +45,13 @@ Functions:
     my_fn => fn(x) {
         return(+(x, 3));
     };
-    
+
     print(my_fn(4));
 
 If/else:
 
-    ifel(true, fn() {
+    # you can use ifel() or if() #
+    if(true, fn() {
         print("Called for true");
     }, fn() {
         print("Called for false");

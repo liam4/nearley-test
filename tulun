@@ -14,7 +14,7 @@ if (args.length === 1) {
     main(args[1]);
   });
 } else {
-  console.error('Usage: tulun [dev] <file>');
+  console.error('Usage: tulun <file>');
   process.exit();
 }
 
