@@ -1,22 +1,9 @@
-reporter_ifel => fn(b, unevaluated x, unevaluated y) {
-  ret => '';
-  ifel(b, fn() {
-    ret -> x();
-  }, fn() {
-    ret -> y();
-  });
-  return(ret);
-};
-
-x => fn() {
-  print("this should not get called");
-  return("bad");
-};
-
-y => fn() {
-  print("this should get called");
-  return("good");
-};
-
-result => reporter_ifel(false, x(), y());
-print(result);
+print('Hello!')
+print('If semicolons are optional')
+print('This should work.')
+x => fn(x) {
+  print("Hi")
+  print("AHHHH")
+  print(+(x, 3))
+}
+x(7)
