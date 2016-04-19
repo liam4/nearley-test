@@ -2,7 +2,9 @@ var nearley = require('nearley');
 var grammar = require('./grammar');
 var interp = require('./interp');
 
-export function run(code, options) {
+export function run(code, fsScope) {
+  fsScope = fsScope || __dirname;
+
   var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
   var asts = parser.feed(code).results;
 
@@ -23,6 +25,6 @@ export function run(code, options) {
   console.log(JSON.stringify(asts, null, 1));
   */
 
-  var result = interp.interp(asts, options);
+  var result = interp.interp(asts, fsScope);
   return result;
 }

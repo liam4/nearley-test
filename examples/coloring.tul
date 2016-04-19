@@ -1,0 +1,21 @@
+# use the colors module #
+colors => use('colors');
+
+# print some fancy text #
+
+print('colors enabled?', colors.enabled());
+
+print(colors.red('red'));
+print(colors.blue('blue'));
+print(colors.green('green'));
+print(colors.yellow('yellow'));
+print(colors.magenta('magenta'));
+print(colors.cyan('cyan'));
+
+print(colors.black('black'));
+print(colors.grey('grey/gray'));
+print(colors.white('white'));
+
+print(colors.bold('bold'));
+print(colors.underlined('underlined'));
+print(colors.italics('italics'));

@@ -2,7 +2,7 @@ var C = require('./constants');
 var lib = require('./lib');
 var builtins = require('./builtins');
 
-export function evaluateExpression(expression, variables) {  
+export function evaluateExpression(expression, variables) {
   if (expression[0] === C.COMMENT) {
     return;
   } else if (expression instanceof Array &&
@@ -161,16 +161,16 @@ export function evaluateEachExpression(variables, expressions) {
   return expressions.map(e => evaluateExpression(e, variables));
 }
 
-export function interp(ast) {
+export function interp(ast, fsScope) {
   if (ast) {
     var variables = {};
 
-    Object.assign(variables, builtins.makeBuiltins());
+    Object.assign(variables, builtins.makeBuiltins(fsScope));
 
     var result = evaluateEachExpression(variables, ast);
 
     return {result, variables};
   } else {
-    console.error('Haha, you didn\'t past me a tree!');
+    console.error('Haha, you didn\'t pass me a tree!');
   }
 }

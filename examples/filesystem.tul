@@ -1,0 +1,8 @@
+# use the fs module #
+fs => use('fs');
+
+# write to filesystem-test.txt #
+fs.write('filesystem-test.txt', 'Hello there!');
+
+# read filesystem-test.txt and print #
+print('Contents of filesystem-test.txt:', fs.read('filesystem-test.txt'));

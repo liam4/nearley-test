@@ -4,6 +4,7 @@ var run = require('./run');
 var interp = require('./interp');
 var lib = require('./lib');
 var C = require('./constants');
+var chalk = require('chalk');
 
 function exists(p) {
   // warning, this is synchronous
@@ -15,11 +16,11 @@ function exists(p) {
   }
 }
 
-export function makeBuiltins() {
+export function makeBuiltins(fsScope) {
   var variables = {};
 
   variables['print'] = new lib.Variable(new lib.LFunction(function(args) {
-    console.log('{Print}', ...args.map(arg => lib.toJString(arg)));
+    console.log(...args.map(arg => lib.toJString(arg)));
   }));
 
   variables['concat'] = new lib.Variable(new lib.LFunction(function(args) {
@@ -97,12 +98,27 @@ export function makeBuiltins() {
 
   variables['use'] = new lib.Variable(new lib.LFunction(function([pathStr]) {
     var p = lib.toJString(pathStr);
-    var locationInBuiltins = __dirname + '/builtin_lib/' + p;
-    console.log('location in bulitins:', locationInBuiltins);
+
+    if(p.substr(0, 2) !== './') {
+      p = 'tulun_modules/' + p;
+    }
+
+    var locationInBuiltins = fsScope + '/' + p;
     var ext = path.parse(p).ext;
+
+    if(!ext) {
+      locationInBuiltins += '.tul';
+      ext = '.tul';
+
+      if(!exists(locationInBuiltins)) {
+        locationInBuiltins = locationInBuiltins.substr(0, locationInBuiltins.length - 3) + 'js';
+        ext = '.js';
+      }
+    }
+
     if (exists(locationInBuiltins)) {
       if (ext === '.js') {
-        var used = require(locationInBuiltins);
+        var used = require(locationInBuiltins)(lib, fsScope);
         var usedObj = lib.toLObject(used);
         return usedObj;
       } else if (ext === '.tul') {
@@ -114,10 +130,24 @@ export function makeBuiltins() {
           return new lib.LObject();
         }
       } else {
-        throw 'Invalid use extension of ' + p;
+        console.error(
+          chalk.cyan(`use(...)`)
+          +
+          ': '
+          +
+          chalk.red(`Invalid extension ${chalk.yellow(ext)}.`)
+        );
+        process.exit(1);
       }
     } else {
-      console.log('file not found');
+      console.error(
+        chalk.cyan(`use(...)`)
+        +
+        ': '
+        +
+        chalk.red(`Could not find module ${chalk.yellow(p)}.`)
+      );
+      process.exit(1);
     }
   }));
 

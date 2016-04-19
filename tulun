@@ -25,11 +25,11 @@ function main(f, again) {
           console.error(err);
         }
 
-        process.exit();
+        process.exit(1);
       }
     } else {
       try {
-        require('./dist/run').run(data.toString());
+        require('./dist/run').run(data.toString(), process.cwd() + '/' + require('path').dirname(f));
       } catch(err) {
         console.error(err.stack);
       }
