@@ -96,6 +96,14 @@ export function makeBuiltins(fsScope) {
     while (lib.toJBoolean(lib.call(fn, [])));
   }));
 
+  variables['sleep'] = new lib.Variable(new lib.LFunction(function([time]) {
+    var e = new Date().getTime() + (lib.toJNumber(time) * 1000);
+
+    while (new Date().getTime() <= e) {
+      ;
+    }
+  }));
+
   variables['use'] = new lib.Variable(new lib.LFunction(function([pathStr]) {
     var p = lib.toJString(pathStr);
 
