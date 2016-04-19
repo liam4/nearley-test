@@ -13,12 +13,16 @@ const test = function(code, assume) {
   }
   run(code);
   console.log = oldLog;
+  console.log('OUTPUT', out);
   if (!assume(out)) {
     console.log('DERP');
   }
 };
 
-test('print("hello!");', function(res) {
-  console.log('test');
-  console.log('result:', res);
-});
+try {
+  test('print("hello!");', r => r[0][1] === 'hello!');
+  test('print("hello!")', r => r[0][1] === 'hello!');
+} catch(error) {
+  console.log('Error!');
+  console.error(error);
+}
