@@ -19,3 +19,8 @@ print(colors.white('white'));
 print(colors.bold('bold'));
 print(colors.underlined('underlined'));
 print(colors.italics('italics'));
+
+# use hello-world.tul too #
+print('');
+print('And just to prove that', colors.cyan('use("./local-file")'), 'works:');
+use('./hello-world');
