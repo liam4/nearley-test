@@ -1,1 +1,2 @@
-print('hello world!');
+variable with spaces in it => "wow!"
+print(variable with spaces in it)

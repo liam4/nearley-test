@@ -2,42 +2,37 @@
 
 var args = process.argv.slice(2);
 
-if (args.length === 1) {
-  main(args[0]);
-} else if (args.length === 2 && args[0] === 'dev') {
-  var spawn = require('child_process').spawn;
-  var build = spawn('gulp', ['build']);
-  build.stdout.on('data', function(d) {
-    process.stdout.write(d.toString());
-  });
-  build.on('exit', function() {
-    main(args[1]);
-  });
+if(args.length === 1) {
+  main(args[0], true);
 } else {
   console.error('Usage: tulun <file>');
   process.exit();
 }
 
-function main(f) {
+function main(f, again) {
   var fs = require('fs');
 
-  fs.readFile(f, function(err, data) {
-    if (err) {
-      if (err.errno === -2) {
-        console.error('That program doesn\'t exist!');
-      } else if (err.errno === -21) {
-        console.error('Can\'t run a directory!');
+  fs.readFile(f, 'utf8', function(err, data) {
+    if(err) {
+      if(again) {
+        main(f + '.tul', false)
       } else {
-        console.error(err);
-      }
-      process.exit();
-    }
+        if(err.errno === -2) {
+          console.error('That program doesn\'t exist!');
+        } else if (err.errno === -21) {
+          console.error('Can\'t run a directory!');
+        } else {
+          console.error(err);
+        }
 
-    try {
-      require('./dist/run').run(data.toString());
-      console.log('Done!');
-    } catch(err) {
-      console.error(err.stack);
+        process.exit();
+      }
+    } else {
+      try {
+        require('./dist/run').run(data.toString());
+      } catch(err) {
+        console.error(err.stack);
+      }
     }
   });
 }
