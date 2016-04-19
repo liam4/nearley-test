@@ -8,6 +8,7 @@
     "gulp-babel": "^6.1.2",
     "nearley": "^2.4.0"
   },
+  "engines" : { "node" : ">=4.0" },
   "name": "tulun",
   "description": "(Pronounced \"Tul-un-qweh-wag-nuf\", call it Tulun for short.)",
   "version": "0.1.0",
