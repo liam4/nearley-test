@@ -29,6 +29,9 @@ export function makeBuiltins() {
   variables['if'] = new lib.Variable(new lib.LFunction(function(args) {
     if (lib.toJBoolean(args[0])) {
       lib.call(args[1], []);
+    } else {
+      // optional `else`
+      if(args[2]) lib.call(args[2], []);
     }
   }));
 
