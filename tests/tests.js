@@ -20,8 +20,9 @@ const test = function(code, assume) {
 };
 
 try {
-  test('print("hello!");', r => r[0][1] === 'hello!');
-  test('print("hello!")', r => r[0][1] === 'hello!');
+  // test('print("hello!");', r => r[0][1] === 'hello!');
+  test('print("hello!")\n', r => r[0][1] === 'hello!');
+  // test('print("hello!")', r => r[0][1] === 'hello!');
 } catch(error) {
   console.log('Error!');
   console.error(error);
