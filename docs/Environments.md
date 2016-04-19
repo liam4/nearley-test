@@ -2,7 +2,7 @@
 
 Environments are used to dynamically create, modify, and do various other things with variables.
 
-You can get started with environments by getting the current environment the interpreter is using. Just use the `environment` keyword to do so:
+You can get started with environments by getting the current, inner-most (as in the scope where new defined variables will be stored) environment the interpreter is using. Just use the `environment` keyword to do so:
 
 ```
 env => environment
