@@ -22,9 +22,16 @@ export function makeBuiltins() {
     console.log('{Print}', ...args.map(arg => lib.toJString(arg)));
   }));
 
+  variables['concat'] = new lib.Variable(new lib.LFunction(function(args) {
+    return lib.toLString(args.map(lib.toJString).join(''));
+  }));
+
   variables['if'] = new lib.Variable(new lib.LFunction(function(args) {
     if (lib.toJBoolean(args[0])) {
       lib.call(args[1], []);
+    } else {
+      // optional `else`
+      if(args[2]) lib.call(args[2], []);
     }
   }));
 
@@ -60,9 +67,38 @@ export function makeBuiltins() {
     return lib.toLNumber(lib.toJNumber(x) * lib.toJNumber(y));
   }));
 
+  variables['not'] = new lib.Variable(new lib.LFunction(function([bool]) {
+    return lib.toLBoolean(!lib.toJBoolean(bool));
+  }));
+
+  variables['and'] = new lib.Variable(new lib.LFunction(function([b1, b2]) {
+    return lib.toLBoolean(lib.toJBoolean(b1) && lib.toJBoolean(b2));
+  }));
+
+  variables['or'] = new lib.Variable(new lib.LFunction(function([b1, b2]) {
+    return lib.toLBoolean(lib.toJBoolean(b1) || lib.toJBoolean(b2));
+  }));
+
+  variables['lt'] = new lib.Variable(new lib.LFunction(function([x, y]) {
+    return lib.toLBoolean(lib.toJNumber(x) < lib.toJNumber(y));
+  }));
+
+  variables['gt'] = new lib.Variable(new lib.LFunction(function([x, y]) {
+    return lib.toLBoolean(lib.toJNumber(x) > lib.toJNumber(y));
+  }));
+
+  variables['eq'] = new lib.Variable(new lib.LFunction(function([x, y]) {
+    return lib.toLBoolean(lib.toJNumber(x) === lib.toJNumber(y));
+  }));
+
+  variables['loop'] = new lib.Variable(new lib.LFunction(function([fn]) {
+    while (lib.toJBoolean(lib.call(fn, [])));
+  }));
+
   variables['use'] = new lib.Variable(new lib.LFunction(function([pathStr]) {
     var p = lib.toJString(pathStr);
-    var locationInBuiltins = './builtin_lib/' + p;
+    var locationInBuiltins = __dirname + '/builtin_lib/' + p;
+    console.log('location in bulitins:', locationInBuiltins);
     var ext = path.parse(p).ext;
     if (exists(locationInBuiltins)) {
       if (ext === '.js') {

@@ -1,8 +1,10 @@
-const GRAMMAR_OUT = 'grammar.js';
-const GRAMMAR_IN = 'grammar.ne';
+const GRAMMAR_OUT = 'src/grammar.js';
+const GRAMMAR_IN = 'src/grammar.ne';
 
 var fs = require('fs');
 var gulp = require('gulp');
+
+var babel = require('gulp-babel');
 
 var nearley = require('./node_modules/nearley/lib/nearley.js');
 var generate = require('./node_modules/nearley/lib/generate.js');
@@ -25,12 +27,24 @@ gulp.task('compile-grammar', function(cb) {
     .on('finish', function() {
       var c = Compile(parser.results[0], {});
       output.write(generate(c, 'grammar'));
-      setTimeout(cb, 1000);
+      cb();
     });
 });
 
-gulp.task('default', ['compile-grammar'], function() {
-  require('./index.js');
+gulp.task('copy-all', ['compile-grammar'], function() {
+  return gulp.src('src/**/*')
+    .pipe(gulp.dest("dist"));
+});
+
+gulp.task('build', ['copy-all'], function() {
+  console.log('Building...');
+  return gulp.src('src/**/*.js')
+    .pipe(babel())
+    .pipe(gulp.dest("dist"));
+});
+
+gulp.task('default', ['build'], function() {
+  require('./dist');
 });
 
 gulp.task('watch', ['default'], function() {

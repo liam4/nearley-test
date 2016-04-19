@@ -32,6 +32,10 @@ export class BooleanPrim {
     return Boolean(this._bool);
   }
 
+  valueOf() {
+    return this.bool;
+  }
+
   toString() {
     return `<Boolean ${this.bool}>`
   }
@@ -116,19 +120,28 @@ export function call(fn, args) {
 export function defaultCall(fnToken, args) {
   if (fnToken.fn instanceof Function) {
     // it's a javascript function so just call it
-    return fnToken.fn(args);
+    return fnToken.fn(args.map(
+      arg => interp.evaluateExpression(arg, fnToken.argumentScope)));
   } else {
-    var scope = Object.assign({}, fnToken.scopeVariables);
-    var returnValue = null;
-    scope.return = new Variable(new LFunction(function(val) {
+    const scope = Object.assign({}, fnToken.scopeVariables);
+    let returnValue = null;
+    scope.return = new Variable(new LFunction(function([val]) {
       returnValue = val;
     }));
-    var fnArgs = fnToken.fnArguments;
-    for (var i = 0; i < fnArgs.length; i++) {
-      var value = args[i];
-      scope[fnArgs[i]] = new Variable(value);
+    const paramaters = fnToken.paramaterList;
+    for (let i = 0; i < paramaters.length; i++) {
+      const value = args[i];
+      const paramater = paramaters[i];
+      if (paramater.type === 'normal') {
+        const evaluatedValue = interp.evaluateExpression(value);
+        scope[paramater.name] = new Variable(evaluatedValue);
+      } else if (paramater.type === 'unevaluated') {
+        scope[paramater.name] = new Variable(new LFunction(function() {
+          return interp.evaluateExpression(value, fnToken.argumentScope);
+        }));
+      }
     }
-    interp.evaluateEachExpression(fnToken.fn, scope);
+    interp.evaluateEachExpression(scope, fnToken.fn);
     return returnValue;
   }
 }
@@ -159,13 +172,12 @@ export function defaultGet(obj, key) {
     }
     if (current) {
       var value = prototype[keyString];
-      if (value instanceof FunctionToken) {
+      if (value instanceof LFunction) {
         // I was going to just bind to obj, but that generally involves using
         // the oh so terrible `this`.
-        //return new FunctionToken(value.fn.bind(obj));
         // Instead it returns a function that calls the given function with
         // obj as the first paramater.
-        return new FunctionToken(function(...args) {
+        return new LFunction(function(...args) {
           return value.fn(obj, ...args);
         });
       }
@@ -230,6 +242,7 @@ export class LArray extends LObject {
 }
 
 // Function token class -------------------------------------------------------
+// [[this needs to be rewritten]]
 // * takes one paramater, fn, which is stored in inst.fn and represents the
 //     function that will be called
 // * you can also set scopeVariables (using setScopeVariables), which is
@@ -248,7 +261,9 @@ export class LFunction extends LObject {
     this['__constructor__'] = LFunction;
     this.fn = fn;
     this.scopeVariables = null;
-    this.fnArguments = null;
+
+    this.unevaluatedArgs = [];
+    this.normalArgs = [];
   }
 
   __call__(args) {
@@ -261,8 +276,8 @@ export class LFunction extends LObject {
     this.scopeVariables = scopeVariables;
   }
 
-  setArguments(fnArguments) {
-    this.fnArguments = fnArguments;
+  setParamaters(paramaterList) {
+    this.paramaterList = paramaterList;
   }
 
   toString() {
@@ -285,8 +300,18 @@ export var LArrayPrototype = {
   })
 }
 
+export var LFunctionPrototype = {
+  debug: new LFunction(function(self) {
+    console.log('** DEBUG **');
+    console.log(self.fn.toString());
+  })
+}
+
 LObject['__prototype__'] = LObjectPrototype;
 LObject['__super__'] = null;
 
 LArray['__prototype__'] = LArrayPrototype;
 LArray['__super__'] = LObject;
+
+LFunction['__prototype__'] = LFunctionPrototype;
+LFunction['__super__'] = LObject;

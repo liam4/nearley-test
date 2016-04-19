@@ -1,10 +1,15 @@
 var code = `
 
-hi => use("hi.tul");
-hi.say("Foo");
+http => use("http.js");
+server => http.server(fn(req, res) {
+  res.write(concat("I see you want to ", req.method(), " ", req.url(), "."));
+  res.end();
+});
+server.listen(8080);
 
 `;
 
+require('source-map-support').install();
 var nearley = require('nearley');
 var grammar = require('./grammar');
 var run = require('./run');

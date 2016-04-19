@@ -11,6 +11,7 @@ var JoinRecursive = function(a) {
   var last = a[a.length - 1];
   return [a[0], ...last];
 };
+
 %}
 
 @builtin "whitespace.ne"
@@ -53,8 +54,10 @@ GetPropertyUsingIdentifierExpression -> Expression _ "." _ Identifier {% functio
 # Function expression
 FunctionExpression -> "fn" _ ArgumentList _ CodeBlock {% function(d) { return [C.FUNCTION_PRIM, d[2], d[4]] } %}
 ArgumentList -> "(" _ ArgumentListContents:? _ ")" {% function(d) { return d[2] ? d[2] : [] } %}
-ArgumentListContents -> Identifier _ "," _ ArgumentListContents {% JoinRecursive %}
-                      | Identifier
+ArgumentListContents -> Argument _ "," _ ArgumentListContents {% JoinRecursive %}
+                      | Argument
+Argument -> Identifier {% function(d) { return {type: "normal", name: d[0]} } %}
+          | "unevaluated" __ Identifier {% function(d) { return {type: "unevaluated", name: d[2]} } %}
 CodeBlock -> "{" Program "}" {% function(d) { return d[1] } %}
 
 # Variable get, really just an Identifier
@@ -72,12 +75,21 @@ BooleanExpression -> _BooleanExpression {% function(d) { return ["BOOLEAN_PRIM",
 _BooleanExpression -> "true" | "false"
 
 # String expression
-StringExpression -> "\"" StringExpressionDoubleContents "\"" {% function(d) { return [C.STRING_PRIM, d[1]] } %}
+StringExpression -> _StringExpression {% function(d) { return [C.STRING_PRIM, d[0][1]] } %}
+_StringExpression -> "\"" StringExpressionDoubleContents "\""
+                   | "'" StringExpressionSingleContents "'"
 StringExpressionDoubleContents -> DoubleStringValidCharacter:* {% function(d) { return d[0].join('') } %}
 DoubleStringValidCharacter -> GenericValidCharacter {%
   function(data, location, reject) {
-    if (data[0] === '"') return reject;
-    else return data[0];
+    if (data[0][0] === '"') return reject;
+    else return data[0][0];
+  }
+%}
+StringExpressionSingleContents -> SingleStringValidCharacter:* {% function(d) { return d[0].join('') } %}
+SingleStringValidCharacter -> GenericValidCharacter {%
+  function(data, location, reject) {
+    if (data[0][0] === '\'') return reject;
+    else return data[0][0];
   }
 %}
 
@@ -103,7 +115,14 @@ Digits -> [0-9]:+ {% function(d) { return d[0].join('') } %}
 # Generic identifier
 Identifier -> GenericValidIdentifierCharacter:+ {%
   function(data, location, reject) {
-    return data[0].join('');
+    var id = data[0].join('');
+    if (/[0-9]/.test(id[0])) {
+      return reject;
+    }
+    if (C.KEYWORDS.indexOf(id) === -1) {
+      return id;
+    }
+    return reject;
   }
 %}
 GenericValidIdentifierCharacter -> GenericValidCharacter {%
