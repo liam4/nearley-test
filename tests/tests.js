@@ -44,6 +44,8 @@ try {
   test('print(/(3, 4))', checkOut`0.75`);
   test('print(+(1.25, 1.755))', checkOut`3.005`);
 
+  console.log('If/else ---');
+  test(`if(true, fn() {print("good"); });`, checkOut`good`)
 } catch(error) {
   console.log = oldLog;
   console.log('\x1b[31m[Errored!]\x1b[0m Error in JS:');
