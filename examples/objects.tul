@@ -1,0 +1,3 @@
+obj => use('obj')
+
+print('Oh, hello there.')

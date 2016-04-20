@@ -1,30 +1,28 @@
-var nearley = require('nearley');
-var grammar = require('./grammar');
-var interp = require('./interp');
+'use strict'
+
+const nearley = require('nearley')
+const grammar = require('./grammar')
+const interp = require('./interp')
+const chalk = require('chalk')
 
 export function run(code, fsScope) {
-  fsScope = fsScope || __dirname;
+  fsScope = fsScope || __dirname
 
-  var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
-  var asts = parser.feed(code).results;
+  let parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart)
+  let asts = parser.feed(code).results
 
-  if (asts.length > 1) {
-    console.warn('!! AMBIGUOUS SYNTAX !!');
-    var escape = String.fromCharCode(27);
-    asts.forEach(function(ast, i) {
-      console.warn(JSON.stringify(ast, null, 0));
-      console.warn('\n----------------------------\n');
-    });
-    console.warn('A total of ' + asts.length + ' ASTs were generated.');
-    console.warn('Please report this on the official issue tracker:');
-    console.warn('https://github.com/liam4/tlnccuwagnf/issues');
-    console.warn('Using first AST.');
+  if(asts.length > 1) {
+    /*
+    console.log(
+chalk.yellow(`${chalk.red(`${chalk.bold('Warning')}: ambiguous syntax!`)}
+A total of ${asts.length} ASTs were generated.
+Please report this on the official issue tracker:
+${chalk.cyan('https://github.com/nanalan/tlnccuwagnf/issues')}.
+Using first AST as a fallback...
+      `)
+    */
   }
-  /*
-  console.log('Using AST:');
-  console.log(JSON.stringify(asts, null, 1));
-  */
 
-  var result = interp.interp(asts, fsScope);
-  return result;
+  var result = interp.interp(asts, fsScope)
+  return result
 }
