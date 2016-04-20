@@ -3,7 +3,6 @@ var grammar = require('./grammar');
 var interp = require('./interp');
 
 export function run(code, options) {
-  // code += '\n';
   var parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
   var asts = parser.feed(code).results;
 
