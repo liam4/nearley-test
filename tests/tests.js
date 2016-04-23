@@ -28,7 +28,7 @@ const checkOut = function(compare) {
     // result: [ [ '{Print}', compareThis ] ]
     return result[0][1] === compare[0];
   };
-}
+};
 
 try {
   console.log('Basic printing ---');
