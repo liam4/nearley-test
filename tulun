@@ -37,7 +37,11 @@ function main(f) {
       require('./dist/run').run(data.toString());
       console.log('Done!');
     } catch(err) {
-      console.error(err.stack);
+      if (err.stack) {
+        console.error(err.stack);
+      } else {
+        console.error(err);
+      }
     }
   });
 }

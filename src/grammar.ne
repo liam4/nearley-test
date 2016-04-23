@@ -20,6 +20,7 @@ Program -> _ _Program:? _ {% function(d) { return d[1] ? d[1] : [] } %}
 _Program -> Command _ CommandSeparator _ _Program {% JoinRecursive %}
           | Command _ CommandSeparator {% function(d) { return [d[0]] } %}
           | Comment _ _Program {% function(d) { return d[2] } %}
+          | Command
           | Comment
 CommandSeparator -> ";"
 
