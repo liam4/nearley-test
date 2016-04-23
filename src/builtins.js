@@ -96,7 +96,7 @@ export function makeBuiltins() {
   }));
 
   variables['loop'] = new lib.Variable(new lib.LFunction(function([fn]) {
-    while(lib.toJBoolean(lib.call(fn, [])))
+    while(lib.toJBoolean(lib.call(fn, []))) {}
   }))
 
   variables['use'] = new lib.Variable(new lib.LFunction(function([pathStr]) {
