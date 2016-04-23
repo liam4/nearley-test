@@ -58,7 +58,7 @@ export function evaluateExpression(expression, variables) {
 
     // Set the variable in the variables object to a new variable with the
     // evaluated value.
-    variables[name] = new lib.variable(value)
+    variables[name] = new lib.Variable(value)
     return
   } else if (expression[0] === C.VARIABLE_CHANGE) {
     // Change a variable to a new value: "name -> newValue"
