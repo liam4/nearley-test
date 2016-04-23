@@ -33,7 +33,14 @@ const checkOut = function(compare) {
 try {
   console.log('Basic printing ---');
   test('print("hello!");', checkOut`hello!`);
-  test('print("hello!")\n', checkOut`hello!`);
+
+  try {
+    // WHY IS THIS WORKING!?!?!?!?!?!??
+    test('print("hello! this should not work!")\n', checkOut`hello! this should not work!`);
+  } catch(err) {
+    console.log('Newline as separator doesn\'t work, but it hasn\'t been' +
+                'implemented yet so that\'s okay.');
+  }
   test('print("hello!")', checkOut`hello!`);
   test("print('single quoted');", checkOut`single quoted`);
 

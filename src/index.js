@@ -1,3 +1,4 @@
+/*
 var code = `
 
 http => use("http.js");
@@ -44,3 +45,4 @@ try {
     throw e;
   }
 }
+*/

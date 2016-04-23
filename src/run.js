@@ -24,6 +24,6 @@ export function run(code, options) {
   console.log(JSON.stringify(asts, null, 1));
   */
 
-  var result = interp.interp(asts, options);
+  var result = interp.interp(asts[0], options);
   return result;
 }
