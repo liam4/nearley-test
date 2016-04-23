@@ -11,7 +11,7 @@
     "language"
   ],
   "author": "liam4 & nanalan",
-  "license": "UNLICENCED",
+  "license": "MIT",
   "bin": {
     "tulun": "./tulun.js"
   },
