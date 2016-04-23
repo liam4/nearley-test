@@ -92,11 +92,11 @@ export function makeBuiltins() {
   }))
 
   variables['is'] = new lib.Variable(new lib.LFunction(function([x, y]) {
-    return Object.is(x, y);
+    return Object.is(x, y)
   }));
 
   variables['loop'] = new lib.Variable(new lib.LFunction(function([fn]) {
-    while(lib.toJBoolean(lib.call(fn, [])));
+    while(lib.toJBoolean(lib.call(fn, [])))
   }))
 
   variables['use'] = new lib.Variable(new lib.LFunction(function([pathStr]) {
@@ -125,39 +125,37 @@ export function makeBuiltins() {
     }
   }))
 
-  variables['variable_make'] = new lib.Variable(new lib.LFunction(function([env, name, value]) {
-    var v = new lib.Variable(value);
-    env.vars[lib.toJString(name)] = v;
-    return v;
-  }));
+  let variableObject = new lib.LObject();
 
-  variables['variable_change'] = new lib.Variable(new lib.LFunction(function([variable, newValue]) {
-    variable.value = newValue;
-  }));
+  lib.set(variableObject, 'make', new lib.LFunction(function([env, name, value]) {
+    let v = new lib.Variable(value)
+    env.vars[lib.toJString(name)] = v
+    return v
+  }))
 
-  variables['variable_value'] = new lib.Variable(new lib.LFunction(function([variable]) {
-    return variable.value;
-  }));
+  lib.set(variableObject, 'change', new lib.LFunction(function([variable, newValue]) {
+    variable.value = newValue
+  }))
 
-  variables['variable_raw'] = new lib.Variable(new lib.LFunction(function([env, name]) {
-    var name = lib.toJString(name);
-    var variable = env.vars[name];
+  lib.set(variableObject, 'value', new lib.LFunction(function([variable]) {
+    return variable.value
+  }))
+
+  lib.set(variableObject, 'from', new lib.LFunction(function([env, name]) {
+    var name = lib.toJString(name)
+    var variable = env.vars[name]
     if (typeof variable === 'undefined') {
-      throw new Error(`Can't access raw variable ${name} because it doesn't exist`);
+      throw new Error(`Can't access variable ${name} because it doesn't exist`)
     } else {
-      return variable;
+      return variable
     }
-  }));
+  }))
 
-  variables['variable_exists'] = new lib.Variable(new lib.LFunction(function([env, name]) {
-    return lib.toLBoolean(env.vars.hasOwnProperty(lib.toJString(name)));
-  }));
+  lib.set(variableObject, 'exists', new lib.LFunction(function([env, name]) {
+    return lib.toLBoolean(env.vars.hasOwnProperty(lib.toJString(name)))
+  }))
 
-  // variables['set_timeout'] = new lib.Variable(new lib.LFunction(function([fn, ms]) {
-  //   setTimeout(function() {
-  //     lib.call(fn);
-  //   }, lib.toJNumber(ms));
-  // }));
+  variables['Variable'] = new lib.Variable(variableObject)
 
   return variables
 }

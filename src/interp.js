@@ -20,6 +20,10 @@ export function evaluateExpression(expression, variables) {
     // Evaluate the function expression to get the actual function.
     const fn = evaluateExpression(fnExpression, variables)
 
+    if (!(fn instanceof lib.LFunction)) {
+      throw new Error('Can\'t call ' + fn + ' because it\'s not a function')
+    }
+
     /* This code *used* to work but it doesn't any more, because some
      * parameters of the function could be unevaluated. Now argument evaluation
      * is done from within the call method of the function.
