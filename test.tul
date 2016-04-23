@@ -1,1 +1,1 @@
-potato=>fn(baz){print('not how you should be coding')print(baz)}if(true,fn(){potato(72)})
+print("Mwahahaha");
