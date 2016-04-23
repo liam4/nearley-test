@@ -22,7 +22,7 @@ _Program -> Command _ CommandSeparator _ _Program {% JoinRecursive %}
           | Comment _ _Program {% function(d) { return d[2] } %}
           | Command
           | Comment
-CommandSeparator -> ";" | "\n"
+CommandSeparator -> ";"
 
 # Command
 Command -> Expression
