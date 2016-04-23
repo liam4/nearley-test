@@ -45,11 +45,11 @@ try {
   test("print('single quoted');", checkOut`single quoted`);
 
   console.log('Math ---');
-  test('print(+(3, 4))', checkOut`7`);
-  test('print(-(3, 4))', checkOut`-1`);
-  test('print(*(3, 4))', checkOut`12`);
-  test('print(/(3, 4))', checkOut`0.75`);
-  test('print(+(1.25, 1.755))', checkOut`3.005`);
+  test('print(+(3, 4));', checkOut`7`);
+  test('print(-(3, 4));', checkOut`-1`);
+  test('print(*(3, 4));', checkOut`12`);
+  test('print(/(3, 4));', checkOut`0.75`);
+  test('print(+(1.25, 1.755));', checkOut`3.005`);
 
   console.log('If/else ---');
   test(`if(true, fn() {print("good"); });`, checkOut`good`)
