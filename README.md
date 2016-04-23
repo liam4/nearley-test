@@ -14,7 +14,7 @@ It doesn't make sense. Please ignore the fact that it doesn't make sense? Also, 
 ## Installation / Usage
 ```sh
 # installation
-npm install -g https://github.com/liam4/tlnccuwagnf
+npm install -g tlnccuwagnf
 
 # usage
 tulun <file.tul>
