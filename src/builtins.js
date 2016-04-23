@@ -91,8 +91,12 @@ export function makeBuiltins() {
     return lib.toLBoolean(lib.toJNumber(x) === lib.toJNumber(y))
   }))
 
+  variables['is'] = new lib.Variable(new lib.LFunction(function([x, y]) {
+    return Object.is(x, y)
+  }));
+
   variables['loop'] = new lib.Variable(new lib.LFunction(function([fn]) {
-    while(lib.toJBoolean(lib.call(fn, [])));
+    while(lib.toJBoolean(lib.call(fn, [])))
   }))
 
   variables['use'] = new lib.Variable(new lib.LFunction(function([pathStr]) {
@@ -120,6 +124,38 @@ export function makeBuiltins() {
       console.log('File not found')
     }
   }))
+
+  let variableObject = new lib.LObject();
+
+  lib.set(variableObject, 'make', new lib.LFunction(function([env, name, value]) {
+    let v = new lib.Variable(value)
+    env.vars[lib.toJString(name)] = v
+    return v
+  }))
+
+  lib.set(variableObject, 'change', new lib.LFunction(function([variable, newValue]) {
+    variable.value = newValue
+  }))
+
+  lib.set(variableObject, 'value', new lib.LFunction(function([variable]) {
+    return variable.value
+  }))
+
+  lib.set(variableObject, 'from', new lib.LFunction(function([env, name]) {
+    var name = lib.toJString(name)
+    var variable = env.vars[name]
+    if (typeof variable === 'undefined') {
+      throw new Error(`Can't access variable ${name} because it doesn't exist`)
+    } else {
+      return variable
+    }
+  }))
+
+  lib.set(variableObject, 'exists', new lib.LFunction(function([env, name]) {
+    return lib.toLBoolean(env.vars.hasOwnProperty(lib.toJString(name)))
+  }))
+
+  variables['Variable'] = new lib.Variable(variableObject)
 
   return variables
 }

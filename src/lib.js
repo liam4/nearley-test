@@ -123,9 +123,9 @@ export function defaultCall(fnToken, args) {
     return fnToken.fn(args.map(
       arg => interp.evaluateExpression(arg, fnToken.argumentScope)))
   } else {
-    const scope = Object.assign({}, fnToken.scopeletiables)
+    const scope = Object.assign({}, fnToken.scopeVariables)
     let returnValue = null
-    scope.return = new letiable(new LFunction(function([val]) {
+    scope.return = new Variable(new LFunction(function([val]) {
       returnValue = val
     }))
     const paramaters = fnToken.paramaterList
@@ -134,9 +134,9 @@ export function defaultCall(fnToken, args) {
       const paramater = paramaters[i]
       if(paramater.type === 'normal') {
         const evaluatedValue = interp.evaluateExpression(value)
-        scope[paramater.name] = new letiable(evaluatedValue)
+        scope[paramater.name] = new Variable(evaluatedValue)
       } else if(paramater.type === 'unevaluated') {
-        scope[paramater.name] = new letiable(new LFunction(function() {
+        scope[paramater.name] = new Variable(new LFunction(function() {
           return interp.evaluateExpression(value, fnToken.argumentScope)
         }))
       }
@@ -196,14 +196,18 @@ export function defaultSet(obj, key, value) {
   return obj.data[toJString(key)] = value
 }
 
-// letiable class -------------------------------------------------------------
+// Variable class -------------------------------------------------------------
 // * this should never *ever* be accessed through anywhere except set/get
-//   letiable functions
+//   Variable functions
 // * takes one paramater, value, which is stored in inst.value and represents
-//   the value of the letiable
-export class letiable {
+//   the value of the Variable
+export class Variable {
   constructor(value) {
     this.value = value
+  }
+
+  toString() {
+    return '<Variable>';
   }
 }
 
@@ -245,13 +249,13 @@ export class LArray extends LObject {
 // [[this needs to be rewritten]]
 // * takes one paramater, fn, which is stored in inst.fn and represents the
 //     function that will be called
-// * you can also set scopeletiables (using setScopeletiables), which is
+// * you can also set scopeVariables (using setScopeVariables), which is
 //     generally only used for internal creation of function expressions; it
-//     represents the closure letiables that can be accessed from within the
+//     represents the closure Variables that can be accessed from within the
 //     function
 // * you can also set fnArguments (using setArguments), which is generally also
 //     only used for internal creation of function expressions; it tells what
-//     call arguments should be mapped to in the letiables context of running
+//     call arguments should be mapped to in the Variables context of running
 //     the code block
 // * use inst.__call__ to call the function (with optional arguments)
 
@@ -260,7 +264,7 @@ export class LFunction extends LObject {
     super()
     this['__constructor__'] = LFunction
     this.fn = fn
-    this.scopeletiables = null
+    this.scopeVariables = null
 
     this.unevaluatedArgs = []
     this.normalArgs = []
@@ -272,8 +276,8 @@ export class LFunction extends LObject {
     return defaultCall(this, args)
   }
 
-  setScopeletiables(scopeletiables) {
-    this.scopeletiables = scopeletiables
+  setScopeVariables(scopeVariables) {
+    this.scopeVariables = scopeVariables
   }
 
   setParamaters(paramaterList) {
@@ -282,6 +286,25 @@ export class LFunction extends LObject {
 
   toString() {
     return '<Object Function>'
+  }
+}
+
+export class LEnvironment {
+  constructor(variables) {
+    this['__constructor__'] = LEnvironment;
+    this.vars = variables;
+  }
+
+  __set__(variableName, value) {
+    this.vars[variableName] = new Variable(value);
+  }
+
+  __get__(variableName) {
+    return this.vars[variableName].value;
+  }
+
+  toString() {
+    return JSON.stringify(Object.keys(this.vars));
   }
 }
 
