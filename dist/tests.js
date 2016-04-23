@@ -1,0 +1,4 @@
+'use strict';
+
+var run = require('./run');
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInRlc3RzLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7O0FBQUEsSUFBSSxNQUFNLFFBQVEsT0FBUixDQUFWIiwiZmlsZSI6InRlc3RzLmpzIiwic291cmNlc0NvbnRlbnQiOlsidmFyIHJ1biA9IHJlcXVpcmUoJy4vcnVuJylcbiJdfQ==
