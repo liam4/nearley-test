@@ -1,7 +1,8 @@
 .DS_Store
 node_modules/*
-dist/*
+#dist/* # commented out for the sake of releases
 gitter-cli.log
+npm-debug.log
 
 # Maybe I'll enable grammar.js at some point but for now it's just annoying
 # and causes commit issues and stuff.
