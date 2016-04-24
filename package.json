@@ -31,5 +31,8 @@
     "gulp-babel": "^6.1.2",
     "nearley": "^2.4.0",
     "source-map-support": "^0.4.0"
+  },
+  "dependencies": {
+    "chalk": "^1.1.3"
   }
 }

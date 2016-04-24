@@ -66,7 +66,7 @@ export class NumberPrim {
 // Converting language primatives to JS prims ---------------------------------
 
 export function toJString(str) {
-  if(str instanceof StringPrim) {
+  if (str instanceof StringPrim) {
     return str.str
   } else {
     return String(str)
@@ -74,7 +74,7 @@ export function toJString(str) {
 }
 
 export function toJBoolean(bool) {
-  if(bool instanceof BooleanPrim && bool.bool === true) {
+  if (bool instanceof BooleanPrim && bool.bool === true) {
     return true
   } else {
     return false
@@ -82,7 +82,7 @@ export function toJBoolean(bool) {
 }
 
 export function toJNumber(num) {
-  if(num instanceof NumberPrim) {
+  if (num instanceof NumberPrim) {
     return num.num
   } else {
     return Number(num)
@@ -105,7 +105,7 @@ export function toLNumber(num) {
 
 export function toLObject(data) {
   let obj = new LObject()
-  for(let key in data) {
+  for (let key in data) {
     set(obj, key, data[key])
   }
   return obj
@@ -118,7 +118,7 @@ export function call(fn, args) {
 }
 
 export function defaultCall(fnToken, args) {
-  if(fnToken.fn instanceof Function) {
+  if (fnToken.fn instanceof Function) {
     // it's a javascript function so just call it
     return fnToken.fn(args.map(
       arg => interp.evaluateExpression(arg, fnToken.argumentScope)))
@@ -129,13 +129,13 @@ export function defaultCall(fnToken, args) {
       returnValue = val
     }))
     const paramaters = fnToken.paramaterList
-    for(let i = 0; i < paramaters.length; i++) {
+    for (let i = 0; i < paramaters.length; i++) {
       const value = args[i]
       const paramater = paramaters[i]
-      if(paramater.type === 'normal') {
+      if (paramater.type === 'normal') {
         const evaluatedValue = interp.evaluateExpression(value)
         scope[paramater.name] = new Variable(evaluatedValue)
-      } else if(paramater.type === 'unevaluated') {
+      } else if (paramater.type === 'unevaluated') {
         scope[paramater.name] = new Variable(new LFunction(function() {
           return interp.evaluateExpression(value, fnToken.argumentScope)
         }))
@@ -160,19 +160,19 @@ export function get(obj, key) {
 
 export function defaultGet(obj, key) {
   let keyString = toJString(key)
-  if(keyString in obj.data) {
+  if (keyString in obj.data) {
     return obj.data[keyString]
   } else {
     let constructor = obj['__constructor__']
     let prototype = constructor['__prototype__']
     let current = constructor
-    while(current && prototype && !(key in prototype)) {
+    while (current && prototype && !(key in prototype)) {
       current = current['__super__']
       prototype = current ? current['__prototype__'] : null
     }
-    if(current) {
+    if (current) {
       let value = prototype[keyString]
-      if(value instanceof LFunction) {
+      if (value instanceof LFunction) {
         // I was going to just bind to obj, but that generally involves using
         // the oh so terrible `this`.
         // Instead it returns a function that calls the given function with
@@ -207,7 +207,7 @@ export class Variable {
   }
 
   toString() {
-    return '<Variable>';
+    return '<Variable>'
   }
 }
 
@@ -291,20 +291,20 @@ export class LFunction extends LObject {
 
 export class LEnvironment {
   constructor(variables) {
-    this['__constructor__'] = LEnvironment;
-    this.vars = variables;
+    this['__constructor__'] = LEnvironment
+    this.vars = variables
   }
 
   __set__(variableName, value) {
-    this.vars[variableName] = new Variable(value);
+    this.vars[variableName] = new Variable(value)
   }
 
   __get__(variableName) {
-    return this.vars[variableName].value;
+    return this.vars[variableName].value
   }
 
   toString() {
-    return JSON.stringify(Object.keys(this.vars));
+    return JSON.stringify(Object.keys(this.vars))
   }
 }
 

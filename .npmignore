@@ -1,8 +1,0 @@
-.babelrc
-.eslintignore
-.eslintrc.json
-gulpfile.js
-grammar.js
-npm-debug.log
-tests/*
-src/*

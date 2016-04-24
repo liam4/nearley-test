@@ -11,7 +11,7 @@ const test = function(code, assume) {
   }
   run(code)
   console.log = oldLog
-  if(!assume(out)) {
+  if (!assume(out)) {
     oldLog(`\x1b[31m[Errored!]\x1b[0m Assumption failed:\n\x1b[36m${code}\x1b[0m`)
   }
 }
@@ -34,7 +34,7 @@ try {
   try {
     // WHY IS THIS WORKING!?!?!?!?!?!??
     test('print("hello! this should not work!")\n', checkOut`hello! this should not work!`)
-  } catch(err) {
+  } catch (err) {
     console.log('Newline as separator doesn\'t work, but it hasn\'t been' +
                 'implemented yet so that\'s okay.')
   }
@@ -50,7 +50,7 @@ try {
 
   console.log('If/else ---')
   test(`if(true, fn() {print("good"); });`, checkOut`good`)
-} catch(error) {
+} catch (error) {
   console.log = oldLog
   console.log('\x1b[31m[Errored!]\x1b[0m Error in JS:')
   console.error(error)

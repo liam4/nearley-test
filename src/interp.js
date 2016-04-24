@@ -1,15 +1,16 @@
 const C = require('./constants')
 const lib = require('./lib')
+const chalk = require('chalk')
 const builtins = require('./builtins')
 
 export function evaluateExpression(expression, variables) {
-  if(expression[0] === C.COMMENT) {
+  if (expression[0] === C.COMMENT) {
     return
   } else if (expression instanceof Array &&
              expression.every(e => e instanceof Array)) {
     return evaluateEachExpression(variables, expression)
   } if (expression[0] === C.VARIABLE_IDENTIFIER && expression[1] === 'environment') {
-    return new lib.LEnvironment(variables);
+    return new lib.LEnvironment(variables)
   } else if (expression[0] === C.FUNCTION_CALL) {
     // Call a function: "function(arg1, arg2, arg3...)"
 
@@ -21,7 +22,7 @@ export function evaluateExpression(expression, variables) {
     const fn = evaluateExpression(fnExpression, variables)
 
     if (!(fn instanceof lib.LFunction)) {
-      throw new Error('Can\'t call ' + fn + ' because it\'s not a function')
+      throw new Error(`Can't call ${chalk.cyan(fn)} because it's not a function`)
     }
 
     /* This code *used* to work but it doesn't any more, because some
@@ -35,7 +36,7 @@ export function evaluateExpression(expression, variables) {
 
     // Use lib.call to call the function with the evaluated arguments.
     return lib.call(fn, args)
-  } else if(expression[0] === C.VARIABLE_IDENTIFIER) {
+  } else if (expression[0] === C.VARIABLE_IDENTIFIER) {
     // Get a variable: "name"
 
     // Get the name from the expression list.
@@ -77,7 +78,7 @@ export function evaluateExpression(expression, variables) {
     // Change the value of the already defined variable.
     variables[name].value = value
     return
-  } else if(expression[0] === C.FUNCTION_PRIM) {
+  } else if (expression[0] === C.FUNCTION_PRIM) {
     // A function literal: "fn(arg1, arg2, arg3...) { code }"
 
     // Get the code and paramaters from the expression list.
@@ -97,7 +98,7 @@ export function evaluateExpression(expression, variables) {
 
     // Return the function.
     return fn
-  } else if(expression[0] === C.STRING_PRIM) {
+  } else if (expression[0] === C.STRING_PRIM) {
     // String literal: "contents"
 
     // Get string from expression list.
@@ -105,7 +106,7 @@ export function evaluateExpression(expression, variables) {
 
     // Convert string to a language-usable string, and return.
     return lib.toLString(string)
-  } else if(expression[0] === C.BOOLEAN_PRIM) {
+  } else if (expression[0] === C.BOOLEAN_PRIM) {
     // Boolean literal: true/false
 
     // Get boolean value from expression list.
@@ -113,7 +114,7 @@ export function evaluateExpression(expression, variables) {
 
     // Convert boolean value to a language-usable boolean, and return.
     return lib.toLBoolean(bool)
-  } else if(expression[0] === C.NUMBER_PRIM) {
+  } else if (expression[0] === C.NUMBER_PRIM) {
     // Number primitive: 1, 2, 3, 4, 7.25, -3, etc.
 
     // Get number value from expression list.
@@ -121,7 +122,7 @@ export function evaluateExpression(expression, variables) {
 
     // Convert number value to a language-usable number, and return.
     return lib.toLNumber(number)
-  } else if(expression[0] === C.SET_PROP_USING_IDENTIFIER) {
+  } else if (expression[0] === C.SET_PROP_USING_IDENTIFIER) {
     // Set a property of an object using an identifier literal:
     // "obj.key > value"
 
@@ -137,7 +138,7 @@ export function evaluateExpression(expression, variables) {
     // Use lib.set to set the property of the evaluated object.
     lib.set(obj, key, value)
     return
-  } else if(expression[0] === C.GET_PROP_USING_IDENTIFIER) {
+  } else if (expression[0] === C.GET_PROP_USING_IDENTIFIER) {
     // Get a property of an object using an identifier literal: "obj.key"
 
     // Get object expression and key from the expression list.
@@ -166,11 +167,11 @@ export function evaluateEachExpression(variables, expressions) {
   return expressions.map(e => evaluateExpression(e, variables))
 }
 
-export function interp(ast) {
-  if(ast) {
+export function interp(ast, dir) {
+  if (ast) {
     let variables = {}
 
-    Object.assign(variables, builtins.makeBuiltins())
+    Object.assign(variables, builtins.makeBuiltins(dir))
 
     let result = evaluateEachExpression(variables, ast)
 

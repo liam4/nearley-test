@@ -10,7 +10,7 @@ function exists(p) {
   try {
     fs.accessSync(p, fs.F_OK)
     return true
-  } catch(err) {
+  } catch (err) {
     return false
   }
 }
@@ -27,16 +27,16 @@ export function makeBuiltins() {
   }))
 
   variables['if'] = new lib.Variable(new lib.LFunction(function(args) {
-    if(lib.toJBoolean(args[0])) {
+    if (lib.toJBoolean(args[0])) {
       lib.call(args[1], [])
     } else {
       // optional `else`
-      if(args[2]) lib.call(args[2], [])
+      if (args[2]) lib.call(args[2], [])
     }
   }))
 
   variables['ifel'] = new lib.Variable(new lib.LFunction(function(args) {
-    if(lib.toJBoolean(args[0])) {
+    if (lib.toJBoolean(args[0])) {
       lib.call(args[1], [])
     } else {
       lib.call(args[2], [])
@@ -93,10 +93,10 @@ export function makeBuiltins() {
 
   variables['is'] = new lib.Variable(new lib.LFunction(function([x, y]) {
     return Object.is(x, y)
-  }));
+  }))
 
   variables['loop'] = new lib.Variable(new lib.LFunction(function([fn]) {
-    while(lib.toJBoolean(lib.call(fn, []))) {}
+    while (lib.toJBoolean(lib.call(fn, []))) {}
   }))
 
   variables['use'] = new lib.Variable(new lib.LFunction(function([pathStr]) {
@@ -104,15 +104,15 @@ export function makeBuiltins() {
     let locationInBuiltins = `${__dirname}/builtin_lib/${p}`
     console.log('location in bulitins:', locationInBuiltins)
     let ext = path.parse(p).ext
-    if(exists(locationInBuiltins)) {
-      if(ext === '.js') {
+    if (exists(locationInBuiltins)) {
+      if (ext === '.js') {
         let used = require(locationInBuiltins)
         let usedObj = lib.toLObject(used)
         return usedObj
-      } else if(ext === '.tul') {
+      } else if (ext === '.tul') {
         let program = fs.readFileSync(locationInBuiltins).toString()
         let result = run.run(program)
-        if('exports' in result.variables) {
+        if ('exports' in result.variables) {
           return result.variables.exports.value
         } else {
           return new lib.LObject()
@@ -125,7 +125,7 @@ export function makeBuiltins() {
     }
   }))
 
-  let variableObject = new lib.LObject();
+  let variableObject = new lib.LObject()
 
   lib.set(variableObject, 'make', new lib.LFunction(function([env, name, value]) {
     let v = new lib.Variable(value)

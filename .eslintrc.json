@@ -38,21 +38,7 @@
       "error",
       {
         "before": true,
-        "after": true,
-        "overrides": {
-          "if": {
-            "after": false
-          },
-          "for": {
-            "after": false
-          },
-          "while": {
-            "after": false
-          },
-          "catch": {
-            "after": false
-          }
-        }
+        "after": true
       }
     ],
     "array-bracket-spacing": [

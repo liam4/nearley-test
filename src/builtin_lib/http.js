@@ -91,14 +91,14 @@ let LHTTPRequestPrototype = {
 
     let u = url.parse(lib.toJString(self.url))
     let isGet = lib.toJString(self.method).toLowerCase() === 'get'
-    if(u.protocol === 'http:') {
-      if(isGet) {
+    if (u.protocol === 'http:') {
+      if (isGet) {
         http.get(lib.toJString(self.url), handle)
       } else {
         console.log('Invalid method:', lib.toJString(self.method))
       }
-    } else if(u.protocol === 'https:') {
-      if(isGet) {
+    } else if (u.protocol === 'https:') {
+      if (isGet) {
         https.get(lib.toJString(self.url), handle)
       } else {
         console.log('Invalid method:', lib.toJString(self.method))
