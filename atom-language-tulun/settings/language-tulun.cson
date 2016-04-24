@@ -1,0 +1,4 @@
+".source.hjson":
+  editor:
+    increaseIndentPattern: '^.*(\\{[^}]*|\\[[^\\]]*)$'
+    decreaseIndentPattern: '^\\s*[}\\]],?\\s*$'
