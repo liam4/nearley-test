@@ -68,7 +68,7 @@
   }
   {
     'match': '\\;'
-    'name': 'punctuation.terminator.statement.js'
+    'name': 'comment.line.number-sign.python'
   }
   {
     'match': ','
