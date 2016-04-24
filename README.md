@@ -95,12 +95,12 @@ Here's an example of a program using all the things we showed above. Please excu
 #  v    vvvv--- A boolean literal.              #
    x => true;
 
-#  v--- Get a variable using identifier "if",   #
-#  |    this is built-in so all programs will   #
-#  |    automatically have "if" as a variable.  #
-#  |  v--- Get a variable using identifier "x", #
-#  |  |    which we assigned earlier.           #
-#  |  |  vvvvvv--- A function literal.          #
+#  vv-- Get a variable using identifier "if",   #
+#  ||  this is built-in so all programs will   #
+#  ||  automatically have "if" as a variable.  #
+#  || v--- Get a variable using identifier "x", #
+#  || |    which we assigned earlier.           #
+#  || |  vvvvvv--- A function literal.          #
    if(x, fn() {
 
 #    vvvvv--- Get a variable using identifier   #
