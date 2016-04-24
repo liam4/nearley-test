@@ -3,6 +3,8 @@ bar => 'old bar';
 env => environment;
 bar_var => Variable.from(env, 'bar');
 
+# comments #
+
 k => fn() {
   new_bar_var => Variable.from(env, 'bar');
   print('One and the same?');

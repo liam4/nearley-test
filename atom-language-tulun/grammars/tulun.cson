@@ -789,11 +789,11 @@
     'end': '(?!\\G)'
     'patterns': [
       {
-        'begin': '#'
+        'begin': '(#|\#\:)'
         'beginCaptures':
           '0':
             'name': 'punctuation.definition.comment.python'
-        'end': '\\n'
+        'end': '(#|\:\#)'
         'name': 'comment.line.number-sign.python'
       }
     ]
