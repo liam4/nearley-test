@@ -21,16 +21,9 @@ tulun <file.tul>
 ```
 
 ## Syntax Highlighting
+**Atom**: Install the [https://atom.io/packages/language-tulun](language-tulun) package.
 
-**Atom**
-If you use Atom as your main editor, then it's worth symlinking/copying `(this repo)/atom-language-tulun/` as a package in your Atom installation to provide syntax highlighting for `.tul` files. If you use a UNIX OS _(e.g. not windows)_ then you _should_ be able to just run this command below to syntax highlight `.tul` files in Atom (provided you've cloned this git repo).
-```sh
-ln -s tlnccuwagnf/atom-language-tulun ~/.atom/packages/language-tulun
-```
-If you can't be bothered to, just use the JavaScript highlighting.
-
-**Other Editors**
-Tulun has a similar syntax to JavaScript, so just use your editor's JS highlighting instead.
+**Other Editors**: Tulun has a similar syntax to JavaScript, so just use your editor's JS highlighting instead.
 
 ## Examples
 
