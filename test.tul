@@ -1,45 +1,10 @@
-baz => 'baz';
-bar => 'old bar';
-env => environment;
-bar_var => Variable.from(env, 'bar');
-
-# comments #
-
-k => fn() {
-  new_bar_var => Variable.from(env, 'bar');
-  print('One and the same?');
-  print(is(bar_var, new_bar_var));
-  print('And the value is?');
-  print(Variable.value(bar_var));
-  print('And in our scope the value is?');
-  print(bar);
-};
-
-Variable.change(bar_var, 'test bar');
-k();
-
-published_env => 0;
-f => fn() {
-  published_env -> environment;
-  return(fn() {
-    print('The magically defined variable:');
-    magic_var => Variable.from(published_env, 'magically_defined_variable');
-    magic_value => Variable.value(magic_var);
-    print(magic_value);
+x => 1;
+loop({
+  print(x);
+  x -> +(x, 1);
+  ret => true;
+  if(gt(x, 8), {
+    ret -> false;
   });
-};
-res => f();
-Variable.make(published_env, 'magically_defined_variable', 'magic!');
-# same as published_env.magically_defined_variable > 'magic!'; #
-res();
-
-print('Does fake variable exist?');
-print(Variable.exists(environment, 'fake_variable'));
-
-print('A variable datum:');
-print(Variable.from(environment, 'baz'));
-
-#
-print('Attempt to get fake variable:');
-print(Variable.from(environment, 'fake_variable'));
-#
+  return(ret);
+});

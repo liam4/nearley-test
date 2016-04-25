@@ -49,7 +49,7 @@ try {
   test('print(+(1.25, 1.755));', checkOut`3.005`)
 
   console.log('If/else ---')
-  test(`if(true, fn() {print("good"); });`, checkOut`good`)
+  test(`if(true, {print("good"); });`, checkOut`good`)
 } catch (error) {
   console.log = oldLog
   console.log('\x1b[31m[Errored!]\x1b[0m Error in JS:')

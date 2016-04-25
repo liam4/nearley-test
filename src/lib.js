@@ -141,8 +141,13 @@ export function defaultCall(fnToken, args) {
         }))
       }
     }
-    interp.evaluateEachExpression(scope, fnToken.fn)
-    return returnValue
+
+    if (fnToken.isShorthand) {
+      return interp.evaluateExpression(fnToken.fn, scope)
+    } else {
+      interp.evaluateEachExpression(scope, fnToken.fn)
+      return returnValue
+    }
   }
 }
 
