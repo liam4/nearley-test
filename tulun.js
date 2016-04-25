@@ -15,16 +15,35 @@ function build(fn) {
   build.on('exit', fn)
 }
 
+function version() {
+  let ver = require('./package.json').version
+  console.log(
+    `${chalk.cyan(`
+      ████████╗ ██╗   ██╗ ██╗      ██╗   ██╗ ███╗   ██╗
+      ╚══██╔══╝ ██║   ██║ ██║      ██║   ██║ ████╗  ██║
+         ██║    ██║   ██║ ██║      ██║   ██║ ██╔██╗ ██║
+         ██║    ██║   ██║ ██║      ██║   ██║ ██║╚██╗██║
+         ██║    ╚██████╔╝ ███████╗ ╚██████╔╝ ██║ ╚████║
+         ╚═╝     ╚═════╝  ╚══════╝  ╚═════╝  ╚═╝  ╚═══╝
+                                                   `)}
+
+                          v${chalk.bold(ver)}`
+  )
+}
+
 if (args.length === 1) {
   if (args[0] === '--rebuild' || args[0] === '-r') build(() => {})
+  else if (args[0] === '--version' || args[0] === '-v') version()
   else main(args[0], true)
 } else if (args.length === 2 && args[0] === '--rebuild' || args[0] === '-r') {
   build(() => main(args[1], true))
 } else if (args.length === 2 && args[1] === '--rebuild' || args[1] === '-r') {
   build(() => main(args[0], true))
-} else {
+} else if (args[0] === '--version' || args[0] === '-v') version()
+  else {
   console.error(`Usage: ${chalk.cyan('tulun <file>')}
-${chalk.green('--rebuild')} / ${chalk.green('-r')} : ${chalk.dim('development only')} rebuilds source`)
+${chalk.green('--rebuild')} / ${chalk.green('-r')} : ${chalk.dim('development only')} rebuilds source
+${chalk.green('--version')} / ${chalk.green('-v')} : output version number`)
   process.exit()
 }
 
