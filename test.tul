@@ -1,5 +1,3 @@
 print('Ah.');
 
 kaz => (): print('kderp');
-
-print(kaz());

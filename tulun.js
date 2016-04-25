@@ -6,16 +6,18 @@ const args = process.argv.slice(2)
 const chalk = require('chalk')
 
 function build(fn) {
+  process.stdout.write(chalk.cyan('Building...'))
   let spawn = require('child_process').spawn
   let build = spawn('gulp', ['build', '--silent'])
   build.stdout.on('data', function(d) {
-    process.stdout.write(chalk.cyan(d.toString()))
+    //process.stdout.write(chalk.cyan(d.toString()))
   })
   build.on('exit', fn)
 }
 
 if (args.length === 1) {
-  main(args[0], true)
+  if (args[0] === '--rebuild' || args[0] === '-r') build(() => {})
+  else main(args[0], true)
 } else if (args.length === 2 && args[0] === '--rebuild' || args[0] === '-r') {
   build(() => main(args[1], true))
 } else if (args.length === 2 && args[1] === '--rebuild' || args[1] === '-r') {

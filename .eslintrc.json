@@ -35,14 +35,14 @@
       1
     ],
     "keyword-spacing": [
-      "error",
+      2,
       {
         "before": true,
         "after": true
       }
     ],
     "array-bracket-spacing": [
-      "warn",
+      1,
       "never",
       {
         "singleValue": false,
@@ -50,36 +50,36 @@
       }
     ],
     "camelcase": [
-      "warn"
+      1
     ],
     "brace-style": [
-      "error",
+      2,
       "1tbs"
     ],
     "block-spacing": [
-      "error",
+      2,
       "always"
     ],
     "object-curly-spacing": [
-      "warn",
+      1,
       "always"
     ],
     "space-in-parens": [
-      "error",
+      2,
       "never"
     ],
     "no-undef": [
-      "warn"
+      1
     ],
     "linebreak-style": [
-      "warn",
+      1,
       "unix"
     ],
     "no-spaced-func": [
-      "error"
+      2
     ],
     "quotes": [
-      "error",
+      1,
       "single",
       {
         "avoidEscape": true,
@@ -87,7 +87,7 @@
       }
     ],
     "semi": [
-      "error",
+      2,
       "never"
     ]
   }

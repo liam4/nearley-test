@@ -20,6 +20,11 @@ npm install -g tlnccuwagnf
 tulun <file.tul>
 ```
 
+## Syntax Highlighting
+**Atom**: Install the [https://atom.io/packages/language-tulun](language-tulun) package.
+
+**Other Editors**: Tulun has a similar syntax to JavaScript, so just use your editor's JS highlighting instead.
+
 ## Examples
 
 ### Hello world
@@ -83,12 +88,12 @@ Here's an example of a program using all the things we showed above. Please excu
 #  v    vvvv--- A boolean literal.              #
    x => true;
 
-#  v--- Get a variable using identifier "if",   #
-#  |    this is built-in so all programs will   #
-#  |    automatically have "if" as a variable.  #
-#  |  v--- Get a variable using identifier "x", #
-#  |  |    which we assigned earlier.           #
-#  |  |  vvvvvv--- A function literal.          #
+#  vv-- Get a variable using identifier "if",   #
+#  ||  this is built-in so all programs will   #
+#  ||  automatically have "if" as a variable.  #
+#  || v--- Get a variable using identifier "x", #
+#  || |    which we assigned earlier.           #
+#  || |  vvvvvv--- A function literal.          #
    if(x, fn() {
 
 #    vvvvv--- Get a variable using identifier   #
