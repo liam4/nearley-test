@@ -1,0 +1,94 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "node": true,
+    "es6": true
+  },
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 6
+  },
+  "rules": {
+    "strict": [
+      0
+    ],
+    "prefer-template": [1],
+    "indent": [
+      2,
+      2
+    ],
+    "no-constant-condition": [
+      0
+    ],
+    "no-mixed-spaces-and-tabs": [
+      0
+    ],
+    "no-console": [
+      0
+    ],
+    "no-unused-vars": [
+      0
+    ],
+    "no-var": [
+      1
+    ],
+    "keyword-spacing": [
+      "error",
+      {
+        "before": true,
+        "after": true
+      }
+    ],
+    "array-bracket-spacing": [
+      "warn",
+      "never",
+      {
+        "singleValue": false,
+        "objectsInArrays": true
+      }
+    ],
+    "camelcase": [
+      "warn"
+    ],
+    "brace-style": [
+      "error",
+      "1tbs"
+    ],
+    "block-spacing": [
+      "error",
+      "always"
+    ],
+    "object-curly-spacing": [
+      "warn",
+      "always"
+    ],
+    "space-in-parens": [
+      "error",
+      "never"
+    ],
+    "no-undef": [
+      "warn"
+    ],
+    "linebreak-style": [
+      "warn",
+      "unix"
+    ],
+    "no-spaced-func": [
+      "error"
+    ],
+    "quotes": [
+      "error",
+      "single",
+      {
+        "avoidEscape": true,
+        "allowTemplateLiterals": true
+      }
+    ],
+    "semi": [
+      "error",
+      "never"
+    ]
+  }
+}

@@ -1,22 +1,21 @@
-'use strict';
+'use strict'
 
 const equal = require('deep-equal')
 const run = require('../dist/run').run
 const oldLog = console.log
 
 const test = function(code, assume) {
-  const out = [];
+  const out = []
   console.log = function(...args) {
-    out.push(args);
-    oldLog('\x1b[33;2m[Test Output]\x1b[39m', ...args, '\x1b[0m');
+    out.push(args)
+    oldLog('\x1b[33;2m[Test Output]\x1b[39m', ...args, '\x1b[0m')
   }
-  run(code);
-  console.log = oldLog;
+  run(code)
+  console.log = oldLog
   if (!assume(out)) {
-    oldLog('\x1b[31m[Errored!]\x1b[0m Assumption failed:\n\x1b[36m' + code
-           + '\x1b[0m');
+    oldLog(`\x1b[31m[Errored!]\x1b[0m Assumption failed:\n\x1b[36m${code}\x1b[0m`)
   }
-};
+}
 
 const checkOut = function(compare) {
   // this should be called like this:
@@ -33,6 +32,7 @@ const checkOut = function(compare) {
 console.time('Total tests time')
 try {
   console.log('Basic printing ---')
+
   // Test print output
   test(`print("hello!");`, checkOut`hello!`)
   // Test print with multiple arguments
@@ -47,10 +47,10 @@ try {
   /*
   try {
     // WHY IS THIS WORKING!?!?!?!?!?!??
-    test('print("hello! this should not work!")\n', checkOut`hello! this should not work!`);
-  } catch(err) {
+    test('print("hello! this should not work!")\n', checkOut`hello! this should not work!`)
+  } catch (err) {
     console.log('Newline as separator doesn\'t work, but it hasn\'t been' +
-                'implemented yet so that\'s okay.');
+                'implemented yet so that\'s okay.')
   }
   */
   // Test single quoted string
