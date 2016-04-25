@@ -54,49 +54,59 @@ export function makeBuiltins() {
   variables['+'] = new lib.Variable(new lib.LFunction(function([x, y]) {
     return lib.toLNumber(lib.toJNumber(x) + lib.toJNumber(y))
   }))
+  variables['add'] = variables['+']
 
   variables['-'] = new lib.Variable(new lib.LFunction(function([x, y]) {
     return lib.toLNumber(lib.toJNumber(x) - lib.toJNumber(y))
   }))
+  variables['minus'] = variables['-']
 
   variables['/'] = new lib.Variable(new lib.LFunction(function([x, y]) {
     return lib.toLNumber(lib.toJNumber(x) / lib.toJNumber(y))
   }))
+  variables['divide'] = variables['/']
 
   variables['*'] = new lib.Variable(new lib.LFunction(function([x, y]) {
     return lib.toLNumber(lib.toJNumber(x) * lib.toJNumber(y))
   }))
+  variables['multiply'] = variables['&']
 
   variables['not'] = new lib.Variable(new lib.LFunction(function([bool]) {
     return lib.toLBoolean(!lib.toJBoolean(bool))
   }))
+  variables['!'] = variables['not']
 
   variables['and'] = new lib.Variable(new lib.LFunction(function([b1, b2]) {
     return lib.toLBoolean(lib.toJBoolean(b1) && lib.toJBoolean(b2))
   }))
+  variables['&'] = variables['and']
 
   variables['or'] = new lib.Variable(new lib.LFunction(function([b1, b2]) {
     return lib.toLBoolean(lib.toJBoolean(b1) || lib.toJBoolean(b2))
   }))
+  variables['|'] = variables['or']
 
   variables['lt'] = new lib.Variable(new lib.LFunction(function([x, y]) {
     return lib.toLBoolean(lib.toJNumber(x) < lib.toJNumber(y))
   }))
+  variables['<'] = variables['lt']
 
   variables['gt'] = new lib.Variable(new lib.LFunction(function([x, y]) {
     return lib.toLBoolean(lib.toJNumber(x) > lib.toJNumber(y))
   }))
+  variables['>'] = variables['gt']
 
   variables['eq'] = new lib.Variable(new lib.LFunction(function([x, y]) {
     return lib.toLBoolean(lib.toJNumber(x) === lib.toJNumber(y))
   }))
+  variables['='] = variables['eq']
 
   variables['is'] = new lib.Variable(new lib.LFunction(function([x, y]) {
     return Object.is(x, y)
   }))
 
   variables['loop'] = new lib.Variable(new lib.LFunction(function([fn]) {
-    while (lib.toJBoolean(lib.call(fn, []))) {}
+    while (lib.toJBoolean(lib.call(fn, []))) { /* empty */ }
   }))
 
   variables['use'] = new lib.Variable(new lib.LFunction(function([pathStr]) {
@@ -142,8 +152,8 @@ export function makeBuiltins() {
   }))
 
   lib.set(variableObject, 'from', new lib.LFunction(function([env, name]) {
-    var name = lib.toJString(name)
-    var variable = env.vars[name]
+    name = lib.toJString(name)
+    let variable = env.vars[name]
     if (typeof variable === 'undefined') {
       throw new Error(`Can't access variable ${name} because it doesn't exist`)
     } else {

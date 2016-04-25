@@ -25,6 +25,8 @@ tulun <file.tul>
 
 **Other Editors**: Tulun has a similar syntax to JavaScript, so just use your editor's JS highlighting instead.
 
+## [https://github.com/liam4/tlnccuwagnf/wiki/Builtins](Builtins)
+
 ## Examples
 
 ### Hello world

@@ -6,7 +6,7 @@ const args = process.argv.slice(2)
 const chalk = require('chalk')
 
 function build(fn) {
-  process.stdout.write(chalk.cyan('Building...'))
+  console.log(chalk.cyan('Building...'))
   let spawn = require('child_process').spawn
   let build = spawn('gulp', ['build', '--silent'])
   build.stdout.on('data', function(d) {
