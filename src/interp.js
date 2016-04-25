@@ -98,6 +98,15 @@ export function evaluateExpression(expression, variables) {
 
     // Return the function.
     return fn
+  } else if (expression[0] === C.SHORTHAND_FUNCTION_PRIM) {
+    console.log('Okay!!!!1!!1')
+    const paramaters = expression[1]
+    const codeExpression = expression[2]
+    const fn = new lib.LFunction(codeExpression)
+    fn.isShorthand = true
+    fn.setScopeVariables(Object.assign({}, variables))
+    fn.setParamaters(paramaters)
+    return fn
   } else if (expression[0] === C.STRING_PRIM) {
     // String literal: "contents"
 
