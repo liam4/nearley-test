@@ -144,8 +144,11 @@ export function defaultCall(fnToken, args) {
       }
     }
 
+    console.log('shorthand:', fnToken.isShorthand)
     if (fnToken.isShorthand) {
-      return interp.evaluateExpression(scope, fnToken.fn)
+      const ret = interp.evaluateExpression(scope, fnToken.fn)
+      console.log('k return is', ret)
+      return ret
     } else {
       interp.evaluateEachExpression(scope, fnToken.fn)
       return returnValue

@@ -1,3 +1,2 @@
-print('Ah.');
-
-kaz => (): print('kderp');
+x => (): 42;
+print(x());
