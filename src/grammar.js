@@ -46,7 +46,6 @@ var grammar = {
     {"name": "_Expression", "symbols": ["CallFunctionExpression"]},
     {"name": "_Expression", "symbols": ["GetPropertyUsingIdentifierExpression"]},
     {"name": "_Expression", "symbols": ["FunctionLiteral"]},
-    {"name": "_Expression", "symbols": ["ShorthandFunctionLiteral"]},
     {"name": "_Expression", "symbols": ["StringExpression"]},
     {"name": "_Expression", "symbols": ["BooleanExpression"]},
     {"name": "_Expression", "symbols": ["NumberExpression"]},

@@ -56,7 +56,7 @@ function main(f, again) {
       require('./dist/run').run(code, `${process.cwd()}/${require('path').dirname(f)}`)
     } catch (err) {
       if (err.stack) console.error(chalk.red(err.stack))
-      else chalk.red(err)
+      else console.error(chalk.red(err))
       process.exit(1)
     }
   })

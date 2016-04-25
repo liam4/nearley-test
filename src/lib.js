@@ -118,8 +118,6 @@ export function call(fn, args) {
 }
 
 export function defaultCall(fnToken, args) {
-  console.log('OH WOW YOU CALLED IT')
-  console.log(JSON.stringify(fnToken.fn))
   if (fnToken.fn instanceof Function) {
     // it's a javascript function so just call it
     return fnToken.fn(args.map(
@@ -144,11 +142,8 @@ export function defaultCall(fnToken, args) {
       }
     }
 
-    console.log('shorthand:', fnToken.isShorthand)
     if (fnToken.isShorthand) {
-      const ret = interp.evaluateExpression(scope, fnToken.fn)
-      console.log('k return is', ret)
-      return ret
+      return interp.evaluateExpression(fnToken.fn, scope)
     } else {
       interp.evaluateEachExpression(scope, fnToken.fn)
       return returnValue

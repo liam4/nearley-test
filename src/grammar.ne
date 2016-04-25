@@ -41,7 +41,7 @@ Expression -> _Expression {% function(d) { return d[0][0] } %}
 _Expression -> CallFunctionExpression
              | GetPropertyUsingIdentifierExpression
              | FunctionLiteral
-             | ShorthandFunctionLiteral
+            #| ShorthandFunctionLiteral
              | StringExpression
              | BooleanExpression
              | NumberExpression
@@ -62,6 +62,7 @@ Argument -> Identifier {% function(d) { return {type: "normal", name: d[0]} } %}
           | "unevaluated" __ Identifier {% function(d) { return {type: "unevaluated", name: d[2]} } %}
 CodeBlock -> "{" Program "}" {% function(d) { return d[1] } %}
 
+# Shorthand function literals. These aren't implemented yet!
 ShorthandFunctionLiteral -> ArgumentList _ ":" _ Expression {% function(d) { return [C.SHORTHAND_FUNCTION_PRIM, d[0], d[4]] } %}
 
 # Variable get, really just an Identifier

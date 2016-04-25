@@ -1,2 +1,10 @@
-x => (): 42;
-print(x());
+x => 1;
+loop({
+  print(x);
+  x -> +(x, 1);
+  ret => true;
+  if(gt(x, 8), {
+    ret -> false;
+  });
+  return(ret);
+});
