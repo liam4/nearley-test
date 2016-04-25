@@ -1,15 +1,8 @@
 'use strict';
 
-<<<<<<< Updated upstream
-// idk, 109C wants me to make this.
-
-const { run } = require('../dist/run');
-const oldLog = console.log;
-=======
 const equal = require('deep-equal')
 const run = require('../dist/run').run
 const oldLog = console.log
->>>>>>> Stashed changes
 
 const test = function(code, assume) {
   const out = [];
