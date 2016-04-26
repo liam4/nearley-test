@@ -16,7 +16,7 @@ var JoinRecursive = function(a) {
 
 @builtin "whitespace.ne"
 
-Program -> _ _Program:? _ {% function(d) { return d[1] ? d[1] : [] } %}
+Program -> _ (_Program _):? {% function(d) { return d[1] ? d[1][0] : [] } %}
 _Program -> Command _ CommandSeparator _ _Program {% JoinRecursive %}
           | Command _ CommandSeparator {% function(d) { return [d[0]] } %}
           | Comment _ _Program {% function(d) { return d[2] } %}
@@ -108,12 +108,7 @@ PassedArgumentListContents -> Expression _ "," _ PassedArgumentListContents {% J
 #
 # ..but hey, it makes the order you're doing things clearer anyways.
 CallFunctionSurroundExpression -> "(" Expression __ Expression __ (Expression __):* Expression _ ")" {% function(d) {
-  return [
-    C.FUNCTION_CALL,
-    d[3],
-    [d[1]].concat(d[5].map(a => a[0]))
-          .concat([d[6]])
-  ];
+  return [ C.FUNCTION_CALL, d[3], [d[1]].concat(d[5].map(a => a[0])).concat([d[6]]) ];
 } %}
 
 # Boolean expression

@@ -25,9 +25,10 @@ var grammar = {
     {"name": "__$ebnf$1", "symbols": ["wschar", "__$ebnf$1"], "postprocess": function arrconcat(d) {return [d[0]].concat(d[1]);}},
     {"name": "__", "symbols": ["__$ebnf$1"], "postprocess": function(d) {return null;}},
     {"name": "wschar", "symbols": [/[ \t\n\v\f]/], "postprocess": id},
-    {"name": "Program$ebnf$1", "symbols": ["_Program"], "postprocess": id},
+    {"name": "Program$ebnf$1$subexpression$1", "symbols": ["_Program", "_"]},
+    {"name": "Program$ebnf$1", "symbols": ["Program$ebnf$1$subexpression$1"], "postprocess": id},
     {"name": "Program$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
-    {"name": "Program", "symbols": ["_", "Program$ebnf$1", "_"], "postprocess": function(d) { return d[1] ? d[1] : [] }},
+    {"name": "Program", "symbols": ["_", "Program$ebnf$1"], "postprocess": function(d) { return d[1] ? d[1][0] : [] }},
     {"name": "_Program", "symbols": ["Command", "_", "CommandSeparator", "_", "_Program"], "postprocess": JoinRecursive},
     {"name": "_Program", "symbols": ["Command", "_", "CommandSeparator"], "postprocess": function(d) { return [d[0]] }},
     {"name": "_Program", "symbols": ["Comment", "_", "_Program"], "postprocess": function(d) { return d[2] }},
@@ -79,12 +80,7 @@ var grammar = {
     {"name": "CallFunctionSurroundExpression$ebnf$1$subexpression$1", "symbols": ["Expression", "__"]},
     {"name": "CallFunctionSurroundExpression$ebnf$1", "symbols": ["CallFunctionSurroundExpression$ebnf$1$subexpression$1", "CallFunctionSurroundExpression$ebnf$1"], "postprocess": function arrconcat(d) {return [d[0]].concat(d[1]);}},
     {"name": "CallFunctionSurroundExpression", "symbols": [{"literal":"("}, "Expression", "__", "Expression", "__", "CallFunctionSurroundExpression$ebnf$1", "Expression", "_", {"literal":")"}], "postprocess":  function(d) {
-          return [
-            C.FUNCTION_CALL,
-            d[3],
-            [d[1]].concat(d[5].map(a => a[0]))
-                  .concat([d[6]])
-          ];
+          return [ C.FUNCTION_CALL, d[3], [d[1]].concat(d[5].map(a => a[0])).concat([d[6]]) ];
         } },
     {"name": "BooleanExpression", "symbols": ["_BooleanExpression"], "postprocess": function(d) { return ["BOOLEAN_PRIM", d[0][0] === "true"] }},
     {"name": "_BooleanExpression$string$1", "symbols": [{"literal":"t"}, {"literal":"r"}, {"literal":"u"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
