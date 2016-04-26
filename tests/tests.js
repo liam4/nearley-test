@@ -6,9 +6,10 @@ const oldLog = console.log
 
 const test = function(code, assume) {
   const out = []
-  console.log = function(...args) {
+  console.log = function() {
+    let args = arguments
     out.push(args)
-    oldLog('\x1b[33;2m[Test Output]\x1b[39m', ...args, '\x1b[0m')
+    oldLog('\x1b[33;2m[Test Output]\x1b[39m', args, '\x1b[0m')
   }
   run(code)
   console.log = oldLog
