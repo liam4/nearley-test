@@ -25,7 +25,7 @@ tulun help
 
 **Other Editors**: Tulun has a similar syntax to JavaScript, so just use your editor's JS highlighting instead.
 
-## [https://github.com/liam4/tlnccuwagnf/wiki/Builtins](Builtins)
+## [Documentation](https://github.com/liam4/tlnccuwagnf/wiki/)
 
 ## Examples
 
