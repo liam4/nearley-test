@@ -1,20 +1,23 @@
 'use strict'
 
 const equal = require('deep-equal')
+const chalk = require('chalk')
 const run = require('../dist/run').run
 const oldLog = console.log
 
 const test = function(code, assume) {
   const out = []
   console.log = function() {
-    let args = arguments
+    let args = [].slice.call(arguments, 0)
     out.push(args)
-    oldLog('\x1b[33;2m[Test Output]\x1b[39m', args, '\x1b[0m')
+    oldLog(chalk.yellow('[out]'), ...args)
   }
   run(code)
   console.log = oldLog
   if (!assume(out)) {
-    oldLog(`\x1b[31m[Errored!]\x1b[0m Assumption failed:\n\x1b[36m${code}\x1b[0m`)
+    oldLog(chalk.red('[err]'), 'Assumption failed!\n      '+chalk.cyan(code)+'\n')
+  } else {
+    oldLog(chalk.green('[yay]'), 'Assumption passed!\n')
   }
 }
 
@@ -103,6 +106,9 @@ try {
   test(`print(gt(10, 20));`, checkOut`<Boolean false>`)
   test(`print(gt(70, 30));`, checkOut`<Boolean true>`)
   test(`print(gt(45, 45));`, checkOut`<Boolean false>`)
+
+  console.log('Modules ---')
+  test(`file => use('fs'); print(file.read);`, checkOut`true`)
 } catch (error) {
   console.log = oldLog
   console.log('\x1b[31m[Errored!]\x1b[0m Error in JS:')
