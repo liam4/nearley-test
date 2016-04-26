@@ -43,6 +43,11 @@ export function makeBuiltins() {
     }
   }))
 
+  variables['sleep'] = new lib.Variable(new lib.LFunction(function([time]) {
+    let e = new Date().getTime() + (lib.toJNumber(time) * 1000)
+    while (new Date().getTime() <= e) { /* empty */ }
+  }))
+
   variables['obj'] = new lib.Variable(new lib.LFunction(function(args) {
     return new lib.LObject()
   }))
