@@ -1,5 +1,4 @@
 x => 1;
-<syntaxerror123>
 loop({
   print(x);
   x -> +(x, 1);
