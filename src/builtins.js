@@ -108,7 +108,7 @@ export function makeBuiltins(fsScope) {
   variables['='] = variables['eq']
 
   variables['is'] = new lib.Variable(new lib.LFunction(function([x, y]) {
-    return Object.is(x, y)
+    return Object.is(x, y) || x.toString() === y.toString()
   }))
 
   variables['loop'] = new lib.Variable(new lib.LFunction(function([fn]) {
