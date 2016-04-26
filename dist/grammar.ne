@@ -62,7 +62,7 @@ Argument -> Identifier {% function(d) { return {type: "normal", name: d[0]} } %}
           | "unevaluated" __ Identifier {% function(d) { return {type: "unevaluated", name: d[2]} } %}
 CodeBlock -> "{" Program "}" {% function(d) { return d[1] } %}
 
-# Shorthand function literals. These aren't implemented yet!
+# Shorthand function literals. These arent implemented yet!
 ShorthandFunctionLiteral -> ArgumentList _ ":" _ Expression {% function(d) { return [C.SHORTHAND_FUNCTION_PRIM, d[0], d[4]] } %}
 
 # Variable get, really just an Identifier
@@ -132,6 +132,7 @@ Identifier -> GenericValidIdentifierCharacter:+ {%
 %}
 GenericValidIdentifierCharacter -> GenericValidCharacter {%
   function(data, location, reject) {
+    //console.log(data[0], location)
     return data[0] && C.SPECIAL_CHARS.indexOf(data[0]) === -1 ? data[0] : reject;
   }
 %}

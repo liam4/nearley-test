@@ -140,6 +140,7 @@ var grammar = {
         },
     {"name": "GenericValidIdentifierCharacter", "symbols": ["GenericValidCharacter"], "postprocess": 
         function(data, location, reject) {
+          //console.log(data[0], location)
           return data[0] && C.SPECIAL_CHARS.indexOf(data[0]) === -1 ? data[0] : reject;
         }
         },
