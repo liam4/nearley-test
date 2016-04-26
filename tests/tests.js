@@ -2,22 +2,30 @@
 
 const equal = require('deep-equal')
 const chalk = require('chalk')
-const run = require('../dist/run').run
+const run = require('../req.js')
 const oldLog = console.log
 
+let passed = 0
+let tests = 0
+
 const test = function(code, assume) {
+  tests++
   const out = []
+  let o = chalk.yellow('[out]')
   console.log = function() {
     let args = [].slice.call(arguments, 0)
     out.push(args)
-    oldLog(chalk.yellow('[out]'), ...args)
+    oldLog(o, ...args)
   }
+  chalk.enabled = false
   run(code)
+  chalk.enabled = true
   console.log = oldLog
   if (!assume(out)) {
-    oldLog(chalk.red('[err]'), 'Assumption failed!\n      '+chalk.cyan(code)+'\n')
+    oldLog(chalk.red('[err]'), 'Test failed!\n      '+chalk.cyan(code)+'\n')
   } else {
-    oldLog(chalk.green('[yay]'), 'Assumption passed!\n')
+    passed++
+    oldLog(chalk.green('[yay]'), 'Test passed!')
   }
 }
 
@@ -28,7 +36,6 @@ const checkOut = function(compare) {
   // test(code, checkOut(compareThese))
 
   return function(result) {
-    // result: [ [ '{Print}', ...compareThese ] ]
     return equal(result[0], compare)
   }
 }
@@ -40,7 +47,7 @@ try {
   // Test print output
   test(`print("hello!");`, checkOut`hello!`)
   // Test print with multiple arguments
-  test(`print("hello", "world");`, checkOut(['hello', 'world']))
+  test(`print("hello", "world");`, checkOut([`hello`, `world`]))
 
   /* Commented this out. It works because of this grammar definition:
    * _Program -> ...
@@ -93,25 +100,23 @@ try {
 
   console.log('Logic and comparison ---')
   // Test logic operator functions
-  test(`print(and(true, false));`, checkOut`<Boolean false>`)
-  test(`print(or(true, false));`, checkOut`<Boolean true>`)
-  test(`print(not(true));`, checkOut`<Boolean false>`)
-  test(`print(not(false));`, checkOut`<Boolean true>`)
+  test(`print(and(true, false));`, checkOut`false`)
+  test(`print(or(true, false));`, checkOut`true`)
+  test(`print(not(true));`, checkOut`false`)
+  test(`print(not(false));`, checkOut`true`)
   // Test comparison operator functions
-  test(`print(eq(10, 20));`, checkOut`<Boolean false>`)
-  test(`print(eq(45, 45));`, checkOut`<Boolean true>`)
-  test(`print(lt(10, 20));`, checkOut`<Boolean true>`)
-  test(`print(lt(70, 30));`, checkOut`<Boolean false>`)
-  test(`print(lt(45, 45));`, checkOut`<Boolean false>`)
-  test(`print(gt(10, 20));`, checkOut`<Boolean false>`)
-  test(`print(gt(70, 30));`, checkOut`<Boolean true>`)
-  test(`print(gt(45, 45));`, checkOut`<Boolean false>`)
-
-  console.log('Modules ---')
-  test(`file => use('fs'); print(file.read);`, checkOut`true`)
+  test(`print(eq(10, 20));`, checkOut`false`)
+  test(`print(eq(45, 45));`, checkOut`true`)
+  test(`print(lt(10, 20));`, checkOut`true`)
+  test(`print(lt(70, 30));`, checkOut`false`)
+  test(`print(lt(45, 45));`, checkOut`false`)
+  test(`print(gt(10, 20));`, checkOut`false`)
+  test(`print(gt(70, 30));`, checkOut`true`)
+  test(`print(gt(45, 45));`, checkOut`false`)
 } catch (error) {
   console.log = oldLog
   console.log('\x1b[31m[Errored!]\x1b[0m Error in JS:')
   console.error(error)
 }
 console.timeEnd('Total tests time')
+console.log(chalk.bold(`${passed}/${tests} passed.`))

@@ -21,9 +21,15 @@ export function makeBuiltins(fsScope) {
 
   variables['print'] = new lib.Variable(new lib.LFunction(function(args) {
     console.log(...args.map(arg => {
-      let a = lib.toJString(arg)
-      if (a == '<Boolean true>') a = chalk.green('true')
-      if (a == '<Boolean false>') a = chalk.red('false')
+      let a = arg.toString() || ''
+      if (a === '<Boolean true>') a = chalk.green('true') // true
+      else if (a === '<Boolean false>') a = chalk.red('false') // false
+      else if (a === '<Function>') a = chalk.magenta(`function`) // function
+      else if (a.substr(0, 8) === '<String ') a = `${a.substr(8, a.length-9)}` // string
+      else if (a.substr(0, 8) === '<Number ') {
+        if (Number(a.substr(8, a.length-9)) % 1 === 0) a = chalk.blue(`${a.substr(8, a.length-9)}`) // integer
+        else a = chalk.blue(`${a.substr(8, a.length-9)}`) // float
+      }
       return a
     }))
   }))

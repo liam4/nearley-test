@@ -15,7 +15,7 @@ export class StringPrim {
   }
 
   toString() {
-    return this.str
+    return '<String ' + this.str + '>'
   }
 }
 
@@ -59,7 +59,7 @@ export class NumberPrim {
   }
 
   toString() {
-    return this.num
+    return '<Number ' + this.num + '>'
   }
 }
 
@@ -290,7 +290,7 @@ export class LFunction extends LObject {
   }
 
   toString() {
-    return '<Object Function>'
+    return '<Function>'
   }
 }
 
