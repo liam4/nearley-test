@@ -4,10 +4,11 @@ clear
 echo "Welcome to the tlnccuwagnf (tulun) installer!";
 echo "This may take up to 3 minutes...";
 
-sleep 5;
+exec 2>/dev/null # We don't need to see all the junky output it shows.
+sleep 4;
 clear;
 
-echo -e "\nUpdating package headers...";
+echo "Updating package headers...";
 sudo apt-get update >/dev/null;
 echo "Installing/Updating npm...";
 sudo apt-get install npm >/dev/null; # will skip if already installed...
@@ -25,5 +26,5 @@ sudo npm install -g tlnccuwagnf >/dev/null;
 clear;
 sleep 1;
 
-echo -e "tlnccuwagnf (tulun) successfully installed!\n\n";
+echo "Congrats! tlnccuwagnf (tulun) was successfully installed!";
 tulun -v;
