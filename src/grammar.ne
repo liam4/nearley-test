@@ -107,8 +107,8 @@ PassedArgumentListContents -> Expression _ "," _ PassedArgumentListContents {% J
 #   (3 * 2 - 4 / 2)
 #
 # ..but hey, it makes the order you're doing things clearer anyways.
-CallFunctionSurroundExpression -> "(" Expression _ Expression _ (Expression _):+ ")" {% function(d) {
-  return [C.FUNCTION_CALL, d[3], [d[1]].concat(d[5].map(a => a[0]))];
+CallFunctionSurroundExpression -> "(" Expression __ Expression __ (Expression __):* Expression _ ")" {% function(d) {
+  return [ C.FUNCTION_CALL, d[3], [d[1]].concat(d[5].map(a => a[0])).concat([d[6]]) ];
 } %}
 
 # Boolean expression

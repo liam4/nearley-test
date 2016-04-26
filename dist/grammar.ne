@@ -80,35 +80,40 @@ PassedArgumentListContents -> Expression _ "," _ PassedArgumentListContents {% J
 # This is kind of confusing -- here's a paste from my workfile to explain:
 #
 # Implement magic things so that you can do this:
-# 
+#
 #   (arg1 fn arg2)
-# 
+#
 # as well as this:
-# 
+#
 #   fn(arg1, arg2)
-# 
+#
 # That makes this possible:
-# 
+#
 #   (3 + 4)
-# 
+#
 # instead of this:
-# 
+#
 #   +(3, 4)
-# 
+#
 # Ambiguity as to order of operations is easy -- the new function call syntax
 # must always be wrapped in parenthesis.
-# 
+#
 # That means you HAVE to do this:
-# 
+#
 #   ((3 * 2) - (4 / 2))
-# 
+#
 # instead of this:
-# 
+#
 #   (3 * 2 - 4 / 2)
-# 
+#
 # ..but hey, it makes the order you're doing things clearer anyways.
-CallFunctionSurroundExpression -> "(" Expression _ Expression _ (Expression _):+ ")" {% function(d) {
-  return [C.FUNCTION_CALL, d[3], [d[1]].concat(d[5].map(a => a[0]))];
+CallFunctionSurroundExpression -> "(" Expression __ Expression __ (Expression __):* Expression _ ")" {% function(d) {
+  return [
+    C.FUNCTION_CALL,
+    d[3],
+    [d[1]].concat(d[5].map(a => a[0]))
+          .concat([d[6]])
+  ];
 } %}
 
 # Boolean expression
