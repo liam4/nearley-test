@@ -4,6 +4,7 @@
 
 const args = process.argv.slice(2)
 const chalk = require('chalk')
+const run = require('./req.js')
 const TULUN = `
   ████████╗ ██╗   ██╗ ██╗      ██╗   ██╗ ███╗   ██╗
   ╚══██╔══╝ ██║   ██║ ██║      ██║   ██║ ████╗  ██║
@@ -32,6 +33,8 @@ function version() {
   )
 }
 
+//    ${chalk.cyan('tulun        ')} | enters REPL \\
+
 if (args.length === 1) {
   if (args[0] === 'rebuild' || args[0] === '-r') build(() => {})
   else if (args[0] === 'version') version()
@@ -39,7 +42,6 @@ if (args.length === 1) {
     console.log(`${chalk.green(TULUN)}
     ${chalk.bold('Command')}       | ${chalk.bold('Description')}
   ――――――――――――――――+――――――――――――――――――――――――――――――――
-    ${chalk.cyan('tulun        ')} | enters REPL
     ${chalk.cyan('tulun')} ${chalk.green('<file> ')} | runs ${chalk.yellow('<file>')}.tul
     ${chalk.cyan('tulun')} ${chalk.green('help   ')} | this screen, silly
     ${chalk.cyan('tulun')} ${chalk.green('version')} | outputs version number
@@ -52,7 +54,7 @@ if (args.length === 1) {
   build(() => main(args[0], true))
 } else if (args[0] === '--version' || args[0] === '-v') version()
   else {
-
+  main('repl/repl', false)
 }
 
 function main(f, again) {
@@ -80,7 +82,7 @@ function main(f, again) {
     let code = data.toString()
 
     try {
-      require('./dist/run').run(code, `${process.cwd()}/${require('path').dirname(f)}`)
+      run(code, `${process.cwd()}/${require('path').dirname(f)}`)
     } catch (err) {
       if (err.stack) console.error(chalk.red(err.stack))
       else console.error(chalk.red(err))

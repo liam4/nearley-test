@@ -47,9 +47,7 @@ export function evaluateExpression(expression, variables) {
     if (name in variables) {
       return variables[name].value
     } else {
-      // FIXME: Change this message not to include *all* the variables within
-      // the scope; maybe just say "variable (name) not found"?
-      throw `variable ${name} not in [${Object.keys(variables)}]`
+      throw new Error(`${chalk.cyan(name)} is not defined.`)
     }
   } else if (expression[0] === C.VARIABLE_ASSIGN) {
     // Set a variable to a value: "name => value"
@@ -162,7 +160,7 @@ export function evaluateExpression(expression, variables) {
     // Return the gotten value.
     return value
   } else {
-    throw new Error(`Invalid expression type: ${expression[0]}`)
+    throw new Error(`Invalid expression: ${chalk.cyan(expression[0])}`)
   }
 }
 
@@ -185,6 +183,6 @@ export function interp(ast, dir) {
 
     return { result, variables }
   } else {
-    console.error('Haha, you didn\'t pass me a tree!')
+    throw new Error('Haha, you didn\'t pass me a tree!')
   }
 }

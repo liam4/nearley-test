@@ -2,7 +2,7 @@
   "name": "tlnccuwagnf",
   "version": "0.2.2",
   "description": "A (silly) functional programming language.",
-  "main": "tulun.js",
+  "main": "req.js",
   "engines": {
     "node": ">=4.0"
   },

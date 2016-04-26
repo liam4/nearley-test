@@ -20,7 +20,12 @@ export function makeBuiltins(fsScope) {
   let variables = {}
 
   variables['print'] = new lib.Variable(new lib.LFunction(function(args) {
-    console.log(...args.map(arg => lib.toJString(arg)))
+    console.log(...args.map(arg => {
+      let a = lib.toJString(arg)
+      if (a == '<Boolean true>') a = chalk.green('true')
+      if (a == '<Boolean false>') a = chalk.red('false')
+      return a
+    }))
   }))
 
   variables['concat'] = new lib.Variable(new lib.LFunction(function(args) {

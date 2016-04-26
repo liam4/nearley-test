@@ -25,7 +25,7 @@ export function run(code, dir) {
     if (line - 1 > 0) console.log(chalk.bold(line - 1), lines[line - 1])
     if (line) console.log(chalk.bold(line), chalk.red(ln))
     if (line + 1 < lines.length) console.log(chalk.bold(line + 1), lines[line + 1])
-    console.error(chalk.red(`\nSyntax Error at ${chalk.cyan(`line ${line}`)}!`))
+    throw new Error(chalk.red(`\nSyntax Error at ${chalk.cyan(`line ${line}`)}!`))
 
     process.exit(1)
   }
