@@ -98,6 +98,14 @@ export function evaluateExpression(expression, variables) {
 
     // Return the function.
     return fn
+  } else if (expression[0] === C.SHORTHAND_FUNCTION_PRIM) {
+    const paramaters = expression[1]
+    const codeExpression = expression[2]
+    const fn = new lib.LFunction(codeExpression)
+    fn.isShorthand = true
+    fn.setScopeVariables(Object.assign({}, variables))
+    fn.setParamaters(paramaters)
+    return fn
   } else if (expression[0] === C.STRING_PRIM) {
     // String literal: "contents"
 
@@ -154,7 +162,7 @@ export function evaluateExpression(expression, variables) {
     // Return the gotten value.
     return value
   } else {
-    throw `Invalid expression type: ${expression[0]}`
+    throw new Error(`Invalid expression type: ${expression[0]}`)
   }
 }
 

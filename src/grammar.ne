@@ -40,7 +40,8 @@ VariableChange -> Identifier _ "->" _ Expression {% function(d) { return [C.VARI
 Expression -> _Expression {% function(d) { return d[0][0] } %}
 _Expression -> CallFunctionExpression
              | GetPropertyUsingIdentifierExpression
-             | FunctionExpression
+             | FunctionLiteral
+            #| ShorthandFunctionLiteral
              | StringExpression
              | BooleanExpression
              | NumberExpression
@@ -53,13 +54,16 @@ SetPropertyUsingIdentifier -> Expression _ "." _ Identifier _ ">" _ Expression {
 GetPropertyUsingIdentifierExpression -> Expression _ "." _ Identifier {% function(d) { return [C.GET_PROP_USING_IDENTIFIER, d[0], d[4]] } %}
 
 # Function expression
-FunctionExpression -> "fn" _ ArgumentList _ CodeBlock {% function(d) { return [C.FUNCTION_PRIM, d[2], d[4]] } %}
+FunctionLiteral -> (ArgumentList _):? CodeBlock {% function(d) { return [C.FUNCTION_PRIM, d[0] ? d[0][0] : [], d[1]] } %}
 ArgumentList -> "(" _ ArgumentListContents:? _ ")" {% function(d) { return d[2] ? d[2] : [] } %}
 ArgumentListContents -> Argument _ "," _ ArgumentListContents {% JoinRecursive %}
                       | Argument
 Argument -> Identifier {% function(d) { return {type: "normal", name: d[0]} } %}
           | "unevaluated" __ Identifier {% function(d) { return {type: "unevaluated", name: d[2]} } %}
 CodeBlock -> "{" Program "}" {% function(d) { return d[1] } %}
+
+# Shorthand function literals. These arent implemented yet!
+ShorthandFunctionLiteral -> ArgumentList _ ":" _ Expression {% function(d) { return [C.SHORTHAND_FUNCTION_PRIM, d[0], d[4]] } %}
 
 # Variable get, really just an Identifier
 VariableGetExpression -> Identifier {% function(d) { return [C.VARIABLE_IDENTIFIER, d[0]] } %}
@@ -128,6 +132,7 @@ Identifier -> GenericValidIdentifierCharacter:+ {%
 %}
 GenericValidIdentifierCharacter -> GenericValidCharacter {%
   function(data, location, reject) {
+    //console.log(data[0], location)
     return data[0] && C.SPECIAL_CHARS.indexOf(data[0]) === -1 ? data[0] : reject;
   }
 %}

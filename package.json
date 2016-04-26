@@ -1,6 +1,6 @@
 {
   "name": "tlnccuwagnf",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "A (silly) functional programming language.",
   "main": "tulun.js",
   "engines": {
@@ -10,6 +10,9 @@
     "lang",
     "language"
   ],
+  "scripts": {
+    "postinstall": "./tulun.js version"
+  },
   "author": "liam4 & nanalan",
   "license": "MIT",
   "bin": {
