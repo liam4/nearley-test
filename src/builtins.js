@@ -19,7 +19,7 @@ export function makeBuiltins() {
   let variables = {}
 
   variables['print'] = new lib.Variable(new lib.LFunction(function(args) {
-    console.log('{Print}', ...args.map(arg => lib.toJString(arg)))
+    console.log(...args.map(arg => lib.toJString(arg)))
   }))
 
   variables['concat'] = new lib.Variable(new lib.LFunction(function(args) {
