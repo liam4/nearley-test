@@ -25,7 +25,7 @@ const checkOut = function(compare) {
 
   return function(result) {
     // result: [ [ '{Print}', ...compareThese ] ]
-    return equal(result[0].slice(1), compare)
+    return equal(result[0], compare)
   }
 }
 
@@ -69,21 +69,21 @@ try {
   console.log('If/else ---')
   // Test basic if
   test(`
-  if(true, fn() {
+  if(true, {
     print("good");
   });`, checkOut`good`)
   // Test ifel (if condition do this; otherwise do that)
   test(`
-  ifel(false, fn() {
+  ifel(false, {
     print("bad");
-  }, fn() {
+  }, {
     print("good");
   });`, checkOut`good`);
   // Test else-code as optional argument to if
   test(`
-  if(false, fn() {
+  if(false, {
     print("bad");
-  }, fn() {
+  }, {
     print("good");
   });`, checkOut`good`)
 
