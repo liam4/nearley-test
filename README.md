@@ -16,8 +16,8 @@ It doesn't make sense. Please ignore the fact that it doesn't make sense? Also, 
 # installation
 npm install -g tlnccuwagnf
 
-# usage
-tulun <file.tul>
+# usage, see
+tulun help
 ```
 
 ## Syntax Highlighting

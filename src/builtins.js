@@ -3,6 +3,7 @@ const path = require('path')
 const run = require('./run')
 const interp = require('./interp')
 const lib = require('./lib')
+const chalk = require('chalk')
 const C = require('./constants')
 
 function exists(p) {
@@ -15,7 +16,7 @@ function exists(p) {
   }
 }
 
-export function makeBuiltins() {
+export function makeBuiltins(fsScope) {
   let variables = {}
 
   variables['print'] = new lib.Variable(new lib.LFunction(function(args) {
@@ -116,14 +117,29 @@ export function makeBuiltins() {
 
   variables['use'] = new lib.Variable(new lib.LFunction(function([pathStr]) {
     let p = lib.toJString(pathStr)
-    let locationInBuiltins = `${__dirname}/builtin_lib/${p}`
-    console.log('location in bulitins:', locationInBuiltins)
-    let ext = path.parse(p).ext
+    let locationInBuiltins = `${fsScope}/${p}`
+
+    if (p.substr(0, 1) !== '.') {
+      locationInBuiltins = `${__dirname}/../global-modules/${p}`
+    }
+
+    let ext = path.parse(locationInBuiltins).ext
+
+    if (!ext) {
+      locationInBuiltins += '.tul'
+      ext = '.tul'
+
+      if (!exists(locationInBuiltins)) {
+        locationInBuiltins = `${locationInBuiltins.substr(0, locationInBuiltins.length - 3)}js`
+        ext = '.js'
+      }
+    }
+
     if (exists(locationInBuiltins)) {
       if (ext === '.js') {
-        let used = require(locationInBuiltins)
-        let usedObj = lib.toLObject(used)
-        return usedObj
+        let used = require(locationInBuiltins)(lib, fsScope)
+        //var usedObj = lib.toLObject(used);
+        return used
       } else if (ext === '.tul') {
         let program = fs.readFileSync(locationInBuiltins).toString()
         let result = run.run(program)
@@ -133,10 +149,24 @@ export function makeBuiltins() {
           return new lib.LObject()
         }
       } else {
-        throw `Invalid use extension of ${p}`
+        console.error(
+          chalk.cyan(`use(...)`)
+          +
+          ': '
+          +
+          chalk.red(`Invalid extension ${chalk.yellow(ext)}.`)
+        )
+        process.exit(1)
       }
     } else {
-      console.log('File not found')
+      console.error(
+        chalk.cyan(`use(...)`)
+        +
+        ': '
+        +
+        chalk.red(`Could not find module ${chalk.yellow(p)}.`)
+      )
+      process.exit(1)
     }
   }))
 

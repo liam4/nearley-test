@@ -1,10 +1,21 @@
-x => 1;
-loop({
-  print(x);
-  x -> +(x, 1);
-  ret => true;
-  if(=(x, 8), {
-    ret -> false;
+file => use('fs');
+
+# synchronous write #
+file.sync.write('test.tul.txt', 'Synchronous fs works!');
+
+# synchronous read #
+print(
+  file.sync.read('test.tul.txt')
+);
+
+# async write #
+file.write('test.tul.txt', 'Asynchronous fs works!', {
+  # async read (doesn't work for some reason!) #
+  file.read('test.tul.txt', {
+    print(data);
   });
-  return(ret);
 });
+
+# deliberate error #
+print('This should error:');
+file.read('unicorns and rainbows!')

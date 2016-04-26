@@ -11,7 +11,7 @@
     "language"
   ],
   "scripts": {
-    "postinstall": "./tulun.js --version"
+    "postinstall": "./tulun.js version"
   },
   "author": "liam4 & nanalan",
   "license": "MIT",
