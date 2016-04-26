@@ -78,7 +78,7 @@ try {
     print("bad");
   }, {
     print("good");
-  });`, checkOut`good`);
+  });`, checkOut`good`)
   // Test else-code as optional argument to if
   test(`
   if(false, {
