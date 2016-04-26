@@ -44,6 +44,7 @@ var grammar = {
     {"name": "VariableChange", "symbols": ["Identifier", "_", "VariableChange$string$1", "_", "Expression"], "postprocess": function(d) { return [C.VARIABLE_CHANGE, d[0], d[4]] }},
     {"name": "Expression", "symbols": ["_Expression"], "postprocess": function(d) { return d[0][0] }},
     {"name": "_Expression", "symbols": ["CallFunctionExpression"]},
+    {"name": "_Expression", "symbols": ["CallFunctionSurroundExpression"]},
     {"name": "_Expression", "symbols": ["GetPropertyUsingIdentifierExpression"]},
     {"name": "_Expression", "symbols": ["FunctionLiteral"]},
     {"name": "_Expression", "symbols": ["StringExpression"]},
@@ -74,6 +75,13 @@ var grammar = {
     {"name": "PassedArgumentList", "symbols": [{"literal":"("}, "_", "PassedArgumentList$ebnf$1", "_", {"literal":")"}], "postprocess": function(d) { return d[2] ? d[2] : [] }},
     {"name": "PassedArgumentListContents", "symbols": ["Expression", "_", {"literal":","}, "_", "PassedArgumentListContents"], "postprocess": JoinRecursive},
     {"name": "PassedArgumentListContents", "symbols": ["Expression"]},
+    {"name": "CallFunctionSurroundExpression$ebnf$1$subexpression$1", "symbols": ["Expression", "_"]},
+    {"name": "CallFunctionSurroundExpression$ebnf$1", "symbols": ["CallFunctionSurroundExpression$ebnf$1$subexpression$1"]},
+    {"name": "CallFunctionSurroundExpression$ebnf$1$subexpression$2", "symbols": ["Expression", "_"]},
+    {"name": "CallFunctionSurroundExpression$ebnf$1", "symbols": ["CallFunctionSurroundExpression$ebnf$1$subexpression$2", "CallFunctionSurroundExpression$ebnf$1"], "postprocess": function arrconcat(d) {return [d[0]].concat(d[1]);}},
+    {"name": "CallFunctionSurroundExpression", "symbols": [{"literal":"("}, "Expression", "_", "Expression", "_", "CallFunctionSurroundExpression$ebnf$1", {"literal":")"}], "postprocess":  function(d) {
+          return [C.FUNCTION_CALL, d[3], [d[1]].concat(d[5].map(a => a[0]))];
+        } },
     {"name": "BooleanExpression", "symbols": ["_BooleanExpression"], "postprocess": function(d) { return ["BOOLEAN_PRIM", d[0][0] === "true"] }},
     {"name": "_BooleanExpression$string$1", "symbols": [{"literal":"t"}, {"literal":"r"}, {"literal":"u"}, {"literal":"e"}], "postprocess": function joiner(d) {return d.join('');}},
     {"name": "_BooleanExpression", "symbols": ["_BooleanExpression$string$1"]},
