@@ -119,7 +119,7 @@ export function makeBuiltins(fsScope) {
   variables['='] = variables['eq']
 
   variables['is'] = new lib.Variable(new lib.LFunction(function([x, y]) {
-    return lib.toLBoolean(Object.is(x, y) || x.toString() === y.toString())
+    return lib.toLBoolean(x.toString() === y.toString())
   }))
 
   variables['loop'] = new lib.Variable(new lib.LFunction(function([fn]) {
@@ -175,7 +175,7 @@ export function makeBuiltins(fsScope) {
         +
         ': '
         +
-        chalk.red(`Could not find module ${chalk.yellow(p)}.`)
+        chalk.red(`Could not find ${chalk.yellow(p)} ${chalk.white.dim('@ '+locationInBuiltins)}.`)
       )
       process.exit(1)
     }

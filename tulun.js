@@ -54,7 +54,7 @@ if (args.length === 1) {
   build(() => main(args[0], true))
 } else if (args[0] === '--version' || args[0] === '-v') version()
   else {
-  main('repl/repl', false)
+  main('repl/repl.tul', false)
 }
 
 function main(f, again) {

@@ -1,4 +1,5 @@
-module.exports = function(code) {
+module.exports = function(code, dir) {
   // this allows for `require('tulun')` in node code
-  require('./dist/run').run(code)
+  dir = dir || __dirname
+  require('./dist/run').run(code, dir)
 }
