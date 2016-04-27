@@ -1,6 +1,6 @@
 {
   "name": "tlnccuwagnf",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "A (silly) functional programming language.",
   "main": "req.js",
   "engines": {
