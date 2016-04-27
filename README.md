@@ -65,13 +65,13 @@ if(true, fn() {
 });
 ```
 
-## Control structures and syntax and such
+## [Syntax](https://github.com/liam4/tlnccuwagnf/wiki/Syntax)
 
 There are basically no control structures. In one command (each separated by semicolons) you can do the following:
 
 * Assign or change a variable. (`variable_name => value`, `variable_name -> new_value`)
 * Evaluate an expression.
-  * Call a function (`function(arg1, arg2, arg3)`)
+  * [Call a function](wiki/Syntax#builtins) (`function(arg1, arg2, arg3)`)
   * Get a variable (`variable_name`)
   * Do something related to object properties
   * Evaluate a special token, like a string, number or function
@@ -85,18 +85,18 @@ if(true_or_false, call_for_true[, call_for_false]);
 Here's an example of a program using all the things we showed above. Please excuse Liam's terrible ASCII labelling.
 
 ```python
-# Variable assign..                             #
+# Variable assign.                              #
 #  v--- Variable identifier                     #
 #  v    vvvv--- A boolean literal.              #
    x => true;
 
 #  vv-- Get a variable using identifier "if",   #
-#  ||  this is built-in so all programs will   #
-#  ||  automatically have "if" as a variable.  #
+#  ||  this is built-in so all programs will    #
+#  ||  automatically have "if" as a variable.   #
 #  || v--- Get a variable using identifier "x", #
 #  || |    which we assigned earlier.           #
-#  || |  vvvvvv--- A function literal.          #
-   if(x, fn() {
+#  || |  v--- A function literal.               #
+   if(x, {
 
 #    vvvvv--- Get a variable using identifier   #
 #    |||||    "print", which is also built-in.  #
