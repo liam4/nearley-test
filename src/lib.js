@@ -113,15 +113,15 @@ export function toLObject(data) {
 
 // Call function --------------------------------------------------------------
 
-export function call(fn, args) {
-  return fn['__call__'](args)
+export async function call(fn, args) {
+  return await fn['__call__'](args)
 }
 
-export function defaultCall(fnToken, args) {
+export async function defaultCall(fnToken, args) {
   if (fnToken.fn instanceof Function) {
     // it's a javascript function so just call it
-    return fnToken.fn(args.map(
-      arg => interp.evaluateExpression(arg, fnToken.argumentScope)))
+    return fnToken.fn(await Promise.all(args.map(
+      arg => interp.evaluateExpression(arg, fnToken.argumentScope))))
   } else {
     const scope = Object.assign({}, fnToken.scopeVariables)
     let returnValue = null
@@ -133,19 +133,19 @@ export function defaultCall(fnToken, args) {
       const value = args[i]
       const paramater = paramaters[i]
       if (paramater.type === 'normal') {
-        const evaluatedValue = interp.evaluateExpression(value)
+        const evaluatedValue = await interp.evaluateExpression(value)
         scope[paramater.name] = new Variable(evaluatedValue)
       } else if (paramater.type === 'unevaluated') {
-        scope[paramater.name] = new Variable(new LFunction(function() {
-          return interp.evaluateExpression(value, fnToken.argumentScope)
+        scope[paramater.name] = new Variable(new LFunction(async function() {
+          return await interp.evaluateExpression(value, fnToken.argumentScope)
         }))
       }
     }
 
     if (fnToken.isShorthand) {
-      return interp.evaluateExpression(fnToken.fn, scope)
+      return await interp.evaluateExpression(fnToken.fn, scope)
     } else {
-      interp.evaluateEachExpression(scope, fnToken.fn)
+      await interp.evaluateEachExpression(scope, fnToken.fn)
       return returnValue
     }
   }
