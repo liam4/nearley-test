@@ -113,6 +113,14 @@ try {
   test(`print(gt(10, 20));`, checkOut`false`)
   test(`print(gt(70, 30));`, checkOut`true`)
   test(`print(gt(45, 45));`, checkOut`false`)
+
+  console.log('Surround functions ---')
+  test(`print((true and false))`, checkOut`false`)
+  test(`print((true & true))`, checkOut`true`)
+  test(`print((99 + 1))`, checkOut`100`)
+  test(`print((20 > 1))`, checkOut`true`)
+  test(`print((1 - 1))`, checkOut`0`)
+  test(`print(('this' concat 'is' 'awesome'))`, checkOut`thisisawesome`)
 } catch (error) {
   console.log = oldLog
   console.log('\x1b[31m[Errored!]\x1b[0m Error in JS:')
