@@ -84,9 +84,8 @@ function main(f, again) {
     try {
       run(code, `${process.cwd()}/${require('path').dirname(f)}`)
     } catch (err) {
-      /*
       if (err.stack) console.error(chalk.red(err.stack))
-      else*/ console.error(chalk.red(err.message))
+      else console.error(chalk.red(err.message))
       process.exit(1)
     }
   })
