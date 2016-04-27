@@ -52,4 +52,3 @@ ${' '.repeat(e.offset - lineStartOff)}
   }
 }
 */
-"use strict";
