@@ -21,7 +21,7 @@ tulun help
 ```
 
 ## Syntax Highlighting
-**Atom**: Install the [https://atom.io/packages/language-tulun](language-tulun) package.
+**Atom**: Install the [language-tulun](https://atom.io/packages/language-tulun) package.
 
 **Other Editors**: Tulun has a similar syntax to JavaScript, so just use your editor's JS highlighting instead.
 
