@@ -138,7 +138,7 @@ export async function call(fn, args) {
 export async function defaultCall(fnToken, args) {
   if (fnToken.fn instanceof Function) {
     // it's a javascript function so just call it
-    const argumentValues = [];
+    const argumentValues = []
     for (let argument of args) {
       argumentValues.push(await interp.evaluateExpression(
         argument, fnToken.argumentScope))
@@ -320,7 +320,7 @@ export class LArray extends LObject {
 // * use inst.__call__ to call the function (with optional arguments)
 
 export class LFunction extends LObject {
-  constructor(fn) {
+  constructor(fn, asynchronous) {
     super()
     this['__constructor__'] = LFunction
     this.fn = fn
@@ -328,6 +328,7 @@ export class LFunction extends LObject {
 
     this.unevaluatedArgs = []
     this.normalArgs = []
+    if (asynchronous) this.isAsynchronous = true
   }
 
   __call__(args) {

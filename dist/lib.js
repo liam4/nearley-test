@@ -718,7 +718,7 @@ var LArray = exports.LArray = function (_LObject) {
 var LFunction = exports.LFunction = function (_LObject2) {
   (0, _inherits3.default)(LFunction, _LObject2);
 
-  function LFunction(fn) {
+  function LFunction(fn, asynchronous) {
     (0, _classCallCheck3.default)(this, LFunction);
 
     var _this4 = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(LFunction).call(this));
@@ -729,6 +729,7 @@ var LFunction = exports.LFunction = function (_LObject2) {
 
     _this4.unevaluatedArgs = [];
     _this4.normalArgs = [];
+    if (asynchronous) _this4.isAsynchronous = true;
     return _this4;
   }
 

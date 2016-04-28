@@ -34,6 +34,13 @@ export function makeBuiltins(fsScope) {
     }))
   }))
 
+  variables['process'] = new lib.Variable(lib.toLObject({
+    exit: new lib.LFunction(function([code]) {
+      code = code || 0
+      process.exit(code)
+    })
+  }))
+
   variables['print-debug'] = new lib.Variable(new lib.LFunction(function(args) {
     console.log(...args)
   }))
