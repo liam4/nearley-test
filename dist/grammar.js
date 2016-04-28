@@ -57,10 +57,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
         return [C.SET_PROP_USING_IDENTIFIER, d[0], d[4], d[8]];
       } }, { "name": "GetPropertyUsingIdentifierExpression", "symbols": ["Expression", "_", { "literal": "." }, "_", "Identifier"], "postprocess": function postprocess(d) {
         return [C.GET_PROP_USING_IDENTIFIER, d[0], d[4]];
-      } }, { "name": "FunctionLiteral$ebnf$1$subexpression$1", "symbols": ["ArgumentList", "_"] }, { "name": "FunctionLiteral$ebnf$1", "symbols": ["FunctionLiteral$ebnf$1$subexpression$1"], "postprocess": id }, { "name": "FunctionLiteral$ebnf$1", "symbols": [], "postprocess": function postprocess(d) {
+      } }, { "name": "FunctionLiteral$ebnf$1$subexpression$1$string$1", "symbols": [{ "literal": "a" }, { "literal": "s" }, { "literal": "y" }, { "literal": "n" }, { "literal": "c" }], "postprocess": function joiner(d) {
+        return d.join('');
+      } }, { "name": "FunctionLiteral$ebnf$1$subexpression$1", "symbols": ["FunctionLiteral$ebnf$1$subexpression$1$string$1", "_"] }, { "name": "FunctionLiteral$ebnf$1", "symbols": ["FunctionLiteral$ebnf$1$subexpression$1"], "postprocess": id }, { "name": "FunctionLiteral$ebnf$1", "symbols": [], "postprocess": function postprocess(d) {
         return null;
-      } }, { "name": "FunctionLiteral", "symbols": ["FunctionLiteral$ebnf$1", "CodeBlock"], "postprocess": function postprocess(d) {
-        return [C.FUNCTION_PRIM, d[0] ? d[0][0] : [], d[1]];
+      } }, { "name": "FunctionLiteral$ebnf$2$subexpression$1", "symbols": ["ArgumentList", "_"] }, { "name": "FunctionLiteral$ebnf$2", "symbols": ["FunctionLiteral$ebnf$2$subexpression$1"], "postprocess": id }, { "name": "FunctionLiteral$ebnf$2", "symbols": [], "postprocess": function postprocess(d) {
+        return null;
+      } }, { "name": "FunctionLiteral", "symbols": ["FunctionLiteral$ebnf$1", "FunctionLiteral$ebnf$2", "CodeBlock"], "postprocess": function postprocess(d) {
+        return [C.FUNCTION_PRIM, d[1] ? d[1][0] : [], d[2], !!d[0]];
       } }, { "name": "ArgumentList$ebnf$1", "symbols": ["ArgumentListContents"], "postprocess": id }, { "name": "ArgumentList$ebnf$1", "symbols": [], "postprocess": function postprocess(d) {
         return null;
       } }, { "name": "ArgumentList", "symbols": [{ "literal": "(" }, "_", "ArgumentList$ebnf$1", "_", { "literal": ")" }], "postprocess": function postprocess(d) {

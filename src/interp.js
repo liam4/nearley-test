@@ -84,11 +84,12 @@ export async function evaluateExpression(expression, variables) {
     variables[name].value = value
     return
   } else if (expression[0] === C.FUNCTION_PRIM) {
-    // A function literal: "fn(arg1, arg2, arg3...) { code }"
+    // A function literal: "[async] [(arg1, arg2, arg3...)] { code }"
 
     // Get the code and paramaters from the expression list.
     const paramaters = expression[1]
     const code = expression[2]
+    const isAsync = expression[3]
 
     // Create the function using the given code.
     const fn = new lib.LFunction(code)
@@ -100,6 +101,8 @@ export async function evaluateExpression(expression, variables) {
     // Set the paramaters for the function to the paramaters taken from the
     // expression list.
     fn.setParamaters(paramaters)
+
+    fn.isAsynchronous = isAsync
 
     // Return the function.
     return fn

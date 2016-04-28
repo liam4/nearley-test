@@ -114,18 +114,19 @@ export function toLObject(data) {
 
 // Tree parsing stuff ---------------------------------------------------------
 
-export function searchTreeFor(innerTree, searchFor) {
+export function searchTreeFor(innerTree, searchFor, reject) {
   for (let treeNode of innerTree) {
     if (equal(treeNode, searchFor)) {
-      return true;
+      return true
     }
   }
-  for (let treeNode of innerTree.filter(n => n instanceof Array)) {
-    if (searchTreeFor(treeNode, searchFor)) {
-      return true;
+  for (let treeNode of innerTree.filter(n => n instanceof Array)
+        .filter(n => !(reject ? reject(n) : false))) {
+    if (searchTreeFor(treeNode, searchFor, reject)) {
+      return true
     }
   }
-  return false;
+  return false
 }
 
 // Call function --------------------------------------------------------------
@@ -147,8 +148,17 @@ export async function defaultCall(fnToken, args) {
     // Might this function return anything? We can tell by if the `return`
     // variable is referenced anywhere within the function's code. If so we
     // need to do all sorts of promise-y things.
-    const referencesReturn = searchTreeFor(
-      fnToken.fn, ['VARIABLE_IDENTIFIER', 'return'])
+    //
+    // Of course, this is all very hacky, and we would be better off using an
+    // "async {}" asynchronous function syntax...
+    /*
+    const isAsynchronous = searchTreeFor(
+      fnToken.fn, ['VARIABLE_IDENTIFIER', 'return'],
+      // New function literals get a new return, so ignore those
+      n => n[0] === 'FUNCTION_PRIM')
+    console.log('test:', isAsynchronous)
+    */
+    const isAsynchronous = fnToken.isAsynchronous
 
     let resolve
     const donePromise = new Promise(function(_resolve) {
@@ -179,7 +189,7 @@ export async function defaultCall(fnToken, args) {
       return await interp.evaluateExpression(fnToken.fn, scope)
     } else {
       await interp.evaluateEachExpression(scope, fnToken.fn)
-      if (referencesReturn) {
+      if (isAsynchronous) {
         return await donePromise
       } else {
         return null

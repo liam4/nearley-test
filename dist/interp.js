@@ -27,7 +27,7 @@ var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
 var evaluateExpression = exports.evaluateExpression = function () {
   var ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(expression, variables) {
-    var ret, fnExpression, argExpressions, fn, args, name, _ret, _name, valueExpression, value, _name2, _valueExpression, _value, paramaters, code, _fn, _paramaters, codeExpression, _fn2, string, bool, number, objExpression, key, _valueExpression2, obj, _value2, _objExpression, _key, _obj, _value3;
+    var ret, fnExpression, argExpressions, fn, args, name, _ret, _name, valueExpression, value, _name2, _valueExpression, _value, paramaters, code, isAsync, _fn, _paramaters, codeExpression, _fn2, string, bool, number, objExpression, key, _valueExpression2, obj, _value2, _objExpression, _key, _obj, _value3;
 
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
@@ -133,7 +133,7 @@ var evaluateExpression = exports.evaluateExpression = function () {
             throw new Error(chalk.cyan(name) + ' is not defined.');
 
           case 36:
-            _context.next = 117;
+            _context.next = 119;
             break;
 
           case 38:
@@ -193,15 +193,16 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
           case 58:
             if (!(expression[0] === C.FUNCTION_PRIM)) {
-              _context.next = 67;
+              _context.next = 69;
               break;
             }
 
-            // A function literal: "fn(arg1, arg2, arg3...) { code }"
+            // A function literal: "[async] [(arg1, arg2, arg3...)] { code }"
 
             // Get the code and paramaters from the expression list.
             paramaters = expression[1];
             code = expression[2];
+            isAsync = expression[3];
 
             // Create the function using the given code.
 
@@ -216,12 +217,14 @@ var evaluateExpression = exports.evaluateExpression = function () {
             // expression list.
             _fn.setParamaters(paramaters);
 
+            _fn.isAsynchronous = isAsync;
+
             // Return the function.
             return _context.abrupt('return', _fn);
 
-          case 67:
+          case 69:
             if (!(expression[0] === C.SHORTHAND_FUNCTION_PRIM)) {
-              _context.next = 77;
+              _context.next = 79;
               break;
             }
 
@@ -234,9 +237,9 @@ var evaluateExpression = exports.evaluateExpression = function () {
             _fn2.setParamaters(_paramaters);
             return _context.abrupt('return', _fn2);
 
-          case 77:
+          case 79:
             if (!(expression[0] === C.STRING_PRIM)) {
-              _context.next = 82;
+              _context.next = 84;
               break;
             }
 
@@ -249,9 +252,9 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             return _context.abrupt('return', lib.toLString(string));
 
-          case 82:
+          case 84:
             if (!(expression[0] === C.BOOLEAN_PRIM)) {
-              _context.next = 87;
+              _context.next = 89;
               break;
             }
 
@@ -264,9 +267,9 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             return _context.abrupt('return', lib.toLBoolean(bool));
 
-          case 87:
+          case 89:
             if (!(expression[0] === C.NUMBER_PRIM)) {
-              _context.next = 92;
+              _context.next = 94;
               break;
             }
 
@@ -279,9 +282,9 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             return _context.abrupt('return', lib.toLNumber(number));
 
-          case 92:
+          case 94:
             if (!(expression[0] === C.SET_PROP_USING_IDENTIFIER)) {
-              _context.next = 106;
+              _context.next = 108;
               break;
             }
 
@@ -295,15 +298,15 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             // Evaluate the object and value expressions.
 
-            _context.next = 98;
+            _context.next = 100;
             return evaluateExpression(objExpression, variables);
 
-          case 98:
+          case 100:
             obj = _context.sent;
-            _context.next = 101;
+            _context.next = 103;
             return evaluateExpression(_valueExpression2, variables);
 
-          case 101:
+          case 103:
             _value2 = _context.sent;
 
 
@@ -311,9 +314,9 @@ var evaluateExpression = exports.evaluateExpression = function () {
             lib.set(obj, key, _value2);
             return _context.abrupt('return');
 
-          case 106:
+          case 108:
             if (!(expression[0] === C.GET_PROP_USING_IDENTIFIER)) {
-              _context.next = 116;
+              _context.next = 118;
               break;
             }
 
@@ -325,10 +328,10 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             // Evaluate the object expression.
 
-            _context.next = 111;
+            _context.next = 113;
             return evaluateExpression(_objExpression, variables);
 
-          case 111:
+          case 113:
             _obj = _context.sent;
 
 
@@ -339,10 +342,10 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             return _context.abrupt('return', _value3);
 
-          case 116:
+          case 118:
             throw new Error('Invalid expression: ' + chalk.cyan(expression[0]));
 
-          case 117:
+          case 119:
           case 'end':
             return _context.stop();
         }

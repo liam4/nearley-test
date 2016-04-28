@@ -170,7 +170,7 @@ var defaultCall = exports.defaultCall = function () {
 
           case 34:
             return _context5.delegateYield(_regenerator2.default.mark(function _callee3() {
-              var referencesReturn, resolve, donePromise, scope, paramaters, _loop, i;
+              var isAsynchronous, resolve, donePromise, scope, paramaters, _loop, i;
 
               return _regenerator2.default.wrap(function _callee3$(_context4) {
                 while (1) {
@@ -179,20 +179,28 @@ var defaultCall = exports.defaultCall = function () {
                       // Might this function return anything? We can tell by if the `return`
                       // variable is referenced anywhere within the function's code. If so we
                       // need to do all sorts of promise-y things.
-                      referencesReturn = searchTreeFor(fnToken.fn, ['VARIABLE_IDENTIFIER', 'return']);
+                      //
+                      // Of course, this is all very hacky, and we would be better off using an
+                      // "async {}" asynchronous function syntax...
+                      /*
+                      const isAsynchronous = searchTreeFor(
+                        fnToken.fn, ['VARIABLE_IDENTIFIER', 'return'],
+                        // New function literals get a new return, so ignore those
+                        n => n[0] === 'FUNCTION_PRIM')
+                      console.log('test:', isAsynchronous)
+                      */
+                      isAsynchronous = fnToken.isAsynchronous;
                       resolve = void 0;
                       donePromise = new _promise2.default(function (_resolve) {
                         resolve = _resolve;
                       });
                       scope = (0, _assign2.default)({}, fnToken.scopeVariables);
-                      // let returnValue = null
 
                       scope.return = new Variable(new LFunction(function (_ref) {
                         var _ref2 = (0, _slicedToArray3.default)(_ref, 1);
 
                         var val = _ref2[0];
 
-                        // returnValue = val
                         resolve(val);
                       }));
                       paramaters = fnToken.paramaterList;
@@ -284,7 +292,7 @@ var defaultCall = exports.defaultCall = function () {
                       return interp.evaluateEachExpression(scope, fnToken.fn);
 
                     case 22:
-                      if (!referencesReturn) {
+                      if (!isAsynchronous) {
                         _context4.next = 29;
                         break;
                       }
@@ -487,7 +495,7 @@ function toLObject(data) {
 
 // Tree parsing stuff ---------------------------------------------------------
 
-function searchTreeFor(innerTree, searchFor) {
+function searchTreeFor(innerTree, searchFor, reject) {
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;
   var _iteratorError = undefined;
@@ -522,10 +530,12 @@ function searchTreeFor(innerTree, searchFor) {
   try {
     for (var _iterator2 = (0, _getIterator3.default)(innerTree.filter(function (n) {
       return n instanceof Array;
+    }).filter(function (n) {
+      return !(reject ? reject(n) : false);
     })), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
       var _treeNode = _step2.value;
 
-      if (searchTreeFor(_treeNode, searchFor)) {
+      if (searchTreeFor(_treeNode, searchFor, reject)) {
         return true;
       }
     }
