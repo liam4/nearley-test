@@ -37,9 +37,9 @@ var _assign = require('babel-runtime/core-js/object/assign');
 
 var _assign2 = _interopRequireDefault(_assign);
 
-var _getIterator2 = require('babel-runtime/core-js/get-iterator');
+var _promise = require('babel-runtime/core-js/promise');
 
-var _getIterator3 = _interopRequireDefault(_getIterator2);
+var _promise2 = _interopRequireDefault(_promise);
 
 var _regenerator = require('babel-runtime/regenerator');
 
@@ -48,6 +48,10 @@ var _regenerator2 = _interopRequireDefault(_regenerator);
 var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+var _getIterator2 = require('babel-runtime/core-js/get-iterator');
+
+var _getIterator3 = _interopRequireDefault(_getIterator2);
 
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
@@ -84,191 +88,245 @@ var call = exports.call = function () {
 }();
 
 var defaultCall = exports.defaultCall = function () {
-  var ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3(fnToken, args) {
+  var ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee4(fnToken, args) {
     var _this = this;
 
-    var argumentValues, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, argument, scope, returnValue, paramaters, _loop, i;
+    var argumentValues, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, argument, _ret;
 
-    return _regenerator2.default.wrap(function _callee3$(_context4) {
+    return _regenerator2.default.wrap(function _callee4$(_context5) {
       while (1) {
-        switch (_context4.prev = _context4.next) {
+        switch (_context5.prev = _context5.next) {
           case 0:
             if (!(fnToken.fn instanceof Function)) {
-              _context4.next = 34;
+              _context5.next = 34;
               break;
             }
 
             // it's a javascript function so just call it
             argumentValues = [];
-            _iteratorNormalCompletion = true;
-            _didIteratorError = false;
-            _iteratorError = undefined;
-            _context4.prev = 5;
-            _iterator = (0, _getIterator3.default)(args);
+            _iteratorNormalCompletion3 = true;
+            _didIteratorError3 = false;
+            _iteratorError3 = undefined;
+            _context5.prev = 5;
+            _iterator3 = (0, _getIterator3.default)(args);
 
           case 7:
-            if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
-              _context4.next = 17;
+            if (_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done) {
+              _context5.next = 17;
               break;
             }
 
-            argument = _step.value;
-            _context4.t0 = argumentValues;
-            _context4.next = 12;
+            argument = _step3.value;
+            _context5.t0 = argumentValues;
+            _context5.next = 12;
             return interp.evaluateExpression(argument, fnToken.argumentScope);
 
           case 12:
-            _context4.t1 = _context4.sent;
+            _context5.t1 = _context5.sent;
 
-            _context4.t0.push.call(_context4.t0, _context4.t1);
+            _context5.t0.push.call(_context5.t0, _context5.t1);
 
           case 14:
-            _iteratorNormalCompletion = true;
-            _context4.next = 7;
+            _iteratorNormalCompletion3 = true;
+            _context5.next = 7;
             break;
 
           case 17:
-            _context4.next = 23;
+            _context5.next = 23;
             break;
 
           case 19:
-            _context4.prev = 19;
-            _context4.t2 = _context4['catch'](5);
-            _didIteratorError = true;
-            _iteratorError = _context4.t2;
+            _context5.prev = 19;
+            _context5.t2 = _context5['catch'](5);
+            _didIteratorError3 = true;
+            _iteratorError3 = _context5.t2;
 
           case 23:
-            _context4.prev = 23;
-            _context4.prev = 24;
+            _context5.prev = 23;
+            _context5.prev = 24;
 
-            if (!_iteratorNormalCompletion && _iterator.return) {
-              _iterator.return();
+            if (!_iteratorNormalCompletion3 && _iterator3.return) {
+              _iterator3.return();
             }
 
           case 26:
-            _context4.prev = 26;
+            _context5.prev = 26;
 
-            if (!_didIteratorError) {
-              _context4.next = 29;
+            if (!_didIteratorError3) {
+              _context5.next = 29;
               break;
             }
 
-            throw _iteratorError;
+            throw _iteratorError3;
 
           case 29:
-            return _context4.finish(26);
+            return _context5.finish(26);
 
           case 30:
-            return _context4.finish(23);
+            return _context5.finish(23);
 
           case 31:
-            return _context4.abrupt('return', fnToken.fn(argumentValues));
+            return _context5.abrupt('return', fnToken.fn(argumentValues));
 
           case 34:
-            scope = (0, _assign2.default)({}, fnToken.scopeVariables);
-            returnValue = null;
+            return _context5.delegateYield(_regenerator2.default.mark(function _callee3() {
+              var referencesReturn, resolve, donePromise, scope, paramaters, _loop, i;
 
-            scope.return = new Variable(new LFunction(function (_ref) {
-              var _ref2 = (0, _slicedToArray3.default)(_ref, 1);
-
-              var val = _ref2[0];
-
-              returnValue = val;
-            }));
-            paramaters = fnToken.paramaterList;
-            _loop = _regenerator2.default.mark(function _loop(i) {
-              var value, paramater, evaluatedValue;
-              return _regenerator2.default.wrap(function _loop$(_context3) {
+              return _regenerator2.default.wrap(function _callee3$(_context4) {
                 while (1) {
-                  switch (_context3.prev = _context3.next) {
+                  switch (_context4.prev = _context4.next) {
                     case 0:
-                      value = args[i];
-                      paramater = paramaters[i];
+                      // Might this function return anything? We can tell by if the `return`
+                      // variable is referenced anywhere within the function's code. If so we
+                      // need to do all sorts of promise-y things.
+                      referencesReturn = searchTreeFor(fnToken.fn, ['VARIABLE_IDENTIFIER', 'return']);
+                      resolve = void 0;
+                      donePromise = new _promise2.default(function (_resolve) {
+                        resolve = _resolve;
+                      });
+                      scope = (0, _assign2.default)({}, fnToken.scopeVariables);
+                      // let returnValue = null
 
-                      if (!(paramater.type === 'normal')) {
-                        _context3.next = 9;
+                      scope.return = new Variable(new LFunction(function (_ref) {
+                        var _ref2 = (0, _slicedToArray3.default)(_ref, 1);
+
+                        var val = _ref2[0];
+
+                        // returnValue = val
+                        resolve(val);
+                      }));
+                      paramaters = fnToken.paramaterList;
+                      _loop = _regenerator2.default.mark(function _loop(i) {
+                        var value, paramater, evaluatedValue;
+                        return _regenerator2.default.wrap(function _loop$(_context3) {
+                          while (1) {
+                            switch (_context3.prev = _context3.next) {
+                              case 0:
+                                value = args[i];
+                                paramater = paramaters[i];
+
+                                if (!(paramater.type === 'normal')) {
+                                  _context3.next = 9;
+                                  break;
+                                }
+
+                                _context3.next = 5;
+                                return interp.evaluateExpression(value);
+
+                              case 5:
+                                evaluatedValue = _context3.sent;
+
+                                scope[paramater.name] = new Variable(evaluatedValue);
+                                _context3.next = 10;
+                                break;
+
+                              case 9:
+                                if (paramater.type === 'unevaluated') {
+                                  scope[paramater.name] = new Variable(new LFunction((0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2() {
+                                    return _regenerator2.default.wrap(function _callee2$(_context2) {
+                                      while (1) {
+                                        switch (_context2.prev = _context2.next) {
+                                          case 0:
+                                            _context2.next = 2;
+                                            return interp.evaluateExpression(value, fnToken.argumentScope);
+
+                                          case 2:
+                                            return _context2.abrupt('return', _context2.sent);
+
+                                          case 3:
+                                          case 'end':
+                                            return _context2.stop();
+                                        }
+                                      }
+                                    }, _callee2, this);
+                                  }))));
+                                }
+
+                              case 10:
+                              case 'end':
+                                return _context3.stop();
+                            }
+                          }
+                        }, _loop, _this);
+                      });
+                      i = 0;
+
+                    case 8:
+                      if (!(i < paramaters.length)) {
+                        _context4.next = 13;
                         break;
                       }
 
-                      _context3.next = 5;
-                      return interp.evaluateExpression(value);
-
-                    case 5:
-                      evaluatedValue = _context3.sent;
-
-                      scope[paramater.name] = new Variable(evaluatedValue);
-                      _context3.next = 10;
-                      break;
-
-                    case 9:
-                      if (paramater.type === 'unevaluated') {
-                        scope[paramater.name] = new Variable(new LFunction((0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2() {
-                          return _regenerator2.default.wrap(function _callee2$(_context2) {
-                            while (1) {
-                              switch (_context2.prev = _context2.next) {
-                                case 0:
-                                  _context2.next = 2;
-                                  return interp.evaluateExpression(value, fnToken.argumentScope);
-
-                                case 2:
-                                  return _context2.abrupt('return', _context2.sent);
-
-                                case 3:
-                                case 'end':
-                                  return _context2.stop();
-                              }
-                            }
-                          }, _callee2, this);
-                        }))));
-                      }
+                      return _context4.delegateYield(_loop(i), 't0', 10);
 
                     case 10:
+                      i++;
+                      _context4.next = 8;
+                      break;
+
+                    case 13:
+                      if (!fnToken.isShorthand) {
+                        _context4.next = 20;
+                        break;
+                      }
+
+                      _context4.next = 16;
+                      return interp.evaluateExpression(fnToken.fn, scope);
+
+                    case 16:
+                      _context4.t1 = _context4.sent;
+                      return _context4.abrupt('return', {
+                        v: _context4.t1
+                      });
+
+                    case 20:
+                      _context4.next = 22;
+                      return interp.evaluateEachExpression(scope, fnToken.fn);
+
+                    case 22:
+                      if (!referencesReturn) {
+                        _context4.next = 29;
+                        break;
+                      }
+
+                      _context4.next = 25;
+                      return donePromise;
+
+                    case 25:
+                      _context4.t2 = _context4.sent;
+                      return _context4.abrupt('return', {
+                        v: _context4.t2
+                      });
+
+                    case 29:
+                      return _context4.abrupt('return', {
+                        v: null
+                      });
+
+                    case 30:
                     case 'end':
-                      return _context3.stop();
+                      return _context4.stop();
                   }
                 }
-              }, _loop, _this);
-            });
-            i = 0;
+              }, _callee3, _this);
+            })(), 't3', 35);
 
-          case 40:
-            if (!(i < paramaters.length)) {
-              _context4.next = 45;
+          case 35:
+            _ret = _context5.t3;
+
+            if (!((typeof _ret === 'undefined' ? 'undefined' : (0, _typeof3.default)(_ret)) === "object")) {
+              _context5.next = 38;
               break;
             }
 
-            return _context4.delegateYield(_loop(i), 't3', 42);
+            return _context5.abrupt('return', _ret.v);
 
-          case 42:
-            i++;
-            _context4.next = 40;
-            break;
-
-          case 45:
-            if (!fnToken.isShorthand) {
-              _context4.next = 51;
-              break;
-            }
-
-            _context4.next = 48;
-            return interp.evaluateExpression(fnToken.fn, scope);
-
-          case 48:
-            return _context4.abrupt('return', _context4.sent);
-
-          case 51:
-            _context4.next = 53;
-            return interp.evaluateEachExpression(scope, fnToken.fn);
-
-          case 53:
-            return _context4.abrupt('return', returnValue);
-
-          case 54:
+          case 38:
           case 'end':
-            return _context4.stop();
+            return _context5.stop();
         }
       }
-    }, _callee3, this, [[5, 19, 23, 31], [24,, 26, 30]]);
+    }, _callee4, this, [[5, 19, 23, 31], [24,, 26, 30]]);
   }));
   return function defaultCall(_x3, _x4) {
     return ref.apply(this, arguments);
@@ -284,6 +342,7 @@ exports.toLString = toLString;
 exports.toLBoolean = toLBoolean;
 exports.toLNumber = toLNumber;
 exports.toLObject = toLObject;
+exports.searchTreeFor = searchTreeFor;
 exports.has = has;
 exports.get = get;
 exports.defaultGet = defaultGet;
@@ -294,6 +353,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var interp = require('./interp');
 var C = require('./constants');
+var equal = require('deep-equal');
 
 var StringPrim = exports.StringPrim = function () {
   function StringPrim(str) {
@@ -423,6 +483,68 @@ function toLObject(data) {
     set(obj, key, data[key]);
   }
   return obj;
+}
+
+// Tree parsing stuff ---------------------------------------------------------
+
+function searchTreeFor(innerTree, searchFor) {
+  var _iteratorNormalCompletion = true;
+  var _didIteratorError = false;
+  var _iteratorError = undefined;
+
+  try {
+    for (var _iterator = (0, _getIterator3.default)(innerTree), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var treeNode = _step.value;
+
+      if (equal(treeNode, searchFor)) {
+        return true;
+      }
+    }
+  } catch (err) {
+    _didIteratorError = true;
+    _iteratorError = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion && _iterator.return) {
+        _iterator.return();
+      }
+    } finally {
+      if (_didIteratorError) {
+        throw _iteratorError;
+      }
+    }
+  }
+
+  var _iteratorNormalCompletion2 = true;
+  var _didIteratorError2 = false;
+  var _iteratorError2 = undefined;
+
+  try {
+    for (var _iterator2 = (0, _getIterator3.default)(innerTree.filter(function (n) {
+      return n instanceof Array;
+    })), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+      var _treeNode = _step2.value;
+
+      if (searchTreeFor(_treeNode, searchFor)) {
+        return true;
+      }
+    }
+  } catch (err) {
+    _didIteratorError2 = true;
+    _iteratorError2 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion2 && _iterator2.return) {
+        _iterator2.return();
+      }
+    } finally {
+      if (_didIteratorError2) {
+        throw _iteratorError2;
+      }
+    }
+  }
+
+  return false;
 }function has(obj, key) {
   return key in obj;
 }
@@ -446,7 +568,7 @@ function defaultGet(obj, key) {
       prototype = current ? current['__prototype__'] : null;
     }
     if (current) {
-      var _ret2 = function () {
+      var _ret3 = function () {
         var value = prototype[keyString];
         if (value instanceof LFunction) {
           // I was going to just bind to obj, but that generally involves using
@@ -468,7 +590,7 @@ function defaultGet(obj, key) {
         };
       }();
 
-      if ((typeof _ret2 === 'undefined' ? 'undefined' : (0, _typeof3.default)(_ret2)) === "object") return _ret2.v;
+      if ((typeof _ret3 === 'undefined' ? 'undefined' : (0, _typeof3.default)(_ret3)) === "object") return _ret3.v;
     }
   }
 }

@@ -1,5 +1,6 @@
 const interp = require('./interp')
 const C = require('./constants')
+const equal = require('deep-equal')
 
 export class StringPrim {
   constructor(str) {
@@ -111,6 +112,22 @@ export function toLObject(data) {
   return obj
 }
 
+// Tree parsing stuff ---------------------------------------------------------
+
+export function searchTreeFor(innerTree, searchFor) {
+  for (let treeNode of innerTree) {
+    if (equal(treeNode, searchFor)) {
+      return true;
+    }
+  }
+  for (let treeNode of innerTree.filter(n => n instanceof Array)) {
+    if (searchTreeFor(treeNode, searchFor)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 // Call function --------------------------------------------------------------
 
 export async function call(fn, args) {
@@ -127,10 +144,20 @@ export async function defaultCall(fnToken, args) {
     }
     return fnToken.fn(argumentValues)
   } else {
+    // Might this function return anything? We can tell by if the `return`
+    // variable is referenced anywhere within the function's code. If so we
+    // need to do all sorts of promise-y things.
+    const referencesReturn = searchTreeFor(
+      fnToken.fn, ['VARIABLE_IDENTIFIER', 'return'])
+
+    let resolve
+    const donePromise = new Promise(function(_resolve) {
+      resolve = _resolve
+    })
+
     const scope = Object.assign({}, fnToken.scopeVariables)
-    let returnValue = null
     scope.return = new Variable(new LFunction(function([val]) {
-      returnValue = val
+      resolve(val)
     }))
     const paramaters = fnToken.paramaterList
     for (let i = 0; i < paramaters.length; i++) {
@@ -146,11 +173,17 @@ export async function defaultCall(fnToken, args) {
       }
     }
 
+    // Shorthand functions.. these aren't finished! They don't work with the
+    // whole async stuff. I think.
     if (fnToken.isShorthand) {
       return await interp.evaluateExpression(fnToken.fn, scope)
     } else {
       await interp.evaluateEachExpression(scope, fnToken.fn)
-      return returnValue
+      if (referencesReturn) {
+        return await donePromise
+      } else {
+        return null
+      }
     }
   }
 }
