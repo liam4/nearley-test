@@ -1,0 +1,21 @@
+# [PackageDev] target_format: plist, ext: tmLanguage
+---
+name: TLNCCUWAGNF
+scopeName: source.tulun
+fileTypes: ['tul']
+uuid: ddee081c-613a-495a-8a4d-848baa2dff73
+
+patterns:
+- name: keyword.control.tulun
+  match: (=|-)>
+- name: constant.numeric.tulun
+  match: ([0-9]+(\.[0-9]+)?)
+- name: comment.line.number-sign.tulun
+  match: (#([^#])*#)
+- name: support.function.tulun
+  match: ((?!-)(?<=\W)|^)(\+|-|/|\*|<|>|=|return|process|print-debug|add|divide|minus|multiply|Variable|print|concat|if|ifel|obj|array|not|and|or|lt|gt|eq|is|loop|use|make|change|value|from|exists)(?!-)(?=\W)
+- name: string.quoted.single.tulun
+  match: ('[^']*')
+- name: string.quoted.double.tulun
+  match: ("[^"]*")
+...
