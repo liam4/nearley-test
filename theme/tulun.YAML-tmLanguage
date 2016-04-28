@@ -11,7 +11,8 @@ patterns:
 - name: constant.numeric.tulun
   match: ([0-9]+(\.[0-9]+)?)
 - name: comment.line.number-sign.tulun
-  match: (#([^#])*#)
+  begin: \#
+  end: \#
 - name: support.function.tulun
   match: ((?!-)(?<=\W)|^)(\+|-|/|\*|<|>|=|return|process|print-debug|add|divide|minus|multiply|Variable|print|concat|if|ifel|obj|array|not|and|or|lt|gt|eq|is|loop|use|make|change|value|from|exists)(?!-)(?=\W)
 - name: string.quoted.single.tulun
