@@ -8,6 +8,8 @@ uuid: ddee081c-613a-495a-8a4d-848baa2dff73
 patterns:
 - name: keyword.control.tulun
   match: (=|-)>
+- name: constant.language.tulun
+  match: ((?!-)(?<=\W)|^)(true|false)(?!-)(?=\W)
 - name: constant.numeric.tulun
   match: ([0-9]+(\.[0-9]+)?)
 - name: comment.line.number-sign.tulun
