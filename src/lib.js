@@ -120,8 +120,12 @@ export async function call(fn, args) {
 export async function defaultCall(fnToken, args) {
   if (fnToken.fn instanceof Function) {
     // it's a javascript function so just call it
-    return fnToken.fn(await Promise.all(args.map(
-      arg => interp.evaluateExpression(arg, fnToken.argumentScope))))
+    const argumentValues = [];
+    for (let argument of args) {
+      argumentValues.push(await interp.evaluateExpression(
+        argument, fnToken.argumentScope))
+    }
+    return fnToken.fn(argumentValues)
   } else {
     const scope = Object.assign({}, fnToken.scopeVariables)
     let returnValue = null

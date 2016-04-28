@@ -4,12 +4,15 @@ const chalk = require('chalk')
 const builtins = require('./builtins')
 
 export async function evaluateExpression(expression, variables) {
-  console.log('evaluating expression', expression)
+  // console.log('evaluating expression', expression)
   if (expression[0] === C.COMMENT) {
     return
   } else if (expression instanceof Array &&
              expression.every(e => e instanceof Array)) {
-    return evaluateEachExpression(variables, expression)
+    // console.log('Fo...')
+    const ret = await evaluateEachExpression(variables, expression)
+    // console.log('Ba.', ret)
+    return ret
   } if (expression[0] === C.VARIABLE_IDENTIFIER && expression[1] === 'environment') {
     return new lib.LEnvironment(variables)
   } else if (expression[0] === C.FUNCTION_CALL) {
@@ -26,12 +29,6 @@ export async function evaluateExpression(expression, variables) {
       throw new Error(`Can't call ${chalk.cyan(fn)} because it's not a function`)
     }
 
-    /* This code *used* to work but it doesn't any more, because some
-     * parameters of the function could be unevaluated. Now argument evaluation
-     * is done from within the call method of the function.
-     */
-    // Evaluate all of the arguments passed to the function.
-    //const args = argExpressions.map(arg => evaluateExpression(arg, variables));
     fn.argumentScope = variables
     const args = argExpressions
 
@@ -43,13 +40,13 @@ export async function evaluateExpression(expression, variables) {
     // Get the name from the expression list.
     const name = expression[1]
 
-    console.log(`Getting variable ${name}...`)
-    console.log(name in variables)
+    // console.log(`Getting variable ${name}...`)
+    // console.log(name in variables)
 
     // Return the variable's value, or, if the variable doesn't exist, throw an
     // error.
     if (name in variables) {
-      console.log('Return:', variables[name])
+      // console.log('Return:', variables[name])
       const ret = variables[name].value
       return ret
     } else {
@@ -62,12 +59,12 @@ export async function evaluateExpression(expression, variables) {
     const name = expression[1]
     const valueExpression = expression[2]
 
-    console.log(`Setting variable ${name}...`)
+    // console.log(`Setting variable ${name}...`)
 
     // Evaluate the value of the variable.
     const value = await evaluateExpression(valueExpression, variables)
 
-    console.log(`..value is ${value}`)
+    // console.log(`..value is ${value}`)
 
     // Set the variable in the variables object to a new variable with the
     // evaluated value.
@@ -180,7 +177,11 @@ export async function evaluateGetPropUsingIdentifier(variables, [_, objExpr, key
 }
 
 export async function evaluateEachExpression(variables, expressions) {
-  return await Promise.all(expressions.map(e => evaluateExpression(e, variables)))
+  let results = []
+  for (let expression of expressions) {
+    results.push(await evaluateExpression(expression, variables))
+  }
+  return results
 }
 
 export async function interp(ast, dir) {
@@ -190,7 +191,7 @@ export async function interp(ast, dir) {
     Object.assign(variables, builtins.makeBuiltins(dir))
 
     let result = await evaluateEachExpression(variables, ast)
-    console.log('derrrp (THIS IS GOOD)')
+    // console.log('derrrp (THIS IS GOOD)')
 
     return { result, variables }
   } else {

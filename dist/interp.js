@@ -5,9 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.interp = exports.evaluateEachExpression = exports.evaluateGetPropUsingIdentifier = exports.evaluateExpression = undefined;
 
-var _promise = require('babel-runtime/core-js/promise');
+var _getIterator2 = require('babel-runtime/core-js/get-iterator');
 
-var _promise2 = _interopRequireDefault(_promise);
+var _getIterator3 = _interopRequireDefault(_getIterator2);
 
 var _slicedToArray2 = require('babel-runtime/helpers/slicedToArray');
 
@@ -27,42 +27,45 @@ var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
 var evaluateExpression = exports.evaluateExpression = function () {
   var ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(expression, variables) {
-    var fnExpression, argExpressions, fn, args, name, ret, _name, valueExpression, value, _name2, _valueExpression, _value, paramaters, code, _fn, _paramaters, codeExpression, _fn2, string, bool, number, objExpression, key, _valueExpression2, obj, _value2, _objExpression, _key, _obj, _value3;
+    var ret, fnExpression, argExpressions, fn, args, name, _ret, _name, valueExpression, value, _name2, _valueExpression, _value, paramaters, code, _fn, _paramaters, codeExpression, _fn2, string, bool, number, objExpression, key, _valueExpression2, obj, _value2, _objExpression, _key, _obj, _value3;
 
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            console.log('evaluating expression', expression);
-
             if (!(expression[0] === C.COMMENT)) {
-              _context.next = 5;
+              _context.next = 4;
               break;
             }
 
             return _context.abrupt('return');
 
-          case 5:
+          case 4:
             if (!(expression instanceof Array && expression.every(function (e) {
               return e instanceof Array;
             }))) {
-              _context.next = 7;
+              _context.next = 9;
               break;
             }
 
-            return _context.abrupt('return', evaluateEachExpression(variables, expression));
+            _context.next = 7;
+            return evaluateEachExpression(variables, expression);
 
           case 7:
+            ret = _context.sent;
+            return _context.abrupt('return', ret);
+
+          case 9:
             if (!(expression[0] === C.VARIABLE_IDENTIFIER && expression[1] === 'environment')) {
-              _context.next = 11;
+              _context.next = 13;
               break;
             }
 
             return _context.abrupt('return', new lib.LEnvironment(variables));
 
-          case 11:
+          case 13:
             if (!(expression[0] === C.FUNCTION_CALL)) {
-              _context.next = 26;
+              _context.next = 28;
               break;
             }
 
@@ -74,41 +77,35 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             // Evaluate the function expression to get the actual function.
 
-            _context.next = 16;
+            _context.next = 18;
             return evaluateExpression(fnExpression, variables);
 
-          case 16:
+          case 18:
             fn = _context.sent;
 
             if (fn instanceof lib.LFunction) {
-              _context.next = 19;
+              _context.next = 21;
               break;
             }
 
             throw new Error('Can\'t call ' + chalk.cyan(fn) + ' because it\'s not a function');
 
-          case 19:
+          case 21:
 
-            /* This code *used* to work but it doesn't any more, because some
-             * parameters of the function could be unevaluated. Now argument evaluation
-             * is done from within the call method of the function.
-             */
-            // Evaluate all of the arguments passed to the function.
-            //const args = argExpressions.map(arg => evaluateExpression(arg, variables));
             fn.argumentScope = variables;
             args = argExpressions;
 
             // Use lib.call to call the function with the evaluated arguments.
 
-            _context.next = 23;
+            _context.next = 25;
             return lib.call(fn, args);
 
-          case 23:
+          case 25:
             return _context.abrupt('return', _context.sent);
 
-          case 26:
+          case 28:
             if (!(expression[0] === C.VARIABLE_IDENTIFIER)) {
-              _context.next = 39;
+              _context.next = 38;
               break;
             }
 
@@ -117,32 +114,31 @@ var evaluateExpression = exports.evaluateExpression = function () {
             // Get the name from the expression list.
             name = expression[1];
 
-
-            console.log('Getting variable ' + name + '...');
-            console.log(name in variables);
+            // console.log(`Getting variable ${name}...`)
+            // console.log(name in variables)
 
             // Return the variable's value, or, if the variable doesn't exist, throw an
             // error.
 
             if (!(name in variables)) {
-              _context.next = 36;
+              _context.next = 35;
               break;
             }
 
-            console.log('Return:', variables[name]);
-            ret = variables[name].value;
-            return _context.abrupt('return', ret);
+            // console.log('Return:', variables[name])
+            _ret = variables[name].value;
+            return _context.abrupt('return', _ret);
 
-          case 36:
+          case 35:
             throw new Error(chalk.cyan(name) + ' is not defined.');
 
-          case 37:
-            _context.next = 120;
+          case 36:
+            _context.next = 117;
             break;
 
-          case 39:
+          case 38:
             if (!(expression[0] === C.VARIABLE_ASSIGN)) {
-              _context.next = 51;
+              _context.next = 48;
               break;
             }
 
@@ -152,27 +148,27 @@ var evaluateExpression = exports.evaluateExpression = function () {
             _name = expression[1];
             valueExpression = expression[2];
 
-
-            console.log('Setting variable ' + _name + '...');
+            // console.log(`Setting variable ${name}...`)
 
             // Evaluate the value of the variable.
-            _context.next = 45;
+
+            _context.next = 43;
             return evaluateExpression(valueExpression, variables);
 
-          case 45:
+          case 43:
             value = _context.sent;
 
 
-            console.log('..value is ' + value);
+            // console.log(`..value is ${value}`)
 
             // Set the variable in the variables object to a new variable with the
             // evaluated value.
             variables[_name] = new lib.Variable(value);
             return _context.abrupt('return');
 
-          case 51:
+          case 48:
             if (!(expression[0] === C.VARIABLE_CHANGE)) {
-              _context.next = 61;
+              _context.next = 58;
               break;
             }
 
@@ -184,10 +180,10 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             // Evaluate the new value of the variable.
 
-            _context.next = 56;
+            _context.next = 53;
             return evaluateExpression(_valueExpression, variables);
 
-          case 56:
+          case 53:
             _value = _context.sent;
 
 
@@ -195,9 +191,9 @@ var evaluateExpression = exports.evaluateExpression = function () {
             variables[_name2].value = _value;
             return _context.abrupt('return');
 
-          case 61:
+          case 58:
             if (!(expression[0] === C.FUNCTION_PRIM)) {
-              _context.next = 70;
+              _context.next = 67;
               break;
             }
 
@@ -223,9 +219,9 @@ var evaluateExpression = exports.evaluateExpression = function () {
             // Return the function.
             return _context.abrupt('return', _fn);
 
-          case 70:
+          case 67:
             if (!(expression[0] === C.SHORTHAND_FUNCTION_PRIM)) {
-              _context.next = 80;
+              _context.next = 77;
               break;
             }
 
@@ -238,9 +234,9 @@ var evaluateExpression = exports.evaluateExpression = function () {
             _fn2.setParamaters(_paramaters);
             return _context.abrupt('return', _fn2);
 
-          case 80:
+          case 77:
             if (!(expression[0] === C.STRING_PRIM)) {
-              _context.next = 85;
+              _context.next = 82;
               break;
             }
 
@@ -253,9 +249,9 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             return _context.abrupt('return', lib.toLString(string));
 
-          case 85:
+          case 82:
             if (!(expression[0] === C.BOOLEAN_PRIM)) {
-              _context.next = 90;
+              _context.next = 87;
               break;
             }
 
@@ -268,9 +264,9 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             return _context.abrupt('return', lib.toLBoolean(bool));
 
-          case 90:
+          case 87:
             if (!(expression[0] === C.NUMBER_PRIM)) {
-              _context.next = 95;
+              _context.next = 92;
               break;
             }
 
@@ -283,9 +279,9 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             return _context.abrupt('return', lib.toLNumber(number));
 
-          case 95:
+          case 92:
             if (!(expression[0] === C.SET_PROP_USING_IDENTIFIER)) {
-              _context.next = 109;
+              _context.next = 106;
               break;
             }
 
@@ -299,15 +295,15 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             // Evaluate the object and value expressions.
 
-            _context.next = 101;
+            _context.next = 98;
             return evaluateExpression(objExpression, variables);
 
-          case 101:
+          case 98:
             obj = _context.sent;
-            _context.next = 104;
+            _context.next = 101;
             return evaluateExpression(_valueExpression2, variables);
 
-          case 104:
+          case 101:
             _value2 = _context.sent;
 
 
@@ -315,9 +311,9 @@ var evaluateExpression = exports.evaluateExpression = function () {
             lib.set(obj, key, _value2);
             return _context.abrupt('return');
 
-          case 109:
+          case 106:
             if (!(expression[0] === C.GET_PROP_USING_IDENTIFIER)) {
-              _context.next = 119;
+              _context.next = 116;
               break;
             }
 
@@ -329,10 +325,10 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             // Evaluate the object expression.
 
-            _context.next = 114;
+            _context.next = 111;
             return evaluateExpression(_objExpression, variables);
 
-          case 114:
+          case 111:
             _obj = _context.sent;
 
 
@@ -343,10 +339,10 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             return _context.abrupt('return', _value3);
 
-          case 119:
+          case 116:
             throw new Error('Invalid expression: ' + chalk.cyan(expression[0]));
 
-          case 120:
+          case 117:
           case 'end':
             return _context.stop();
         }
@@ -391,24 +387,83 @@ var evaluateGetPropUsingIdentifier = exports.evaluateGetPropUsingIdentifier = fu
 
 var evaluateEachExpression = exports.evaluateEachExpression = function () {
   var ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3(variables, expressions) {
+    var results, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, expression;
+
     return _regenerator2.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _context3.next = 2;
-            return _promise2.default.all(expressions.map(function (e) {
-              return evaluateExpression(e, variables);
-            }));
+            results = [];
+            _iteratorNormalCompletion = true;
+            _didIteratorError = false;
+            _iteratorError = undefined;
+            _context3.prev = 4;
+            _iterator = (0, _getIterator3.default)(expressions);
 
-          case 2:
-            return _context3.abrupt('return', _context3.sent);
+          case 6:
+            if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
+              _context3.next = 16;
+              break;
+            }
 
-          case 3:
+            expression = _step.value;
+            _context3.t0 = results;
+            _context3.next = 11;
+            return evaluateExpression(expression, variables);
+
+          case 11:
+            _context3.t1 = _context3.sent;
+
+            _context3.t0.push.call(_context3.t0, _context3.t1);
+
+          case 13:
+            _iteratorNormalCompletion = true;
+            _context3.next = 6;
+            break;
+
+          case 16:
+            _context3.next = 22;
+            break;
+
+          case 18:
+            _context3.prev = 18;
+            _context3.t2 = _context3['catch'](4);
+            _didIteratorError = true;
+            _iteratorError = _context3.t2;
+
+          case 22:
+            _context3.prev = 22;
+            _context3.prev = 23;
+
+            if (!_iteratorNormalCompletion && _iterator.return) {
+              _iterator.return();
+            }
+
+          case 25:
+            _context3.prev = 25;
+
+            if (!_didIteratorError) {
+              _context3.next = 28;
+              break;
+            }
+
+            throw _iteratorError;
+
+          case 28:
+            return _context3.finish(25);
+
+          case 29:
+            return _context3.finish(22);
+
+          case 30:
+            return _context3.abrupt('return', results);
+
+          case 31:
           case 'end':
             return _context3.stop();
         }
       }
-    }, _callee3, this);
+    }, _callee3, this, [[4, 18, 22, 30], [23,, 25, 29]]);
   }));
   return function evaluateEachExpression(_x5, _x6) {
     return ref.apply(this, arguments);
@@ -423,7 +478,7 @@ var interp = exports.interp = function () {
         switch (_context4.prev = _context4.next) {
           case 0:
             if (!ast) {
-              _context4.next = 10;
+              _context4.next = 9;
               break;
             }
 
@@ -437,15 +492,15 @@ var interp = exports.interp = function () {
 
           case 5:
             result = _context4.sent;
+            return _context4.abrupt('return', { result:
+              // console.log('derrrp (THIS IS GOOD)')
 
-            console.log('derrrp (THIS IS GOOD)');
+              result, variables: variables });
 
-            return _context4.abrupt('return', { result: result, variables: variables });
-
-          case 10:
+          case 9:
             throw new Error('Haha, you didn\'t pass me a tree!');
 
-          case 11:
+          case 10:
           case 'end':
             return _context4.stop();
         }

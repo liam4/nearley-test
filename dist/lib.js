@@ -37,9 +37,9 @@ var _assign = require('babel-runtime/core-js/object/assign');
 
 var _assign2 = _interopRequireDefault(_assign);
 
-var _promise = require('babel-runtime/core-js/promise');
+var _getIterator2 = require('babel-runtime/core-js/get-iterator');
 
-var _promise2 = _interopRequireDefault(_promise);
+var _getIterator3 = _interopRequireDefault(_getIterator2);
 
 var _regenerator = require('babel-runtime/regenerator');
 
@@ -87,28 +87,84 @@ var defaultCall = exports.defaultCall = function () {
   var ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3(fnToken, args) {
     var _this = this;
 
-    var scope, returnValue, paramaters, _loop, i;
+    var argumentValues, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, argument, scope, returnValue, paramaters, _loop, i;
 
     return _regenerator2.default.wrap(function _callee3$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             if (!(fnToken.fn instanceof Function)) {
-              _context4.next = 8;
+              _context4.next = 34;
               break;
             }
 
-            _context4.t0 = fnToken;
-            _context4.next = 4;
-            return _promise2.default.all(args.map(function (arg) {
-              return interp.evaluateExpression(arg, fnToken.argumentScope);
-            }));
+            // it's a javascript function so just call it
+            argumentValues = [];
+            _iteratorNormalCompletion = true;
+            _didIteratorError = false;
+            _iteratorError = undefined;
+            _context4.prev = 5;
+            _iterator = (0, _getIterator3.default)(args);
 
-          case 4:
+          case 7:
+            if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
+              _context4.next = 17;
+              break;
+            }
+
+            argument = _step.value;
+            _context4.t0 = argumentValues;
+            _context4.next = 12;
+            return interp.evaluateExpression(argument, fnToken.argumentScope);
+
+          case 12:
             _context4.t1 = _context4.sent;
-            return _context4.abrupt('return', _context4.t0.fn.call(_context4.t0, _context4.t1));
 
-          case 8:
+            _context4.t0.push.call(_context4.t0, _context4.t1);
+
+          case 14:
+            _iteratorNormalCompletion = true;
+            _context4.next = 7;
+            break;
+
+          case 17:
+            _context4.next = 23;
+            break;
+
+          case 19:
+            _context4.prev = 19;
+            _context4.t2 = _context4['catch'](5);
+            _didIteratorError = true;
+            _iteratorError = _context4.t2;
+
+          case 23:
+            _context4.prev = 23;
+            _context4.prev = 24;
+
+            if (!_iteratorNormalCompletion && _iterator.return) {
+              _iterator.return();
+            }
+
+          case 26:
+            _context4.prev = 26;
+
+            if (!_didIteratorError) {
+              _context4.next = 29;
+              break;
+            }
+
+            throw _iteratorError;
+
+          case 29:
+            return _context4.finish(26);
+
+          case 30:
+            return _context4.finish(23);
+
+          case 31:
+            return _context4.abrupt('return', fnToken.fn(argumentValues));
+
+          case 34:
             scope = (0, _assign2.default)({}, fnToken.scopeVariables);
             returnValue = null;
 
@@ -175,44 +231,44 @@ var defaultCall = exports.defaultCall = function () {
             });
             i = 0;
 
-          case 14:
+          case 40:
             if (!(i < paramaters.length)) {
-              _context4.next = 19;
+              _context4.next = 45;
               break;
             }
 
-            return _context4.delegateYield(_loop(i), 't2', 16);
+            return _context4.delegateYield(_loop(i), 't3', 42);
 
-          case 16:
+          case 42:
             i++;
-            _context4.next = 14;
+            _context4.next = 40;
             break;
 
-          case 19:
+          case 45:
             if (!fnToken.isShorthand) {
-              _context4.next = 25;
+              _context4.next = 51;
               break;
             }
 
-            _context4.next = 22;
+            _context4.next = 48;
             return interp.evaluateExpression(fnToken.fn, scope);
 
-          case 22:
+          case 48:
             return _context4.abrupt('return', _context4.sent);
 
-          case 25:
-            _context4.next = 27;
+          case 51:
+            _context4.next = 53;
             return interp.evaluateEachExpression(scope, fnToken.fn);
 
-          case 27:
+          case 53:
             return _context4.abrupt('return', returnValue);
 
-          case 28:
+          case 54:
           case 'end':
             return _context4.stop();
         }
       }
-    }, _callee3, this);
+    }, _callee3, this, [[5, 19, 23, 31], [24,, 26, 30]]);
   }));
   return function defaultCall(_x3, _x4) {
     return ref.apply(this, arguments);
