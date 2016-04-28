@@ -170,7 +170,7 @@ var defaultCall = exports.defaultCall = function () {
 
           case 34:
             return _context5.delegateYield(_regenerator2.default.mark(function _callee3() {
-              var isAsynchronous, resolve, donePromise, scope, paramaters, _loop, i;
+              var isAsynchronous, resolve, donePromise, returnValue, scope, paramaters, _loop, i;
 
               return _regenerator2.default.wrap(function _callee3$(_context4) {
                 while (1) {
@@ -190,10 +190,17 @@ var defaultCall = exports.defaultCall = function () {
                       console.log('test:', isAsynchronous)
                       */
                       isAsynchronous = fnToken.isAsynchronous;
+
+                      // Asynchronous things
+
                       resolve = void 0;
                       donePromise = new _promise2.default(function (_resolve) {
                         resolve = _resolve;
                       });
+
+                      // Not asynchronous things
+
+                      returnValue = null;
                       scope = (0, _assign2.default)({}, fnToken.scopeVariables);
 
                       scope.return = new Variable(new LFunction(function (_ref) {
@@ -201,7 +208,11 @@ var defaultCall = exports.defaultCall = function () {
 
                         var val = _ref2[0];
 
-                        resolve(val);
+                        if (isAsynchronous) {
+                          resolve(val);
+                        } else {
+                          returnValue = val;
+                        }
                       }));
                       paramaters = fnToken.paramaterList;
                       _loop = _regenerator2.default.mark(function _loop(i) {
@@ -259,59 +270,59 @@ var defaultCall = exports.defaultCall = function () {
                       });
                       i = 0;
 
-                    case 8:
+                    case 9:
                       if (!(i < paramaters.length)) {
-                        _context4.next = 13;
+                        _context4.next = 14;
                         break;
                       }
 
-                      return _context4.delegateYield(_loop(i), 't0', 10);
+                      return _context4.delegateYield(_loop(i), 't0', 11);
 
-                    case 10:
+                    case 11:
                       i++;
-                      _context4.next = 8;
+                      _context4.next = 9;
                       break;
 
-                    case 13:
+                    case 14:
                       if (!fnToken.isShorthand) {
-                        _context4.next = 20;
+                        _context4.next = 21;
                         break;
                       }
 
-                      _context4.next = 16;
+                      _context4.next = 17;
                       return interp.evaluateExpression(fnToken.fn, scope);
 
-                    case 16:
+                    case 17:
                       _context4.t1 = _context4.sent;
                       return _context4.abrupt('return', {
                         v: _context4.t1
                       });
 
-                    case 20:
-                      _context4.next = 22;
+                    case 21:
+                      _context4.next = 23;
                       return interp.evaluateEachExpression(scope, fnToken.fn);
 
-                    case 22:
+                    case 23:
                       if (!isAsynchronous) {
-                        _context4.next = 29;
+                        _context4.next = 30;
                         break;
                       }
 
-                      _context4.next = 25;
+                      _context4.next = 26;
                       return donePromise;
 
-                    case 25:
+                    case 26:
                       _context4.t2 = _context4.sent;
                       return _context4.abrupt('return', {
                         v: _context4.t2
                       });
 
-                    case 29:
+                    case 30:
                       return _context4.abrupt('return', {
-                        v: null
+                        v: returnValue
                       });
 
-                    case 30:
+                    case 31:
                     case 'end':
                       return _context4.stop();
                   }

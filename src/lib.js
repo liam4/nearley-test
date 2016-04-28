@@ -160,14 +160,22 @@ export async function defaultCall(fnToken, args) {
     */
     const isAsynchronous = fnToken.isAsynchronous
 
+    // Asynchronous things
     let resolve
     const donePromise = new Promise(function(_resolve) {
       resolve = _resolve
     })
 
+    // Not asynchronous things
+    let returnValue = null
+
     const scope = Object.assign({}, fnToken.scopeVariables)
     scope.return = new Variable(new LFunction(function([val]) {
-      resolve(val)
+      if (isAsynchronous) {
+        resolve(val)
+      } else {
+        returnValue = val
+      }
     }))
     const paramaters = fnToken.paramaterList
     for (let i = 0; i < paramaters.length; i++) {
@@ -192,7 +200,7 @@ export async function defaultCall(fnToken, args) {
       if (isAsynchronous) {
         return await donePromise
       } else {
-        return null
+        return returnValue
       }
     }
   }

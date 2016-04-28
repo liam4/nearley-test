@@ -7,6 +7,14 @@ test-fn => async {
   }, 325);
 };
 
+should-return-normally => {
+  print('E');
+  return('F');
+};
+
 print('A');
 test-fn();
 print('D');
+returned => should-return-normally();
+print(returned);
+print('G');
