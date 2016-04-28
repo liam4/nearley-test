@@ -1,24 +1,34 @@
 # [PackageDev] target_format: plist, ext: tmLanguage
----
-name: TLNCCUWAGNF
+name: Tulun (TLNCCUWAGNF)
 scopeName: source.tulun
-fileTypes: ['tul']
+fileTypes: [tul]
 uuid: ddee081c-613a-495a-8a4d-848baa2dff73
 
 patterns:
 - name: keyword.control.tulun
   match: (=|-)>
+
 - name: constant.language.tulun
   match: ((?!-)(?<=\W)|^)(true|false)(?!-)(?=\W)
+
 - name: constant.numeric.tulun
   match: ([0-9]+(\.[0-9]+)?)
+
 - name: comment.line.number-sign.tulun
   begin: \#
   end: \#
+
 - name: support.function.tulun
-  match: ((?!-)(?<=\W)|^)(\+|-|/|\*|<|>|=|return|process|print-debug|add|divide|minus|multiply|Variable|print|concat|if|ifel|obj|array|not|and|or|lt|gt|eq|is|loop|use|make|change|value|from|exists)(?!-)(?=\W)
+  match: async(.)(?=.*\{)
+
+- name: keyword.control.tulun
+  match: ((?!-)(?<=\W)|^)(return|process|print-debug|Variable|print|concat|if|ifel|obj|array|loop|use|make|change|value|from|exists)(?!-)(?=\W)
+
+- name: keyword.operator.tulun
+  match: ((?!-)(?<=\W)|^)(add|divide|minus|multiply|not|and|or|lt|gt|eq|is|\+|-|/|\*|<|>|=)(?!-)(?=\W)
+
 - name: string.quoted.single.tulun
   match: ('[^']*')
+
 - name: string.quoted.double.tulun
   match: ("[^"]*")
-...
