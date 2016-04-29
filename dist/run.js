@@ -17,7 +17,80 @@ var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
-  var result = interp.interp(asts[0], dir);
-  return result;
-}
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInJ1bi5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7OztRQUtnQjtBQUxoQixJQUFNLFVBQVUsUUFBUSxTQUFSLENBQVY7QUFDTixJQUFNLFVBQVUsUUFBUSxXQUFSLENBQVY7QUFDTixJQUFNLFNBQVMsUUFBUSxVQUFSLENBQVQ7QUFDTixJQUFNLFFBQVEsUUFBUSxPQUFSLENBQVI7O0FBRUMsU0FBUyxHQUFULENBQWEsSUFBYixFQUFtQixHQUFuQixFQUF3QjtBQUM3QixNQUFJLFNBQVMsSUFBSSxRQUFRLE1BQVIsQ0FBZSxRQUFRLFdBQVIsRUFBcUIsUUFBUSxXQUFSLENBQWpELENBRHlCO0FBRTdCLE1BQUksYUFBSixDQUY2Qjs7QUFJN0IsTUFBSTtBQUNGLFdBQU8sT0FBTyxJQUFQLENBQVksSUFBWixFQUFrQixPQUFsQixDQURMO0dBQUosQ0FFRSxPQUFPLENBQVAsRUFBVTs7O0FBR1YsUUFBSSxPQUFPLENBQVAsQ0FITTtBQUlWLFFBQUksUUFBUSxLQUFLLEtBQUwsQ0FBVyxJQUFYLENBQVIsQ0FKTTtBQUtWLFVBQU0sT0FBTixDQUFjLEVBQWQsRUFMVTtBQU1WLFNBQUssSUFBSSxJQUFJLENBQUosRUFBTyxJQUFJLEVBQUUsTUFBRixFQUFVLEdBQTlCLEVBQW1DO0FBQ2pDLFVBQUksT0FBTyxLQUFLLENBQUwsQ0FBUCxDQUQ2QjtBQUVqQyxVQUFJLFFBQVEsSUFBUixFQUFjLE9BQWxCO0tBRkY7O0FBS0EsUUFBSSxLQUFLLE1BQU0sSUFBTixDQUFMLENBWE07O0FBYVYsUUFBSSxPQUFPLENBQVAsR0FBVyxDQUFYLEVBQWMsUUFBUSxHQUFSLENBQVksTUFBTSxJQUFOLENBQVcsT0FBTyxDQUFQLENBQXZCLEVBQWtDLE1BQU0sT0FBTyxDQUFQLENBQXhDLEVBQWxCO0FBQ0EsUUFBSSxJQUFKLEVBQVUsUUFBUSxHQUFSLENBQVksTUFBTSxJQUFOLENBQVcsSUFBWCxDQUFaLEVBQThCLE1BQU0sR0FBTixDQUFVLEVBQVYsQ0FBOUIsRUFBVjtBQUNBLFFBQUksT0FBTyxDQUFQLEdBQVcsTUFBTSxNQUFOLEVBQWMsUUFBUSxHQUFSLENBQVksTUFBTSxJQUFOLENBQVcsT0FBTyxDQUFQLENBQXZCLEVBQWtDLE1BQU0sT0FBTyxDQUFQLENBQXhDLEVBQTdCO0FBQ0EsVUFBTSxJQUFJLEtBQUosQ0FBVSxNQUFNLEdBQU4sd0JBQStCLE1BQU0sSUFBTixXQUFtQixJQUFuQixPQUEvQixDQUFWLENBQU4sQ0FoQlU7R0FBVjs7QUFtQkYsTUFBSSxLQUFLLE1BQUwsR0FBYyxDQUFkLEVBQWlCO0FBQ25CLFlBQVEsSUFBUixDQUFhLE1BQU0sR0FBTixDQUFVLElBQVYsQ0FBZSx3QkFBZixDQUFiLEVBRG1CO0FBRW5CLFFBQUksVUFBUyxPQUFPLFlBQVAsQ0FBb0IsRUFBcEIsQ0FBVCxDQUZlO0FBR25CLFNBQUssT0FBTCxDQUFhLFVBQVMsR0FBVCxFQUFjLENBQWQsRUFBaUI7QUFDNUIsY0FBUSxJQUFSLENBQWEsS0FBSyxTQUFMLENBQWUsR0FBZixFQUFvQixJQUFwQixFQUEwQixDQUExQixDQUFiLEVBRDRCO0FBRTVCLGNBQVEsSUFBUixDQUFhLGtDQUFiLEVBRjRCO0tBQWpCLENBQWIsR0FJQSxRQUFRLElBQVIsQ0FBYSxNQUFNLE1BQU4sbUJBQ0osTUFBTSxJQUFOLENBQVcsS0FBSyxNQUFMLCtJQURQLENBQWIsQ0FKQSxDQUhtQjtHQUFyQjs7QUFlQSxNQUFJLFNBQVMsT0FBTyxNQUFQLENBQWMsS0FBSyxDQUFMLENBQWQsRUFBdUIsR0FBdkIsQ0FBVCxDQXhDeUI7QUF5QzdCLFNBQU8sTUFBUCxDQXpDNkI7Q0FBeEIiLCJmaWxlIjoicnVuLmpzIiwic291cmNlc0NvbnRlbnQiOlsiY29uc3QgbmVhcmxleSA9IHJlcXVpcmUoJ25lYXJsZXknKVxuY29uc3QgZ3JhbW1hciA9IHJlcXVpcmUoJy4vZ3JhbW1hcicpXG5jb25zdCBpbnRlcnAgPSByZXF1aXJlKCcuL2ludGVycCcpXG5jb25zdCBjaGFsayA9IHJlcXVpcmUoJ2NoYWxrJylcblxuZXhwb3J0IGZ1bmN0aW9uIHJ1bihjb2RlLCBkaXIpIHtcbiAgbGV0IHBhcnNlciA9IG5ldyBuZWFybGV5LlBhcnNlcihncmFtbWFyLlBhcnNlclJ1bGVzLCBncmFtbWFyLlBhcnNlclN0YXJ0KVxuICBsZXQgYXN0c1xuXG4gIHRyeSB7XG4gICAgYXN0cyA9IHBhcnNlci5mZWVkKGNvZGUpLnJlc3VsdHNcbiAgfSBjYXRjaCAoZSkge1xuICAgIC8vIHRoZXJlJ3MgYmVlbiBhIHN5bnRheCBlcnJvciA6KFxuXG4gICAgbGV0IGxpbmUgPSAxXG4gICAgbGV0IGxpbmVzID0gY29kZS5zcGxpdCgnXFxuJylcbiAgICBsaW5lcy51bnNoaWZ0KCcnKVxuICAgIGZvciAobGV0IGkgPSAwOyBpIDwgZS5vZmZzZXQ7IGkrKykge1xuICAgICAgbGV0IGNoYXIgPSBjb2RlW2ldXG4gICAgICBpZiAoY2hhciA9PSAnXFxuJykgbGluZSsrXG4gICAgfVxuXG4gICAgbGV0IGxuID0gbGluZXNbbGluZV1cblxuICAgIGlmIChsaW5lIC0gMSA+IDApIGNvbnNvbGUubG9nKGNoYWxrLmJvbGQobGluZSAtIDEpLCBsaW5lc1tsaW5lIC0gMV0pXG4gICAgaWYgKGxpbmUpIGNvbnNvbGUubG9nKGNoYWxrLmJvbGQobGluZSksIGNoYWxrLnJlZChsbikpXG4gICAgaWYgKGxpbmUgKyAxIDwgbGluZXMubGVuZ3RoKSBjb25zb2xlLmxvZyhjaGFsay5ib2xkKGxpbmUgKyAxKSwgbGluZXNbbGluZSArIDFdKVxuICAgIHRocm93IG5ldyBFcnJvcihjaGFsay5yZWQoYFxcblN5bnRheCBFcnJvciBhdCAke2NoYWxrLmN5YW4oYGxpbmUgJHtsaW5lfWApfSFgKSlcbiAgfVxuXG4gIGlmIChhc3RzLmxlbmd0aCA+IDEpIHtcbiAgICBjb25zb2xlLndhcm4oY2hhbGsucmVkLmJvbGQoJyEhIEFNQklHVU9VUyBTWU5UQVggISEnKSlcbiAgICBsZXQgZXNjYXBlID0gU3RyaW5nLmZyb21DaGFyQ29kZSgyNylcbiAgICBhc3RzLmZvckVhY2goZnVuY3Rpb24oYXN0LCBpKSB7XG4gICAgICBjb25zb2xlLndhcm4oSlNPTi5zdHJpbmdpZnkoYXN0LCBudWxsLCAwKSlcbiAgICAgIGNvbnNvbGUud2FybignXFxuLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLVxcbicpXG4gICAgfSktXG4gICAgY29uc29sZS53YXJuKGNoYWxrLnllbGxvdyhgXG5BIHRvdGFsIG9mICR7Y2hhbGsuY3lhbihhc3RzLmxlbmd0aCl9IEFTVHMgd2VyZSBnZW5lcmF0ZWQuXG5QbGVhc2UgcmVwb3J0IHRoaXMgb24gdGhlIG9mZmljaWFsIGlzc3VlIHRyYWNrZXI6XG5odHRwczovL2dpdGh1Yi5jb20vbGlhbTQvdGxuY2N1d2FnbmYvaXNzdWVzXG5Vc2luZyBmaXJzdCBBU1QuXG5gKSlcbiAgfVxuXG4gIGxldCByZXN1bHQgPSBpbnRlcnAuaW50ZXJwKGFzdHNbMF0sIGRpcilcbiAgcmV0dXJuIHJlc3VsdFxufVxuIl19
+var run = exports.run = function () {
+  var ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(code, dir) {
+    var parser, asts, line, lines, i, char, ln, _escape, result;
+
+    return _regenerator2.default.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart);
+            asts = void 0;
+            _context.prev = 2;
+
+            asts = parser.feed(code).results;
+            _context.next = 17;
+            break;
+
+          case 6:
+            _context.prev = 6;
+            _context.t0 = _context['catch'](2);
+
+            // there's been a syntax error :(
+
+            line = 1;
+            lines = code.split('\n');
+
+            lines.unshift('');
+            for (i = 0; i < _context.t0.offset; i++) {
+              char = code[i];
+
+              if (char == '\n') line++;
+            }
+
+            ln = lines[line];
+
+
+            if (line - 1 > 0) console.log(chalk.bold(line - 1), lines[line - 1]);
+            if (line) console.log(chalk.bold(line), chalk.red(ln));
+            if (line + 1 < lines.length) console.log(chalk.bold(line + 1), lines[line + 1]);
+            throw new Error(chalk.red('\nSyntax Error at ' + chalk.cyan('line ' + line) + '!'));
+
+          case 17:
+
+            if (asts.length > 1) {
+              console.warn(chalk.red.bold('!! AMBIGUOUS SYNTAX !!'));
+              _escape = String.fromCharCode(27);
+
+              asts.forEach(function (ast, i) {
+                console.warn((0, _stringify2.default)(ast, null, 0));
+                console.warn('\n----------------------------\n');
+              }) - console.warn(chalk.yellow('\nA total of ' + chalk.cyan(asts.length) + ' ASTs were generated.\nPlease report this on the official issue tracker:\nhttps://github.com/liam4/tlnccuwagnf/issues\nUsing first AST.\n'));
+            }
+
+            _context.next = 20;
+            return interp.interp(asts[0], dir);
+
+          case 20:
+            result = _context.sent;
+            return _context.abrupt('return', result);
+
+          case 22:
+          case 'end':
+            return _context.stop();
+        }
+      }
+    }, _callee, this, [[2, 6]]);
+  }));
+  return function run(_x, _x2) {
+    return ref.apply(this, arguments);
+  };
+}();
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var nearley = require('nearley');
+var grammar = require('./grammar');
+var interp = require('./interp');
+var chalk = require('chalk');
