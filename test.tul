@@ -1,4 +1,5 @@
 time => 300;
+t => time;
 
 test-fn => async {
   ret => return;
@@ -13,6 +14,8 @@ should-return-normally => {
   print('E');
   return('F');
 };
+
+foobar.baz -> foobar;
 
 print('A');
 test-fn();
