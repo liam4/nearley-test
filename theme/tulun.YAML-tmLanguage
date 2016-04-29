@@ -1,11 +1,11 @@
 # [PackageDev] target_format: plist, ext: tmLanguage
-name: Tulun (TLNCCUWAGNF)
+name: Tulun (tlnccuwagnf)
 scopeName: source.tulun
 fileTypes: [tul]
 uuid: ddee081c-613a-495a-8a4d-848baa2dff73
 
 patterns:
-- name: keyword.control.tulun
+- name: meta.operator.tulun
   match: (=|-)>
 
 - name: constant.language.tulun
@@ -19,16 +19,24 @@ patterns:
   end: \#
 
 - name: support.function.tulun
-  match: async(.)(?=.*\{)
+  match: async\s(?=.*\{)
 
 - name: keyword.control.tulun
-  match: ((?!-)(?<=\W)|^)(return|process|print-debug|Variable|print|concat|if|ifel|obj|array|loop|use|make|change|value|from|exists)(?!-)(?=\W)
+  # return|process|print-debug|Variable|print|concat|if|ifel|obj|array|loop|use|make|change|value|from|exists
+  match: ((return|process|print-debug|Variable|print|concat|if|ifel|obj|array|loop|use|make|change|value|from|exists)\s*(?=\(|;|\s))|((?!\([$\w0-9-+=-]+)\s+(return|process|print-debug|Variable|print|concat|if|ifel|obj|array|loop|use|make|change|value|from|exists)\s+(?=([$\w0-9-+=-]+)+\)))
 
 - name: keyword.operator.tulun
-  match: ((?!-)(?<=\W)|^)(add|divide|minus|multiply|not|and|or|lt|gt|eq|is|\+|-|/|\*|<|>|=)(?!-)(?=\W)
+  # add|divide|minus|multiply|not|and|or|lt|gt|eq|is|\+|-|\/|\*|<|>|=
+  match: ((add|divide|minus|multiply|not|and|or|lt|gt|eq|is|\+|-|\/|\*|<|>|=)\s*(?=\(|;|\s))|((?!\([$\w0-9-+=-]+)\s+(add|divide|minus|multiply|not|and|or|lt|gt|eq|is|\+|-|\/|\*|<|>|=)\s+(?=([$\w0-9-+=-]+)+\)))
 
 - name: string.quoted.single.tulun
   match: ('[^']*')
 
 - name: string.quoted.double.tulun
   match: ("[^"]*")
+
+- name: entity.name.function.tulun
+  match: ([-_$a-zA-Z0-9][$\w0-9-+=-]*\s*(?=\())|((?!\([$\w0-9-+=-]+)\s+([$\w0-9-+=-]+)\s+(?=([$\w0-9-+=-]+)+\)))
+
+- name: variable.parameter.tulun
+  match: ([-_$a-zA-Z0-9][$\w0-9-+=-]*\s*(?=\(|(=|-)>|\)|\s))

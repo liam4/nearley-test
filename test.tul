@@ -1,10 +1,12 @@
+time => 300;
+
 test-fn => async {
   ret => return;
   print('B');
   set-timeout({
     print('C');
     ret(42);
-  }, 325);
+  }, (time + 25));
 };
 
 should-return-normally => {

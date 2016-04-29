@@ -7,14 +7,14 @@
 		<string>tul</string>
 	</array>
 	<key>name</key>
-	<string>Tulun (TLNCCUWAGNF)</string>
+	<string>Tulun (tlnccuwagnf)</string>
 	<key>patterns</key>
 	<array>
 		<dict>
 			<key>match</key>
 			<string>(=|-)&gt;</string>
 			<key>name</key>
-			<string>keyword.control.tulun</string>
+			<string>meta.operator.tulun</string>
 		</dict>
 		<dict>
 			<key>match</key>
@@ -38,19 +38,19 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>async(.)(?=.*\{)</string>
+			<string>async\s(?=.*\{)</string>
 			<key>name</key>
 			<string>support.function.tulun</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>((?!-)(?&lt;=\W)|^)(return|process|print-debug|Variable|print|concat|if|ifel|obj|array|loop|use|make|change|value|from|exists)(?!-)(?=\W)</string>
+			<string>((return|process|print-debug|Variable|print|concat|if|ifel|obj|array|loop|use|make|change|value|from|exists)\s*(?=\(|;|\s))|((?!\([$\w0-9-+=-]+)\s+(return|process|print-debug|Variable|print|concat|if|ifel|obj|array|loop|use|make|change|value|from|exists)\s+(?=([$\w0-9-+=-]+)+\)))</string>
 			<key>name</key>
 			<string>keyword.control.tulun</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>((?!-)(?&lt;=\W)|^)(add|divide|minus|multiply|not|and|or|lt|gt|eq|is|\+|-|/|\*|&lt;|&gt;|=)(?!-)(?=\W)</string>
+			<string>((add|divide|minus|multiply|not|and|or|lt|gt|eq|is|\+|-|\/|\*|&lt;|&gt;|=)\s*(?=\(|;|\s))|((?!\([$\w0-9-+=-]+)\s+(add|divide|minus|multiply|not|and|or|lt|gt|eq|is|\+|-|\/|\*|&lt;|&gt;|=)\s+(?=([$\w0-9-+=-]+)+\)))</string>
 			<key>name</key>
 			<string>keyword.operator.tulun</string>
 		</dict>
@@ -65,6 +65,18 @@
 			<string>("[^"]*")</string>
 			<key>name</key>
 			<string>string.quoted.double.tulun</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>([-_$a-zA-Z0-9][$\w0-9-+=-]*\s*(?=\())|((?!\([$\w0-9-+=-]+)\s+([$\w0-9-+=-]+)\s+(?=([$\w0-9-+=-]+)+\)))</string>
+			<key>name</key>
+			<string>entity.name.function.tulun</string>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>([-_$a-zA-Z0-9][$\w0-9-+=-]*\s*(?=\(|(=|-)&gt;|\)|\s))</string>
+			<key>name</key>
+			<string>variable.parameter.tulun</string>
 		</dict>
 	</array>
 	<key>scopeName</key>
