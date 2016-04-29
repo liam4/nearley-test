@@ -1,5 +1,0 @@
-# Tulun Read Eval Print Loop #
-readline => use('readline');
-colors => use('colors');
-
-print('hi');
