@@ -1,0 +1,23 @@
+# Tulun Read Eval Print Loop #
+repl => use('./repl.js');
+run => repl.run;
+while => repl.forever;
+lines => '';
+line-before => '';
+ret => '';
+
+while({
+  line => repl.prompt();
+  run(line);
+
+  #
+  lines -> (lines concat line);
+
+  if(((line is '') and (line-before is '')), {
+    ret -> 'finish'
+  });
+
+  line-before -> line;
+  return(ret);
+  #
+});
