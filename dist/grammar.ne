@@ -16,7 +16,7 @@ var JoinRecursive = function(a) {
 
 @builtin "whitespace.ne"
 
-Program -> _ _Program:? _ {% function(d) { return d[1] ? d[1] : [] } %}
+Program -> _ (_Program _):? {% function(d) { return d[1] ? d[1][0] : [] } %}
 _Program -> Command _ CommandSeparator _ _Program {% JoinRecursive %}
           | Command _ CommandSeparator {% function(d) { return [d[0]] } %}
           | Comment _ _Program {% function(d) { return d[2] } %}
@@ -39,6 +39,7 @@ VariableChange -> Identifier _ "->" _ Expression {% function(d) { return [C.VARI
 # General expression
 Expression -> _Expression {% function(d) { return d[0][0] } %}
 _Expression -> CallFunctionExpression
+             | CallFunctionSurroundExpression
              | GetPropertyUsingIdentifierExpression
              | FunctionLiteral
             #| ShorthandFunctionLiteral
@@ -74,6 +75,41 @@ CallFunctionExpression -> Expression _ PassedArgumentList {% function(d) {
 PassedArgumentList -> "(" _ PassedArgumentListContents:? _ ")" {% function(d) { return d[2] ? d[2] : [] } %}
 PassedArgumentListContents -> Expression _ "," _ PassedArgumentListContents {% JoinRecursive %}
                             | Expression
+
+# Surround function call
+# This is kind of confusing -- here's a paste from my workfile to explain:
+#
+# Implement magic things so that you can do this:
+#
+#   (arg1 fn arg2)
+#
+# as well as this:
+#
+#   fn(arg1, arg2)
+#
+# That makes this possible:
+#
+#   (3 + 4)
+#
+# instead of this:
+#
+#   +(3, 4)
+#
+# Ambiguity as to order of operations is easy -- the new function call syntax
+# must always be wrapped in parenthesis.
+#
+# That means you HAVE to do this:
+#
+#   ((3 * 2) - (4 / 2))
+#
+# instead of this:
+#
+#   (3 * 2 - 4 / 2)
+#
+# ..but hey, it makes the order you're doing things clearer anyways.
+CallFunctionSurroundExpression -> "(" Expression __ Expression __ (Expression __):* Expression _ ")" {% function(d) {
+  return [ C.FUNCTION_CALL, d[3], [d[1]].concat(d[5].map(a => a[0])).concat([d[6]]) ];
+} %}
 
 # Boolean expression
 BooleanExpression -> _BooleanExpression {% function(d) { return ["BOOLEAN_PRIM", d[0][0] === "true"] } %}
