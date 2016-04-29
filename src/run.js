@@ -3,7 +3,7 @@ const grammar = require('./grammar')
 const interp = require('./interp')
 const chalk = require('chalk')
 
-export function run(code, dir) {
+export async function run(code, dir) {
   let parser = new nearley.Parser(grammar.ParserRules, grammar.ParserStart)
   let asts
 
@@ -43,6 +43,6 @@ Using first AST.
 `))
   }
 
-  let result = interp.interp(asts[0], dir)
+  let result = await interp.interp(asts[0], dir)
   return result
 }

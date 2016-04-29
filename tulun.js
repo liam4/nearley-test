@@ -81,13 +81,11 @@ function main(f, again) {
 
     let code = data.toString()
 
-    try {
-      run(code, `${process.cwd()}/${require('path').dirname(f)}`)
-    } catch (err) {
-      /*
-      if (err.stack) console.error(chalk.red(err.stack))
-      else*/ console.error(chalk.red(err.message))
+    run(code, `${process.cwd()}/${require('path').dirname(f)}`)
+    .catch(function(err) {
+      console.error(chalk.red(err.message))
+      console.error(chalk.red(err.stack))
       process.exit(1)
-    }
+    })
   })
 }

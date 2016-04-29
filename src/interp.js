@@ -3,12 +3,16 @@ const lib = require('./lib')
 const chalk = require('chalk')
 const builtins = require('./builtins')
 
-export function evaluateExpression(expression, variables) {
+export async function evaluateExpression(expression, variables) {
+  // console.log('evaluating expression', expression)
   if (expression[0] === C.COMMENT) {
     return
   } else if (expression instanceof Array &&
              expression.every(e => e instanceof Array)) {
-    return evaluateEachExpression(variables, expression)
+    // console.log('Fo...')
+    const ret = await evaluateEachExpression(variables, expression)
+    // console.log('Ba.', ret)
+    return ret
   } if (expression[0] === C.VARIABLE_IDENTIFIER && expression[1] === 'environment') {
     return new lib.LEnvironment(variables)
   } else if (expression[0] === C.FUNCTION_CALL) {
@@ -19,33 +23,32 @@ export function evaluateExpression(expression, variables) {
     const argExpressions = expression[2]
 
     // Evaluate the function expression to get the actual function.
-    const fn = evaluateExpression(fnExpression, variables)
+    const fn = await evaluateExpression(fnExpression, variables)
 
     if (!(fn instanceof lib.LFunction)) {
       throw new Error(`Can't call ${chalk.cyan(fn)} because it's not a function`)
     }
 
-    /* This code *used* to work but it doesn't any more, because some
-     * parameters of the function could be unevaluated. Now argument evaluation
-     * is done from within the call method of the function.
-     */
-    // Evaluate all of the arguments passed to the function.
-    //const args = argExpressions.map(arg => evaluateExpression(arg, variables));
     fn.argumentScope = variables
     const args = argExpressions
 
     // Use lib.call to call the function with the evaluated arguments.
-    return lib.call(fn, args)
+    return await lib.call(fn, args)
   } else if (expression[0] === C.VARIABLE_IDENTIFIER) {
     // Get a variable: "name"
 
     // Get the name from the expression list.
     const name = expression[1]
 
+    // console.log(`Getting variable ${name}...`)
+    // console.log(name in variables)
+
     // Return the variable's value, or, if the variable doesn't exist, throw an
     // error.
     if (name in variables) {
-      return variables[name].value
+      // console.log('Return:', variables[name])
+      const ret = variables[name].value
+      return ret
     } else {
       throw new Error(`${chalk.cyan(name)} is not defined.`)
     }
@@ -56,8 +59,12 @@ export function evaluateExpression(expression, variables) {
     const name = expression[1]
     const valueExpression = expression[2]
 
+    // console.log(`Setting variable ${name}...`)
+
     // Evaluate the value of the variable.
-    const value = evaluateExpression(valueExpression, variables)
+    const value = await evaluateExpression(valueExpression, variables)
+
+    // console.log(`..value is ${value}`)
 
     // Set the variable in the variables object to a new variable with the
     // evaluated value.
@@ -71,17 +78,18 @@ export function evaluateExpression(expression, variables) {
     const valueExpression = expression[2]
 
     // Evaluate the new value of the variable.
-    const value = evaluateExpression(valueExpression, variables)
+    const value = await evaluateExpression(valueExpression, variables)
 
     // Change the value of the already defined variable.
     variables[name].value = value
     return
   } else if (expression[0] === C.FUNCTION_PRIM) {
-    // A function literal: "fn(arg1, arg2, arg3...) { code }"
+    // A function literal: "[async] [(arg1, arg2, arg3...)] { code }"
 
     // Get the code and paramaters from the expression list.
     const paramaters = expression[1]
     const code = expression[2]
+    const isAsync = expression[3]
 
     // Create the function using the given code.
     const fn = new lib.LFunction(code)
@@ -93,6 +101,8 @@ export function evaluateExpression(expression, variables) {
     // Set the paramaters for the function to the paramaters taken from the
     // expression list.
     fn.setParamaters(paramaters)
+
+    fn.isAsynchronous = isAsync
 
     // Return the function.
     return fn
@@ -138,8 +148,8 @@ export function evaluateExpression(expression, variables) {
     const valueExpression = expression[3]
 
     // Evaluate the object and value expressions.
-    const obj = evaluateExpression(objExpression, variables)
-    const value = evaluateExpression(valueExpression, variables)
+    const obj = await evaluateExpression(objExpression, variables)
+    const value = await evaluateExpression(valueExpression, variables)
 
     // Use lib.set to set the property of the evaluated object.
     lib.set(obj, key, value)
@@ -152,7 +162,7 @@ export function evaluateExpression(expression, variables) {
     const key = expression[2]
 
     // Evaluate the object expression.
-    const obj = evaluateExpression(objExpression, variables)
+    const obj = await evaluateExpression(objExpression, variables)
 
     // Get the value from lib.get.
     const value = lib.get(obj, key)
@@ -164,22 +174,27 @@ export function evaluateExpression(expression, variables) {
   }
 }
 
-export function evaluateGetPropUsingIdentifier(variables, [_, objExpr, key]) {
-  let obj = evaluateExpression(objExpr, variables)
+export async function evaluateGetPropUsingIdentifier(variables, [_, objExpr, key]) {
+  let obj = await evaluateExpression(objExpr, variables)
   return lib.get(obj, key)
 }
 
-export function evaluateEachExpression(variables, expressions) {
-  return expressions.map(e => evaluateExpression(e, variables))
+export async function evaluateEachExpression(variables, expressions) {
+  let results = []
+  for (let expression of expressions) {
+    results.push(await evaluateExpression(expression, variables))
+  }
+  return results
 }
 
-export function interp(ast, dir) {
+export async function interp(ast, dir) {
   if (ast) {
     let variables = {}
 
     Object.assign(variables, builtins.makeBuiltins(dir))
 
-    let result = evaluateEachExpression(variables, ast)
+    let result = await evaluateEachExpression(variables, ast)
+    // console.log('derrrp (THIS IS GOOD)')
 
     return { result, variables }
   } else {

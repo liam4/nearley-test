@@ -1,5 +1,6 @@
 const interp = require('./interp')
 const C = require('./constants')
+const equal = require('deep-equal')
 
 export class StringPrim {
   constructor(str) {
@@ -111,42 +112,96 @@ export function toLObject(data) {
   return obj
 }
 
-// Call function --------------------------------------------------------------
+// Tree parsing stuff ---------------------------------------------------------
 
-export function call(fn, args) {
-  return fn['__call__'](args)
+export function searchTreeFor(innerTree, searchFor, reject) {
+  for (let treeNode of innerTree) {
+    if (equal(treeNode, searchFor)) {
+      return true
+    }
+  }
+  for (let treeNode of innerTree.filter(n => n instanceof Array)
+        .filter(n => !(reject ? reject(n) : false))) {
+    if (searchTreeFor(treeNode, searchFor, reject)) {
+      return true
+    }
+  }
+  return false
 }
 
-export function defaultCall(fnToken, args) {
+// Call function --------------------------------------------------------------
+
+export async function call(fn, args) {
+  return await fn['__call__'](args)
+}
+
+export async function defaultCall(fnToken, args) {
   if (fnToken.fn instanceof Function) {
     // it's a javascript function so just call it
-    return fnToken.fn(args.map(
-      arg => interp.evaluateExpression(arg, fnToken.argumentScope)))
+    const argumentValues = []
+    for (let argument of args) {
+      argumentValues.push(await interp.evaluateExpression(
+        argument, fnToken.argumentScope))
+    }
+    return fnToken.fn(argumentValues)
   } else {
-    const scope = Object.assign({}, fnToken.scopeVariables)
+    // Might this function return anything? We can tell by if the `return`
+    // variable is referenced anywhere within the function's code. If so we
+    // need to do all sorts of promise-y things.
+    //
+    // Of course, this is all very hacky, and we would be better off using an
+    // "async {}" asynchronous function syntax...
+    /*
+    const isAsynchronous = searchTreeFor(
+      fnToken.fn, ['VARIABLE_IDENTIFIER', 'return'],
+      // New function literals get a new return, so ignore those
+      n => n[0] === 'FUNCTION_PRIM')
+    console.log('test:', isAsynchronous)
+    */
+    const isAsynchronous = fnToken.isAsynchronous
+
+    // Asynchronous things
+    let resolve
+    const donePromise = new Promise(function(_resolve) {
+      resolve = _resolve
+    })
+
+    // Not asynchronous things
     let returnValue = null
+
+    const scope = Object.assign({}, fnToken.scopeVariables)
     scope.return = new Variable(new LFunction(function([val]) {
-      returnValue = val
+      if (isAsynchronous) {
+        resolve(val)
+      } else {
+        returnValue = val
+      }
     }))
     const paramaters = fnToken.paramaterList
     for (let i = 0; i < paramaters.length; i++) {
       const value = args[i]
       const paramater = paramaters[i]
       if (paramater.type === 'normal') {
-        const evaluatedValue = interp.evaluateExpression(value)
+        const evaluatedValue = await interp.evaluateExpression(value)
         scope[paramater.name] = new Variable(evaluatedValue)
       } else if (paramater.type === 'unevaluated') {
-        scope[paramater.name] = new Variable(new LFunction(function() {
-          return interp.evaluateExpression(value, fnToken.argumentScope)
+        scope[paramater.name] = new Variable(new LFunction(async function() {
+          return await interp.evaluateExpression(value, fnToken.argumentScope)
         }))
       }
     }
 
+    // Shorthand functions.. these aren't finished! They don't work with the
+    // whole async stuff. I think.
     if (fnToken.isShorthand) {
-      return interp.evaluateExpression(fnToken.fn, scope)
+      return await interp.evaluateExpression(fnToken.fn, scope)
     } else {
-      interp.evaluateEachExpression(scope, fnToken.fn)
-      return returnValue
+      await interp.evaluateEachExpression(scope, fnToken.fn)
+      if (isAsynchronous) {
+        return await donePromise
+      } else {
+        return returnValue
+      }
     }
   }
 }
@@ -265,7 +320,7 @@ export class LArray extends LObject {
 // * use inst.__call__ to call the function (with optional arguments)
 
 export class LFunction extends LObject {
-  constructor(fn) {
+  constructor(fn, asynchronous) {
     super()
     this['__constructor__'] = LFunction
     this.fn = fn
@@ -273,6 +328,7 @@ export class LFunction extends LObject {
 
     this.unevaluatedArgs = []
     this.normalArgs = []
+    if (asynchronous) this.isAsynchronous = true
   }
 
   __call__(args) {

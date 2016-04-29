@@ -34,6 +34,17 @@ export function makeBuiltins(fsScope) {
     }))
   }))
 
+  variables['process'] = new lib.Variable(lib.toLObject({
+    exit: new lib.LFunction(function([code]) {
+      code = code || 0
+      process.exit(code)
+    })
+  }))
+
+  variables['print-debug'] = new lib.Variable(new lib.LFunction(function(args) {
+    console.log(...args)
+  }))
+
   variables['concat'] = new lib.Variable(new lib.LFunction(function(args) {
     return lib.toLString(args.map(lib.toJString).join(''))
   }))
@@ -212,6 +223,12 @@ export function makeBuiltins(fsScope) {
   }))
 
   variables['Variable'] = new lib.Variable(variableObject)
+
+  variables['set-timeout'] = new lib.Variable(new lib.LFunction(function([fn, ms]) {
+    setTimeout(function() {
+      lib.call(fn, [])
+    }, lib.toJNumber(ms))
+  }))
 
   return variables
 }

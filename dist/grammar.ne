@@ -54,7 +54,7 @@ SetPropertyUsingIdentifier -> Expression _ "." _ Identifier _ ">" _ Expression {
 GetPropertyUsingIdentifierExpression -> Expression _ "." _ Identifier {% function(d) { return [C.GET_PROP_USING_IDENTIFIER, d[0], d[4]] } %}
 
 # Function expression
-FunctionLiteral -> (ArgumentList _):? CodeBlock {% function(d) { return [C.FUNCTION_PRIM, d[0] ? d[0][0] : [], d[1]] } %}
+FunctionLiteral -> ("async" _):? (ArgumentList _):? CodeBlock {% function(d) { return [C.FUNCTION_PRIM, d[1] ? d[1][0] : [], d[2], !!d[0]] } %}
 ArgumentList -> "(" _ ArgumentListContents:? _ ")" {% function(d) { return d[2] ? d[2] : [] } %}
 ArgumentListContents -> Argument _ "," _ ArgumentListContents {% JoinRecursive %}
                       | Argument

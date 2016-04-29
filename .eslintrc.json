@@ -10,6 +10,7 @@
     "sourceType": "module",
     "ecmaVersion": 6
   },
+  "parser": "babel-eslint",
   "rules": {
     "strict": [
       0

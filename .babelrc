@@ -1,4 +1,7 @@
 {
   "presets": ["es2015"],
-  "sourceMaps": "inline"
+  "plugins": [
+    "transform-async-to-generator",
+    "transform-runtime"
+  ]
 }
