@@ -15,8 +15,6 @@ should-return-normally => {
   return('F');
 };
 
-foobar.baz -> foobar;
-
 print('A');
 test-fn();
 print('D');
