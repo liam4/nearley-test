@@ -33,8 +33,6 @@ function version() {
   )
 }
 
-//    ${chalk.cyan('tulun        ')} | enters REPL \\
-
 if (args.length === 1) {
   if (args[0] === 'rebuild' || args[0] === '-r') build(() => {})
   else if (args[0] === 'version') version()
@@ -42,6 +40,7 @@ if (args.length === 1) {
     console.log(`${chalk.green(TULUN)}
     ${chalk.bold('Command')}       | ${chalk.bold('Description')}
   ――――――――――――――――+――――――――――――――――――――――――――――――――
+    ${chalk.cyan('tulun        ')} | enters REPL
     ${chalk.cyan('tulun')} ${chalk.green('<file> ')} | runs ${chalk.yellow('<file>')}.tul
     ${chalk.cyan('tulun')} ${chalk.green('help   ')} | this screen, silly
     ${chalk.cyan('tulun')} ${chalk.green('version')} | outputs version number
@@ -80,12 +79,12 @@ function main(f, again) {
     }
 
     let code = data.toString()
-
-    run(code, `${process.cwd()}/${require('path').dirname(f)}`)
-    .catch(function(err) {
-      console.error(chalk.red(err.message))
-      console.error(chalk.red(err.stack))
+    try {
+      run(code, `${process.cwd()}/${require('path').dirname(f)}`)
+    } catch (err) {
+      // for some reason the actual error message/stack doesn't appear
+      console.log(err)
       process.exit(1)
-    })
+    }
   })
 }
