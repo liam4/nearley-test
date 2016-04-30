@@ -194,7 +194,6 @@ export async function interp(ast, dir) {
     Object.assign(variables, builtins.makeBuiltins(dir))
 
     let result = await evaluateEachExpression(variables, ast)
-    // console.log('derrrp (THIS IS GOOD)')
 
     return { result, variables }
   } else {

@@ -38,5 +38,8 @@
     "deep-equal": "^1.0.1",
     "nearley": "^2.4.0",
     "readline-sync": "^1.4.1"
+  },
+  "scripts": {
+    "test": "gulp test"
   }
 }

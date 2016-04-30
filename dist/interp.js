@@ -495,10 +495,7 @@ var interp = exports.interp = function () {
 
           case 5:
             result = _context4.sent;
-            return _context4.abrupt('return', { result:
-              // console.log('derrrp (THIS IS GOOD)')
-
-              result, variables: variables });
+            return _context4.abrupt('return', { result: result, variables: variables });
 
           case 9:
             throw new Error('Haha, you didn\'t pass me a tree!');

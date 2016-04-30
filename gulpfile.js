@@ -51,6 +51,8 @@ gulp.task('watch', ['default'], function() {
   gulp.watch('./*/**/*.tul', ['default'])
 })
 
-gulp.task('test', ['build'], function() {
-  require('./dist/tests')
+gulp.task('test', ['default'], function() {
+  setImmediate(function() {
+    require('./dist/tests')
+  })
 })

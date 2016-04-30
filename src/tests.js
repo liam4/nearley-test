@@ -12,8 +12,7 @@ const test = function(code, assume) {
   tests++
   const out = []
   let o = chalk.yellow('[out]')
-  console.log = function() {
-    let args = [].slice.call(arguments, 0)
+  console.log = function(...args) {
     out.push(args)
     oldLog(o, ...args)
   }
@@ -43,7 +42,8 @@ const checkOut = function(compare) {
   }
 }
 
-console.time('Total tests time')
+console.time('Total tests time');
+// semicolon so that it doesn't think console.time(...)(async function...)
 
 (async function() {
   try {

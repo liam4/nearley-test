@@ -12,10 +12,6 @@ var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
-var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
-
-var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
-
 var _templateObject = (0, _taggedTemplateLiteral3.default)(['hello!'], ['hello!']),
     _templateObject2 = (0, _taggedTemplateLiteral3.default)(['single quoted'], ['single quoted']),
     _templateObject3 = (0, _taggedTemplateLiteral3.default)(['foobar'], ['foobar']),
@@ -46,9 +42,12 @@ var test = function test(code, assume) {
   var out = [];
   var o = chalk.yellow('[out]');
   console.log = function () {
-    var args = [].slice.call(arguments, 0);
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
     out.push(args);
-    oldLog.apply(undefined, [o].concat((0, _toConsumableArray3.default)(args)));
+    oldLog.apply(undefined, [o].concat(args));
   };
   chalk.enabled = false;
   var promise = run(code);
@@ -76,7 +75,10 @@ var checkOut = function checkOut(compare) {
   };
 };
 
-console.time('Total tests time')((0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee() {
+console.time('Total tests time');
+// semicolon so that it doesn't think console.time(...)(async function...)
+
+(0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee() {
   return _regenerator2.default.wrap(function _callee$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
@@ -238,4 +240,4 @@ console.time('Total tests time')((0, _asyncToGenerator3.default)(_regenerator2.d
       }
     }
   }, _callee, this, [[0, 68]]);
-}))());
+}))();
