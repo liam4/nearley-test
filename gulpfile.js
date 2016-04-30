@@ -1,33 +1,33 @@
 'use strict'
 
-const GRAMMAR_OUT = 'src/grammar.js'
-const GRAMMAR_IN = 'src/grammar.ne'
+var GRAMMAR_OUT = 'src/grammar.js'
+var GRAMMAR_IN = 'src/grammar.ne'
 
-const fs = require('fs')
-const gulp = require('gulp')
+var fs = require('fs')
+var gulp = require('gulp')
 
-const babel = require('gulp-babel')
+var babel = require('gulp-babel')
 
-const nearley = require('./node_modules/nearley/lib/nearley.js')
-const generate = require('./node_modules/nearley/lib/generate.js')
-const Compile = require('./node_modules/nearley/lib/compile.js')
-const StreamWrapper = require('./node_modules/nearley/lib/stream.js')
+var nearley = require('./node_modules/nearley/lib/nearley.js')
+var generate = require('./node_modules/nearley/lib/generate.js')
+var Compile = require('./node_modules/nearley/lib/compile.js')
+var StreamWrapper = require('./node_modules/nearley/lib/stream.js')
 
 gulp.task('compile-grammar', function(cb) {
   // nearley compiling totally not a copy of
   // https://github.com/Hardmath123/nearley/blob/master/bin/nearleyc.js
 
-  let input = fs.createReadStream(GRAMMAR_IN)
-  let output = fs.createWriteStream(GRAMMAR_OUT)
+  var input = fs.createReadStream(GRAMMAR_IN)
+  var output = fs.createWriteStream(GRAMMAR_OUT)
 
-  let parserGrammar = new require('./node_modules/nearley/lib/' +
+  var parserGrammar = new require('./node_modules/nearley/lib/' +
                                   'nearley-language-bootstrapped.js')
-  let parser = new nearley.Parser(parserGrammar.ParserRules, parserGrammar.ParserStart)
+  var parser = new nearley.Parser(parserGrammar.ParserRules, parserGrammar.ParserStart)
 
-  let stream = input
+  var stream = input
     .pipe(new StreamWrapper(parser))
     .on('finish', function() {
-      let c = Compile(parser.results[0], {})
+      var c = Compile(parser.results[0], {})
       output.write(generate(c, 'grammar'))
       cb()
     })
