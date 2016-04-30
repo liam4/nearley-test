@@ -15,17 +15,21 @@ var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 var _templateObject = (0, _taggedTemplateLiteral3.default)(['hello!'], ['hello!']),
     _templateObject2 = (0, _taggedTemplateLiteral3.default)(['single quoted'], ['single quoted']),
     _templateObject3 = (0, _taggedTemplateLiteral3.default)(['foobar'], ['foobar']),
-    _templateObject4 = (0, _taggedTemplateLiteral3.default)(['7'], ['7']),
-    _templateObject5 = (0, _taggedTemplateLiteral3.default)(['-1'], ['-1']),
-    _templateObject6 = (0, _taggedTemplateLiteral3.default)(['12'], ['12']),
-    _templateObject7 = (0, _taggedTemplateLiteral3.default)(['0.75'], ['0.75']),
-    _templateObject8 = (0, _taggedTemplateLiteral3.default)(['3.005'], ['3.005']),
-    _templateObject9 = (0, _taggedTemplateLiteral3.default)(['good'], ['good']),
-    _templateObject10 = (0, _taggedTemplateLiteral3.default)(['false'], ['false']),
-    _templateObject11 = (0, _taggedTemplateLiteral3.default)(['true'], ['true']),
-    _templateObject12 = (0, _taggedTemplateLiteral3.default)(['100'], ['100']),
-    _templateObject13 = (0, _taggedTemplateLiteral3.default)(['0'], ['0']),
-    _templateObject14 = (0, _taggedTemplateLiteral3.default)(['thisisawesome'], ['thisisawesome']);
+    _templateObject4 = (0, _taggedTemplateLiteral3.default)(['single quoted \'escape'], ['single quoted \'escape']),
+    _templateObject5 = (0, _taggedTemplateLiteral3.default)(['double quoted "escape'], ['double quoted "escape']),
+    _templateObject6 = (0, _taggedTemplateLiteral3.default)(['newline\nescape'], ['newline\\nescape']),
+    _templateObject7 = (0, _taggedTemplateLiteral3.default)(['escape \\escape'], ['escape \\\\escape']),
+    _templateObject8 = (0, _taggedTemplateLiteral3.default)(['7'], ['7']),
+    _templateObject9 = (0, _taggedTemplateLiteral3.default)(['-1'], ['-1']),
+    _templateObject10 = (0, _taggedTemplateLiteral3.default)(['12'], ['12']),
+    _templateObject11 = (0, _taggedTemplateLiteral3.default)(['0.75'], ['0.75']),
+    _templateObject12 = (0, _taggedTemplateLiteral3.default)(['3.005'], ['3.005']),
+    _templateObject13 = (0, _taggedTemplateLiteral3.default)(['good'], ['good']),
+    _templateObject14 = (0, _taggedTemplateLiteral3.default)(['false'], ['false']),
+    _templateObject15 = (0, _taggedTemplateLiteral3.default)(['true'], ['true']),
+    _templateObject16 = (0, _taggedTemplateLiteral3.default)(['100'], ['100']),
+    _templateObject17 = (0, _taggedTemplateLiteral3.default)(['0'], ['0']),
+    _templateObject18 = (0, _taggedTemplateLiteral3.default)(['thisisawesome'], ['thisisawesome']);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -105,139 +109,157 @@ console.time('Total tests time');
 
         case 10:
 
-          console.log('Math ---');
-          // Test basic math operator functions
+          console.log('Escape codes ---');
           _context.next = 13;
-          return test('print(+(3, 4));', checkOut(_templateObject4));
+          return test('print(\'single quoted \\\'escape\');', checkOut(_templateObject4));
 
         case 13:
           _context.next = 15;
-          return test('print(-(3, 4));', checkOut(_templateObject5));
+          return test('print("double quoted \\"escape");', checkOut(_templateObject5));
 
         case 15:
           _context.next = 17;
-          return test('print(*(3, 4));', checkOut(_templateObject6));
+          return test('print(\'newline\\\nescape\');', checkOut(_templateObject6));
 
         case 17:
           _context.next = 19;
-          return test('print(/(3, 4));', checkOut(_templateObject7));
+          return test('print(\'escape \\\\escape\');', checkOut(_templateObject7));
 
         case 19:
-          _context.next = 21;
-          return test('print(+(1.25, 1.755));', checkOut(_templateObject8));
 
-        case 21:
+          console.log('Math ---');
+          // Test basic math operator functions
+          _context.next = 22;
+          return test('print(+(3, 4));', checkOut(_templateObject8));
 
-          console.log('If/else ---');
-          // Test basic if
+        case 22:
           _context.next = 24;
-          return test('\n    if(true, {\n      print("good");\n    });', checkOut(_templateObject9));
+          return test('print(-(3, 4));', checkOut(_templateObject9));
 
         case 24:
           _context.next = 26;
-          return test('\n    ifel(false, {\n      print("bad");\n    }, {\n      print("good");\n    });', checkOut(_templateObject9));
+          return test('print(*(3, 4));', checkOut(_templateObject10));
 
         case 26:
           _context.next = 28;
-          return test('\n    if(false, {\n      print("bad");\n    }, {\n      print("good");\n    });', checkOut(_templateObject9));
+          return test('print(/(3, 4));', checkOut(_templateObject11));
 
         case 28:
+          _context.next = 30;
+          return test('print(+(1.25, 1.755));', checkOut(_templateObject12));
 
-          console.log('Logic and comparison ---');
-          // Test logic operator functions
-          _context.next = 31;
-          return test('print(and(true, false));', checkOut(_templateObject10));
+        case 30:
 
-        case 31:
+          console.log('If/else ---');
+          // Test basic if
           _context.next = 33;
-          return test('print(or(true, false));', checkOut(_templateObject11));
+          return test('\n    if(true, {\n      print("good");\n    });', checkOut(_templateObject13));
 
         case 33:
           _context.next = 35;
-          return test('print(not(true));', checkOut(_templateObject10));
+          return test('\n    ifel(false, {\n      print("bad");\n    }, {\n      print("good");\n    });', checkOut(_templateObject13));
 
         case 35:
           _context.next = 37;
-          return test('print(not(false));', checkOut(_templateObject11));
+          return test('\n    if(false, {\n      print("bad");\n    }, {\n      print("good");\n    });', checkOut(_templateObject13));
 
         case 37:
-          _context.next = 39;
-          return test('print(eq(10, 20));', checkOut(_templateObject10));
 
-        case 39:
-          _context.next = 41;
-          return test('print(eq(45, 45));', checkOut(_templateObject11));
+          console.log('Logic and comparison ---');
+          // Test logic operator functions
+          _context.next = 40;
+          return test('print(and(true, false));', checkOut(_templateObject14));
 
-        case 41:
-          _context.next = 43;
-          return test('print(lt(10, 20));', checkOut(_templateObject11));
+        case 40:
+          _context.next = 42;
+          return test('print(or(true, false));', checkOut(_templateObject15));
 
-        case 43:
-          _context.next = 45;
-          return test('print(lt(70, 30));', checkOut(_templateObject10));
+        case 42:
+          _context.next = 44;
+          return test('print(not(true));', checkOut(_templateObject14));
 
-        case 45:
-          _context.next = 47;
-          return test('print(lt(45, 45));', checkOut(_templateObject10));
+        case 44:
+          _context.next = 46;
+          return test('print(not(false));', checkOut(_templateObject15));
 
-        case 47:
-          _context.next = 49;
-          return test('print(gt(10, 20));', checkOut(_templateObject10));
+        case 46:
+          _context.next = 48;
+          return test('print(eq(10, 20));', checkOut(_templateObject14));
 
-        case 49:
-          _context.next = 51;
-          return test('print(gt(70, 30));', checkOut(_templateObject11));
+        case 48:
+          _context.next = 50;
+          return test('print(eq(45, 45));', checkOut(_templateObject15));
 
-        case 51:
-          _context.next = 53;
-          return test('print(gt(45, 45));', checkOut(_templateObject10));
+        case 50:
+          _context.next = 52;
+          return test('print(lt(10, 20));', checkOut(_templateObject15));
 
-        case 53:
+        case 52:
+          _context.next = 54;
+          return test('print(lt(70, 30));', checkOut(_templateObject14));
 
-          console.log('Surround functions ---');
+        case 54:
           _context.next = 56;
-          return test('print((true and false))', checkOut(_templateObject10));
+          return test('print(lt(45, 45));', checkOut(_templateObject14));
 
         case 56:
           _context.next = 58;
-          return test('print((true & true))', checkOut(_templateObject11));
+          return test('print(gt(10, 20));', checkOut(_templateObject14));
 
         case 58:
           _context.next = 60;
-          return test('print((99 + 1))', checkOut(_templateObject12));
+          return test('print(gt(70, 30));', checkOut(_templateObject15));
 
         case 60:
           _context.next = 62;
-          return test('print((20 > 1))', checkOut(_templateObject11));
+          return test('print(gt(45, 45));', checkOut(_templateObject14));
 
         case 62:
-          _context.next = 64;
-          return test('print((1 - 1))', checkOut(_templateObject13));
 
-        case 64:
-          _context.next = 66;
-          return test('print((\'this\' concat \'is\' \'awesome\'))', checkOut(_templateObject14));
+          console.log('Surround functions ---');
+          _context.next = 65;
+          return test('print((true and false))', checkOut(_templateObject14));
 
-        case 66:
+        case 65:
+          _context.next = 67;
+          return test('print((true & true))', checkOut(_templateObject15));
+
+        case 67:
+          _context.next = 69;
+          return test('print((99 + 1))', checkOut(_templateObject16));
+
+        case 69:
+          _context.next = 71;
+          return test('print((20 > 1))', checkOut(_templateObject15));
+
+        case 71:
           _context.next = 73;
+          return test('print((1 - 1))', checkOut(_templateObject17));
+
+        case 73:
+          _context.next = 75;
+          return test('print((\'this\' concat \'is\' \'awesome\'))', checkOut(_templateObject18));
+
+        case 75:
+          _context.next = 82;
           break;
 
-        case 68:
-          _context.prev = 68;
+        case 77:
+          _context.prev = 77;
           _context.t0 = _context['catch'](0);
 
           console.log = oldLog;
           console.log('\x1b[31m[Errored!]\x1b[0m Error in JS:');
           console.error(_context.t0);
 
-        case 73:
+        case 82:
           console.timeEnd('Total tests time');
           console.log(chalk.bold(passed + '/' + tests + ' passed.'));
 
-        case 75:
+        case 84:
         case 'end':
           return _context.stop();
       }
     }
-  }, _callee, this, [[0, 68]]);
+  }, _callee, this, [[0, 77]]);
 }))();
