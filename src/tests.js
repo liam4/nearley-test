@@ -78,6 +78,7 @@ console.time('Total tests time');
     await test(`print("double quoted \\"escape");`, checkOut`double quoted "escape`)
     await test(`print('newline\\\nescape');`, checkOut`newline\nescape`)
     await test(`print('escape \\\\escape');`, checkOut`escape \\escape`)
+    await test(`print('\\'single\\' and \\"double\\"')`, checkOut`'single' and "double"`)
 
     console.log('Math ---')
     // Test basic math operator functions
