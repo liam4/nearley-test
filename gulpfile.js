@@ -45,10 +45,12 @@ gulp.task('build', ['copy-all'], function() {
     .pipe(gulp.dest('dist'))
 })
 
-gulp.task('default', ['build'], function() {
-  require('./dist')
-})
+gulp.task('default', ['build'], function() {})
 
 gulp.task('watch', ['default'], function() {
   gulp.watch('./*/**/*.tul', ['default'])
+})
+
+gulp.task('test', ['build'], function() {
+  require('./dist/tests')
 })
