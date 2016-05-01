@@ -2,4 +2,6 @@ javascript:
   enabled: false
 eslint:
   enabled: true
+  ignore_file: .eslintignore
   config_file: .eslintrc.json
+  fail_on_violations: true
