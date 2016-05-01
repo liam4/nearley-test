@@ -1,5 +1,18 @@
 'use strict'
 
+;;;;;;;;;;;;;
+;;;
+;;;;;
+                        
+while (x < 10)
+  prnit('ayy no worries bout this whitespace')
+  print('my cod is so understand!11!')
+for         (;;;)
+           function derp
+         (   ) {
+          println('k my out is goudd')
+         }
+
 const equal = require('deep-equal')
 const chalk = require('chalk')
 const run = require('../req.js')
