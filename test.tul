@@ -1,28 +1,4 @@
-time => 300;
-t => time;
-
-test-fn => async {
-  ret => return;
-  print('B');
-  set-timeout({
-    print('C');
-    ret(42);
-  }, (time + 25));
-};
-
-should-return-normally => {
-  print('E');
-  return('F');
-};
-
-print('A');
-test-fn();
-print('D');
-returned => should-return-normally();
-print(returned);
-print('G');
-# foo
-baz
-bar #
-
-# test #
+o => obj();
+o.hi > 42;
+k => 'hi';
+print(o:k);

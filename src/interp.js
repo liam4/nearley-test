@@ -169,6 +169,17 @@ export async function evaluateExpression(expression, variables) {
 
     // Return the gotten value.
     return value
+  } else if (expression[0] === C.GET_PROP_USING_KEY) {
+    console.log('OH MY GOODNESS')
+    console.log(expression)
+
+    const objExpression = expression[1]
+    const keyExpression = expression[2]
+
+    const obj = await evaluateExpression(objExpression, variables)
+    const key = await evaluateExpression(keyExpression, variables)
+
+    return lib.get(obj, key)
   } else {
     throw new Error(`Invalid expression: ${chalk.cyan(expression[0])}`)
   }

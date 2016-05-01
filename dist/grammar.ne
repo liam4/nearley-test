@@ -41,6 +41,7 @@ Expression -> _Expression {% function(d) { return d[0][0] } %}
 _Expression -> CallFunctionExpression
              | CallFunctionSurroundExpression
              | GetPropertyUsingIdentifierExpression
+             | GetPropertyUsingKeyExpression
              | FunctionLiteral
             #| ShorthandFunctionLiteral
              | StringExpression
@@ -53,6 +54,9 @@ SetPropertyUsingIdentifier -> Expression _ "." _ Identifier _ ">" _ Expression {
 
 # Get using identifier expression
 GetPropertyUsingIdentifierExpression -> Expression _ "." _ Identifier {% function(d) { return [C.GET_PROP_USING_IDENTIFIER, d[0], d[4]] } %}
+
+# Get using key expression
+GetPropertyUsingKeyExpression -> Expression _ ":" _ Expression {% function(d) { return [C.GET_PROP_USING_KEY, d[0], d[4]] } %}
 
 # Function expression
 FunctionLiteral -> ("async" _):? (ArgumentList _):? CodeBlock {% function(d) { return [C.FUNCTION_PRIM, d[1] ? d[1][0] : [], d[2], !!d[0]] } %}

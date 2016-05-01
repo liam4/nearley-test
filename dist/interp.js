@@ -27,7 +27,7 @@ var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
 var evaluateExpression = exports.evaluateExpression = function () {
   var ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(expression, variables) {
-    var ret, fnExpression, argExpressions, fn, args, name, _ret, _name, valueExpression, value, _name2, _valueExpression, _value, paramaters, code, isAsync, _fn, _paramaters, codeExpression, _fn2, string, bool, number, objExpression, key, _valueExpression2, obj, _value2, _objExpression, _key, _obj, _value3;
+    var ret, fnExpression, argExpressions, fn, args, name, _ret, _name, valueExpression, value, _name2, _valueExpression, _value, paramaters, code, isAsync, _fn, _paramaters, codeExpression, _fn2, string, bool, number, objExpression, key, _valueExpression2, obj, _value2, _objExpression, _key, _obj, _value3, _objExpression2, keyExpression, _obj2, _key2;
 
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
@@ -133,7 +133,7 @@ var evaluateExpression = exports.evaluateExpression = function () {
             throw new Error(chalk.cyan(name) + ' is not defined.');
 
           case 36:
-            _context.next = 119;
+            _context.next = 133;
             break;
 
           case 38:
@@ -343,9 +343,32 @@ var evaluateExpression = exports.evaluateExpression = function () {
             return _context.abrupt('return', _value3);
 
           case 118:
+            if (!(expression[0] === C.GET_PROP_USING_KEY)) {
+              _context.next = 132;
+              break;
+            }
+
+            console.log('OH MY GOODNESS');
+            console.log(expression);
+
+            _objExpression2 = expression[1];
+            keyExpression = expression[2];
+            _context.next = 125;
+            return evaluateExpression(_objExpression2, variables);
+
+          case 125:
+            _obj2 = _context.sent;
+            _context.next = 128;
+            return evaluateExpression(keyExpression, variables);
+
+          case 128:
+            _key2 = _context.sent;
+            return _context.abrupt('return', lib.get(_obj2, _key2));
+
+          case 132:
             throw new Error('Invalid expression: ' + chalk.cyan(expression[0]));
 
-          case 119:
+          case 133:
           case 'end':
             return _context.stop();
         }
