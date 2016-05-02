@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
 var _slicedToArray2 = require('babel-runtime/helpers/slicedToArray');
 
 var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
@@ -312,7 +316,7 @@ function makeBuiltins(fsScope) {
     name = lib.toJString(name);
     var variable = env.vars[name];
     if (typeof variable === 'undefined') {
-      throw new Error('Can\'t access variable ' + name + ' because it doesn\'t exist');
+      throw new Error(chalk.red('Can\'t access variable ' + chalk.cyan(name) + ' because it doesn\'t exist!'));
     } else {
       return variable;
     }
@@ -339,6 +343,12 @@ function makeBuiltins(fsScope) {
       lib.call(fn, []);
     }, lib.toJNumber(ms));
   }));
+
+  (0, _keys2.default)(variables).map(function (value, index) {
+    if (variables[value]) {
+      if (variables[value].value instanceof lib.LFunction) variables[value].value.builtin = true;
+    }
+  });
 
   return variables;
 }

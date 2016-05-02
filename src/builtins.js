@@ -212,7 +212,7 @@ export function makeBuiltins(fsScope) {
     name = lib.toJString(name)
     let variable = env.vars[name]
     if (typeof variable === 'undefined') {
-      throw new Error(`Can't access variable ${name} because it doesn't exist`)
+      throw new Error(chalk.red(`Can't access variable ${chalk.cyan(name)} because it doesn't exist!`))
     } else {
       return variable
     }
@@ -229,6 +229,12 @@ export function makeBuiltins(fsScope) {
       lib.call(fn, [])
     }, lib.toJNumber(ms))
   }))
+
+  Object.keys(variables).map(function(value, index) {
+    if(variables[value]) {
+      if(variables[value].value instanceof lib.LFunction) variables[value].value.builtin = true
+    }
+  })
 
   return variables
 }

@@ -37,6 +37,25 @@
 			<string>comment.line.number-sign.tulun</string>
 		</dict>
 		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.function.tulun</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.function.tulun</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>(\()\s*(.*)\s*(\))(?= *\{)</string>
+			<key>name</key>
+			<string>other.argument-list.tulun</string>
+		</dict>
+		<dict>
 			<key>match</key>
 			<string>async\s(?=.*\{)</string>
 			<key>name</key>

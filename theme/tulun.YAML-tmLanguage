@@ -18,6 +18,12 @@ patterns:
   begin: \#
   end: \#
 
+- name: other.argument-list.tulun
+  match: (\()\s*(.*)\s*(\))(?= *\{)
+  captures:
+    '1': {name: entity.name.function.tulun}
+    '3': {name: entity.name.function.tulun}
+
 - name: support.function.tulun
   match: async\s(?=.*\{)
 
