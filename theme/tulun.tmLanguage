@@ -109,13 +109,13 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>([-_$a-zA-Z0-9][$\w0-9-+=\- ]*\s*(?=\())|((?!\([$\w0-9-+=-]+)\s+([$\w0-9-+=-]+)\s+(?=([$\w0-9-+=-]+)+\)))</string>
+			<string>([-_$a-zA-Z0-9][$\w0-9-+=\-]*\s*(?=\())|((?!\([$\w0-9-+=-]+)\s+([$\w0-9-+=-]+)\s+(?=([$\w0-9-+=-]+)+\)))</string>
 			<key>name</key>
 			<string>entity.name.function.tulun</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>([-_$a-zA-Z0-9][$\w0-9-+=\- ]*\s*(?=\(|(=|-)&gt;|\)|\s|;|\.))</string>
+			<string>([-_$a-zA-Z0-9][$\w0-9-+=\-]*\s*(?=\(|(=|-)&gt;|\)|\s|;|\.))</string>
 			<key>name</key>
 			<string>variable.parameter.tulun</string>
 		</dict>
