@@ -1,2 +1,11 @@
-spaces in name => 'ooo';
-print(spaces in name);
+req-args => (required, arguments) {
+  print('req-args');
+};
+
+async-req-args => async (required, arguments) {
+  print('async-req-args');
+  return();
+};
+
+req-args('too little arguments');
+async-req-args('too little arguments');

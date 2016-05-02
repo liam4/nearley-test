@@ -45,11 +45,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
         return d[2];
       } }, { "name": "_Program", "symbols": ["Command"] }, { "name": "_Program", "symbols": ["Comment"] }, { "name": "CommandSeparator", "symbols": [{ "literal": ";" }] }, { "name": "Command", "symbols": ["Expression"] }, { "name": "Command", "symbols": ["SetPropertyUsingIdentifier"] }, { "name": "Command", "symbols": ["VariableAssign"] }, { "name": "Command", "symbols": ["VariableChange"] }, { "name": "VariableAssign$string$1", "symbols": [{ "literal": "=" }, { "literal": ">" }], "postprocess": function joiner(d) {
         return d.join('');
-      } }, { "name": "VariableAssign", "symbols": ["Identifier", "__", "VariableAssign$string$1", "__", "Expression"], "postprocess": function postprocess(d) {
+      } }, { "name": "VariableAssign", "symbols": ["Identifier", "_", "VariableAssign$string$1", "_", "Expression"], "postprocess": function postprocess(d) {
         return [C.VARIABLE_ASSIGN, d[0], d[4]];
       } }, { "name": "VariableChange$string$1", "symbols": [{ "literal": "-" }, { "literal": ">" }], "postprocess": function joiner(d) {
         return d.join('');
-      } }, { "name": "VariableChange", "symbols": ["Identifier", "__", "VariableChange$string$1", "__", "Expression"], "postprocess": function postprocess(d) {
+      } }, { "name": "VariableChange", "symbols": ["Identifier", "_", "VariableChange$string$1", "_", "Expression"], "postprocess": function postprocess(d) {
         return [C.VARIABLE_CHANGE, d[0], d[4]];
       } }, { "name": "Expression", "symbols": ["_Expression"], "postprocess": function postprocess(d) {
         return d[0][0];

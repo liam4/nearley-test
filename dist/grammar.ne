@@ -31,10 +31,10 @@ Command -> Expression
          | VariableChange
 
 # Variable assign
-VariableAssign -> Identifier __ "=>" __ Expression {% function(d) { return [C.VARIABLE_ASSIGN, d[0], d[4]] } %}
+VariableAssign -> Identifier _ "=>" _ Expression {% function(d) { return [C.VARIABLE_ASSIGN, d[0], d[4]] } %}
 
 # Variable change
-VariableChange -> Identifier __ "->" __ Expression {% function(d) { return [C.VARIABLE_CHANGE, d[0], d[4]] } %}
+VariableChange -> Identifier _ "->" _ Expression {% function(d) { return [C.VARIABLE_CHANGE, d[0], d[4]] } %}
 
 # General expression
 Expression -> _Expression {% function(d) { return d[0][0] } %}

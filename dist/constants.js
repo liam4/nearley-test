@@ -20,10 +20,10 @@ defineConstant('VARIABLE_CHANGE');
 defineConstant('VARIABLE_IDENTIFIER');
 
 // Characters that can't be used as parts of identifiers.
-allExports.SPECIAL_CHARS = '(){}[]\'".:;#';
+allExports.SPECIAL_CHARS = '(){}\'" .:;#';
 // allExports.SPECIAL_CHARS = ['(',')','{','}','=>',"'",'"','.',':',';','#']
 
 // Words that can't be used as identifiers.
-allExports.KEYWORDS = ['true', 'false', '=>', '->', 'async', 'unevaluated'];
+allExports.KEYWORDS = ['true', 'false', '=>', '->', 'async'];
 
 module.exports = allExports;
