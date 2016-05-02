@@ -73,6 +73,13 @@ console.time('Total tests time');
     await test(`print('single quoted');`, checkOut`single quoted`)
     await test(`print(concat("foo", "bar"));`, checkOut`foobar`)
 
+    console.log('Escape codes ---')
+    await test(`print('single quoted \\'escape');`, checkOut`single quoted 'escape`)
+    await test(`print("double quoted \\"escape");`, checkOut`double quoted "escape`)
+    await test(`print('newline\\\nescape');`, checkOut`newline\nescape`)
+    await test(`print('escape \\\\escape');`, checkOut`escape \\escape`)
+    await test(`print('\\'single\\' and \\"double\\"')`, checkOut`'single' and "double"`)
+
     console.log('Math ---')
     // Test basic math operator functions
     await test(`print(+(3, 4));`, checkOut`7`)
