@@ -17,7 +17,7 @@ const test = function(code, assume) {
     oldLog(o, ...args)
   }
   chalk.enabled = false
-  const promise = run(code)
+  const promise = run(code, __dirname, true)
   promise.then(function() {
     chalk.enabled = true
     console.log = oldLog

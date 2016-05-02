@@ -1,8 +1,12 @@
 const chalk = require('chalk')
 
-module.exports = function(code, dir) {
+module.exports = function(code, dir, isTesting) {
   // this allows for `require('tulun')` in node code
   dir = dir || __dirname
+  if (isTesting) {
+    return require('./dist/run').run(code, dir)
+  }
+
   require('./dist/run').run(code, dir).catch(function(err) {
     // promises/async swallows errors by default ;-;
     console.log(chalk.red('Error:'), err.message)

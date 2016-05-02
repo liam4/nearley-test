@@ -55,7 +55,7 @@ var test = function test(code, assume) {
     oldLog.apply(undefined, [o].concat(args));
   };
   chalk.enabled = false;
-  var promise = run(code);
+  var promise = run(code, __dirname, true);
   promise.then(function () {
     chalk.enabled = true;
     console.log = oldLog;
