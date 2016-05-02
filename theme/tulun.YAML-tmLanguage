@@ -30,10 +30,18 @@ patterns:
   match: ((add|divide|minus|multiply|not|and|or|lt|gt|eq|is|\+|-|\/|\*|<|>|=)\s*(?=\(|;|\s))|((?!\([$\w0-9-+=-]+)\s+(add|divide|minus|multiply|not|and|or|lt|gt|eq|is|\+|-|\/|\*|<|>|=)\s+(?=([$\w0-9-+=-]+)+\)))
 
 - name: string.quoted.single.tulun
-  match: ('[^']*')
+  begin: "'"
+  end: "'"
+  patterns:
+  - name: constant.character.escape.tulun
+    match: \\(x[\da-fA-F]{2}|u[\da-fA-F]{4}|.)
 
 - name: string.quoted.double.tulun
-  match: ("[^"]*")
+  begin: '"'
+  end: '"'
+  patterns:
+  - name: constant.character.escape.tulun
+    match: \\(x[\da-fA-F]{2}|u[\da-fA-F]{4}|.)
 
 - name: entity.name.function.tulun
   match: ([-_$a-zA-Z0-9][$\w0-9-+=\-]*\s*(?=\())|((?!\([$\w0-9-+=-]+)\s+([$\w0-9-+=-]+)\s+(?=([$\w0-9-+=-]+)+\)))

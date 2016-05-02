@@ -55,16 +55,38 @@
 			<string>keyword.operator.tulun</string>
 		</dict>
 		<dict>
-			<key>match</key>
-			<string>('[^']*')</string>
+			<key>begin</key>
+			<string>'</string>
+			<key>end</key>
+			<string>'</string>
 			<key>name</key>
 			<string>string.quoted.single.tulun</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>\\(x[\da-fA-F]{2}|u[\da-fA-F]{4}|.)</string>
+					<key>name</key>
+					<string>constant.character.escape.tulun</string>
+				</dict>
+			</array>
 		</dict>
 		<dict>
-			<key>match</key>
-			<string>("[^"]*")</string>
+			<key>begin</key>
+			<string>"</string>
+			<key>end</key>
+			<string>"</string>
 			<key>name</key>
 			<string>string.quoted.double.tulun</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>\\(x[\da-fA-F]{2}|u[\da-fA-F]{4}|.)</string>
+					<key>name</key>
+					<string>constant.character.escape.tulun</string>
+				</dict>
+			</array>
 		</dict>
 		<dict>
 			<key>match</key>
