@@ -15,6 +15,9 @@
   "bin": {
     "tulun": "./tulun.js"
   },
+  "scripts": {
+    "postinstall": "npm i -g gulp"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/liam4/tlnccuwagnf.git"
