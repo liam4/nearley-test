@@ -144,16 +144,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
       } }, { "name": "Identifier$ebnf$1", "symbols": ["GenericValidIdentifierCharacter"] }, { "name": "Identifier$ebnf$1", "symbols": ["GenericValidIdentifierCharacter", "Identifier$ebnf$1"], "postprocess": function arrconcat(d) {
         return [d[0]].concat(d[1]);
       } }, { "name": "Identifier", "symbols": ["Identifier$ebnf$1"], "postprocess": function postprocess(data, location, reject) {
-        var id = data[0].join('');
-        if (/[0-9]/.test(id[0])) {
-          return reject;
-        }
-        if (C.KEYWORDS.indexOf(id) === -1) {
-          return id;
+        var identifier = data[0].join('');
+        var no = false;
+        C.NO.forEach(function (str) {
+          if (identifier.indexOf(str)) no = true;
+        });
+        if (!no || C.KEYWORDS.indexOf(identifier) == -1 && !/[0-9]/.test(identifier.charAt(0))) {
+          return identifier.trim();
         }
         return reject;
-      }
-    }, { "name": "GenericValidIdentifierCharacter", "symbols": [/./], "postprocess": function postprocess(data, location, reject) {
+      } }, { "name": "GenericValidIdentifierCharacter", "symbols": [/./], "postprocess": function postprocess(data, location, reject) {
         //console.log(data[0], location)
         return data[0] && C.SPECIAL_CHARS.indexOf(data[0]) === -1 ? data[0] : reject;
       }

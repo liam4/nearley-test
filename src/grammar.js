@@ -143,18 +143,17 @@ var grammar = {
     {"name": "Digits", "symbols": ["Digits$ebnf$1"], "postprocess": function(d) { return d[0].join('') }},
     {"name": "Identifier$ebnf$1", "symbols": ["GenericValidIdentifierCharacter"]},
     {"name": "Identifier$ebnf$1", "symbols": ["GenericValidIdentifierCharacter", "Identifier$ebnf$1"], "postprocess": function arrconcat(d) {return [d[0]].concat(d[1]);}},
-    {"name": "Identifier", "symbols": ["Identifier$ebnf$1"], "postprocess": 
-        function(data, location, reject) {
-          var id = data[0].join('');
-          if (/[0-9]/.test(id[0])) {
-            return reject;
+    {"name": "Identifier", "symbols": ["Identifier$ebnf$1"], "postprocess":  function(data, location, reject) { 
+          var identifier = data[0].join('')
+          var no = false
+          C.NO.forEach(function(str) {
+            if(identifier.indexOf(str)) no = true
+          })
+          if(!no || C.KEYWORDS.indexOf(identifier) == -1 && !(/[0-9]/.test(identifier.charAt(0)))) {
+            return identifier.trim()
           }
-          if (C.KEYWORDS.indexOf(id) === -1) {
-            return id;
-          }
-          return reject;
-        }
-        },
+          return reject
+        } },
     {"name": "GenericValidIdentifierCharacter", "symbols": [/./], "postprocess": 
         function(data, location, reject) {
           //console.log(data[0], location)

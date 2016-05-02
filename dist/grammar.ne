@@ -156,18 +156,17 @@ _Number -> "-":? (Digits "."):? Digits {% function(d) {
 Digits -> [0-9]:+ {% function(d) { return d[0].join('') } %}
 
 # Generic identifier
-Identifier -> GenericValidIdentifierCharacter:+ {%
-  function(data, location, reject) {
-    var id = data[0].join('');
-    if (/[0-9]/.test(id[0])) {
-      return reject;
-    }
-    if (C.KEYWORDS.indexOf(id) === -1) {
-      return id;
-    }
-    return reject;
+Identifier -> GenericValidIdentifierCharacter:+ {% function(data, location, reject) { 
+  var identifier = data[0].join('')
+  var no = false
+  C.NO.forEach(function(str) {
+    if(identifier.indexOf(str)) no = true
+  })
+  if(!no || C.KEYWORDS.indexOf(identifier) == -1 && !(/[0-9]/.test(identifier.charAt(0)))) {
+    return identifier.trim()
   }
-%}
+  return reject
+} %}
 GenericValidIdentifierCharacter -> . {%
   function(data, location, reject) {
     //console.log(data[0], location)
