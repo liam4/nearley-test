@@ -141,8 +141,9 @@ console.time('Total tests time');
 
   } catch (error) {
     console.log = oldLog
-    console.log('\x1b[31m[Errored!]\x1b[0m Error in JS:')
+    console.log(chalk.red(' ✗✗✗✗ JavaScript Error! ✗✗✗✗'))
     console.error(error)
+    process.exit(1)
   }
   console.log('\n');
   console.timeEnd('Total tests time')
