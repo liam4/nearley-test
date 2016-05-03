@@ -149,8 +149,9 @@ var grammar = {
           C.NO.forEach(function(str) {
             if(identifier.indexOf(str)) no = true
           })
-          if(!no || C.KEYWORDS.indexOf(identifier) == -1 && !(/[0-9]/.test(identifier.charAt(0)))) {
-            return identifier.trim()
+          if(!no && identifier.trim() === identifier && C.KEYWORDS.indexOf(identifier) == -1 && !(/[0-9]/.test(identifier.charAt(0)))) {
+            console.log(identifier)
+            return identifier
           }
           return reject
         } },
