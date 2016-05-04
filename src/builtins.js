@@ -98,6 +98,10 @@ export function makeBuiltins(fsScope) {
     return lib.toLNumber(lib.toJNumber(x) * lib.toJNumber(y))
   }))
   variables['multiply'] = variables['&']
+  
+  variables['^'] = new lib.Variable(new lib.LFunction(function([x, y]) {
+    return lib.toLNumber(Math.pow(lib.toJNumber(x), lib.toJNumber(y)))
+  }))
 
   variables['not'] = new lib.Variable(new lib.LFunction(function([bool]) {
     return lib.toLBoolean(!lib.toJBoolean(bool))
