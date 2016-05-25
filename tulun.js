@@ -81,6 +81,10 @@ function main(f, again) {
     let code = data.toString()
     try {
       run(code, `${process.cwd()}/${require('path').dirname(f)}`)
+        .catch(function(err) {
+          console.error(err)
+          process.exit(1)
+        })
     } catch (err) {
       // for some reason the actual error message/stack doesn't appear
       console.log(err)
