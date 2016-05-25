@@ -98,6 +98,10 @@ export function makeBuiltins(fsScope) {
     return lib.toLNumber(lib.toJNumber(x) * lib.toJNumber(y))
   }))
   variables['multiply'] = variables['&']
+  
+  variables['^'] = new lib.Variable(new lib.LFunction(function([x, y]) {
+    return lib.toLNumber(Math.pow(lib.toJNumber(x), lib.toJNumber(y)))
+  }))
 
   variables['not'] = new lib.Variable(new lib.LFunction(function([bool]) {
     return lib.toLBoolean(!lib.toJBoolean(bool))
@@ -212,7 +216,7 @@ export function makeBuiltins(fsScope) {
     name = lib.toJString(name)
     let variable = env.vars[name]
     if (typeof variable === 'undefined') {
-      throw new Error(`Can't access variable ${name} because it doesn't exist`)
+      throw new Error(chalk.red(`Can't access variable ${chalk.cyan(name)} because it doesn't exist!`))
     } else {
       return variable
     }
@@ -229,6 +233,12 @@ export function makeBuiltins(fsScope) {
       lib.call(fn, [])
     }, lib.toJNumber(ms))
   }))
+
+  Object.keys(variables).map(function(value, index) {
+    if(variables[value]) {
+      if(variables[value].value instanceof lib.LFunction) variables[value].value.builtin = true
+    }
+  })
 
   return variables
 }

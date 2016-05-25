@@ -97,6 +97,7 @@ var grammar = {
     {"name": "StringExpressionDoubleContents$ebnf$1", "symbols": []},
     {"name": "StringExpressionDoubleContents$ebnf$1", "symbols": ["DoubleStringValidCharacter", "StringExpressionDoubleContents$ebnf$1"], "postprocess": function arrconcat(d) {return [d[0]].concat(d[1]);}},
     {"name": "StringExpressionDoubleContents", "symbols": ["StringExpressionDoubleContents$ebnf$1"], "postprocess": function(d) { return d[0].join('') }},
+    {"name": "DoubleStringValidCharacter", "symbols": ["EscapeCode"]},
     {"name": "DoubleStringValidCharacter", "symbols": ["GenericValidCharacter"], "postprocess": 
         function(data, location, reject) {
           if (data[0][0] === '"') return reject;
@@ -106,12 +107,16 @@ var grammar = {
     {"name": "StringExpressionSingleContents$ebnf$1", "symbols": []},
     {"name": "StringExpressionSingleContents$ebnf$1", "symbols": ["SingleStringValidCharacter", "StringExpressionSingleContents$ebnf$1"], "postprocess": function arrconcat(d) {return [d[0]].concat(d[1]);}},
     {"name": "StringExpressionSingleContents", "symbols": ["StringExpressionSingleContents$ebnf$1"], "postprocess": function(d) { return d[0].join('') }},
+    {"name": "SingleStringValidCharacter", "symbols": ["EscapeCode"]},
     {"name": "SingleStringValidCharacter", "symbols": ["GenericValidCharacter"], "postprocess": 
         function(data, location, reject) {
           if (data[0][0] === '\'') return reject;
           else return data[0][0];
         }
         },
+    {"name": "EscapeCode$subexpression$1", "symbols": [/./]},
+    {"name": "EscapeCode$subexpression$1", "symbols": [{"literal":"\n"}]},
+    {"name": "EscapeCode", "symbols": [{"literal":"\\"}, "EscapeCode$subexpression$1"], "postprocess": function(d) { return d[1][0]; }},
     {"name": "NumberExpression", "symbols": ["_Number"], "postprocess": function(d) { return [C.NUMBER_PRIM, d[0]] }},
     {"name": "_Number$ebnf$1", "symbols": [{"literal":"-"}], "postprocess": id},
     {"name": "_Number$ebnf$1", "symbols": [], "postprocess": function(d) {return null;}},
@@ -150,13 +155,17 @@ var grammar = {
           return reject;
         }
         },
-    {"name": "GenericValidIdentifierCharacter", "symbols": ["GenericValidCharacter"], "postprocess": 
+    {"name": "GenericValidIdentifierCharacter", "symbols": [/./], "postprocess": 
         function(data, location, reject) {
           //console.log(data[0], location)
           return data[0] && C.SPECIAL_CHARS.indexOf(data[0]) === -1 ? data[0] : reject;
         }
         },
-    {"name": "GenericValidCharacter", "symbols": [/./]},
+    {"name": "GenericValidCharacter", "symbols": [/./], "postprocess": 
+        function(data, location, reject) {
+          return data[0] === '\\' ? reject : data
+        }
+        },
     {"name": "Comment$ebnf$1", "symbols": []},
     {"name": "Comment$ebnf$1", "symbols": [/[^#]/, "Comment$ebnf$1"], "postprocess": function arrconcat(d) {return [d[0]].concat(d[1]);}},
     {"name": "Comment", "symbols": [{"literal":"#"}, "Comment$ebnf$1", {"literal":"#"}], "postprocess": function(d) { return [C.COMMENT] }}

@@ -22,6 +22,6 @@ allExports.SPECIAL_CHARS = '(){}\'" .:;#'
 // allExports.SPECIAL_CHARS = ['(',')','{','}','=>',"'",'"','.',':',';','#']
 
 // Words that can't be used as identifiers.
-allExports.KEYWORDS = ['true', 'false', '=>']
+allExports.KEYWORDS = ['true', 'false', '=>', '->', 'async']
 
 module.exports = allExports

@@ -24,13 +24,19 @@ export async function evaluateExpression(expression, variables) {
 
     // Evaluate the function expression to get the actual function.
     const fn = await evaluateExpression(fnExpression, variables)
+    const varName = fnExpression[1]
 
     if (!(fn instanceof lib.LFunction)) {
-      throw new Error(`Can't call ${chalk.cyan(fn)} because it's not a function`)
+      throw new Error(`${chalk.cyan(varName)} is not a function`)
     }
 
     fn.argumentScope = variables
     const args = argExpressions
+    const takingArgs = fn.paramaterList || []
+
+    if (args.length !== takingArgs.length && !fn.builtin) {
+      throw new Error(`Function ${chalk.cyan(varName)} expects ${chalk.bold(takingArgs.length)} arguments, was called with ${chalk.bold(args.length)}`)
+    }
 
     // Use lib.call to call the function with the evaluated arguments.
     return await lib.call(fn, args)
@@ -50,7 +56,7 @@ export async function evaluateExpression(expression, variables) {
       const ret = variables[name].value
       return ret
     } else {
-      throw new Error(`${chalk.cyan(name)} is not defined.`)
+      throw new Error(`${chalk.cyan(name)} is not defined`)
     }
   } else if (expression[0] === C.VARIABLE_ASSIGN) {
     // Set a variable to a value: "name => value"
