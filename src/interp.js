@@ -3,7 +3,7 @@ const lib = require('./lib')
 const chalk = require('chalk')
 const builtins = require('./builtins')
 
-export async function evaluateExpression(expression, variables) {
+export async function evaluateExpression(expression, environment) {
   // console.log('evaluating expression', expression)
   if (expression[0] === C.COMMENT) {
     return
@@ -14,9 +14,12 @@ export async function evaluateExpression(expression, variables) {
     // console.log('Ba.', ret)
     return ret
   } if (expression[0] === C.VARIABLE_IDENTIFIER && expression[1] === 'environment') {
+    /*
     const env = new lib.LEnvironment()
     env.addVars(variables)
     return env
+    */
+    return environment
   } else if (expression[0] === C.FUNCTION_CALL) {
     // Call a function: "function(arg1, arg2, arg3...)"
 
@@ -197,13 +200,13 @@ export async function evaluateEachExpression(variables, expressions) {
 
 export async function interp(ast, dir) {
   if (ast) {
-    let variables = {}
+    const environment = new lib.LEnvironment()
 
-    Object.assign(variables, builtins.makeBuiltins(dir))
+    environment.addVars(builtins.makeBuiltins(dir))
 
-    let result = await evaluateEachExpression(variables, ast)
+    let result = await evaluateEachExpression(environment, ast)
 
-    return { result, variables }
+    return { result, environment }
   } else {
     throw new Error('Haha, you didn\'t pass me a tree!')
   }

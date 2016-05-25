@@ -196,3 +196,4 @@ var request = exports.request = new lib.LFunction(function (_ref7) {
 
   return new LHTTPRequest(method, url, callback);
 });
+//# sourceMappingURL=http.js.map

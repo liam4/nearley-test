@@ -26,8 +26,8 @@ var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
 var evaluateExpression = exports.evaluateExpression = function () {
-  var ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(expression, variables) {
-    var ret, env, fnExpression, argExpressions, fn, varName, args, takingArgs, name, _ret, _name, valueExpression, value, _name2, _valueExpression, _value, paramaters, code, isAsync, _fn, _paramaters, codeExpression, _fn2, string, bool, number, objExpression, key, _valueExpression2, obj, _value2, _objExpression, _key, _obj, _value3;
+  var ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(expression, environment) {
+    var ret, fnExpression, argExpressions, fn, varName, args, takingArgs, name, _ret, _name, valueExpression, value, _name2, _valueExpression, _value, paramaters, code, isAsync, _fn, _paramaters, codeExpression, _fn2, string, bool, number, objExpression, key, _valueExpression2, obj, _value2, _objExpression, _key, _obj, _value3;
 
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
@@ -57,18 +57,15 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
           case 9:
             if (!(expression[0] === C.VARIABLE_IDENTIFIER && expression[1] === 'environment')) {
-              _context.next = 15;
+              _context.next = 13;
               break;
             }
 
-            env = new lib.LEnvironment();
+            return _context.abrupt('return', environment);
 
-            env.addVars(variables);
-            return _context.abrupt('return', env);
-
-          case 15:
+          case 13:
             if (!(expression[0] === C.FUNCTION_CALL)) {
-              _context.next = 34;
+              _context.next = 32;
               break;
             }
 
@@ -80,43 +77,43 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             // Evaluate the function expression to get the actual function.
 
-            _context.next = 20;
+            _context.next = 18;
             return evaluateExpression(fnExpression, variables);
 
-          case 20:
+          case 18:
             fn = _context.sent;
             varName = fnExpression[1];
 
             if (fn instanceof lib.LFunction) {
-              _context.next = 24;
+              _context.next = 22;
               break;
             }
 
             throw new Error(chalk.cyan(varName) + ' is not a function');
 
-          case 24:
+          case 22:
 
             fn.argumentScope = variables;
             args = argExpressions;
             takingArgs = fn.paramaterList || [];
 
             if (!(args.length !== takingArgs.length && !fn.builtin)) {
-              _context.next = 29;
+              _context.next = 27;
               break;
             }
 
             throw new Error('Function ' + chalk.cyan(varName) + ' expects ' + chalk.bold(takingArgs.length) + ' arguments, was called with ' + chalk.bold(args.length));
 
-          case 29:
-            _context.next = 31;
+          case 27:
+            _context.next = 29;
             return lib.call(fn, args);
 
-          case 31:
+          case 29:
             return _context.abrupt('return', _context.sent);
 
-          case 34:
+          case 32:
             if (!(expression[0] === C.VARIABLE_IDENTIFIER)) {
-              _context.next = 44;
+              _context.next = 42;
               break;
             }
 
@@ -132,7 +129,7 @@ var evaluateExpression = exports.evaluateExpression = function () {
             // error.
 
             if (!(name in variables)) {
-              _context.next = 41;
+              _context.next = 39;
               break;
             }
 
@@ -140,16 +137,16 @@ var evaluateExpression = exports.evaluateExpression = function () {
             _ret = variables[name].value;
             return _context.abrupt('return', _ret);
 
-          case 41:
+          case 39:
             throw new Error(chalk.cyan(name) + ' is not defined');
 
-          case 42:
-            _context.next = 125;
+          case 40:
+            _context.next = 123;
             break;
 
-          case 44:
+          case 42:
             if (!(expression[0] === C.VARIABLE_ASSIGN)) {
-              _context.next = 54;
+              _context.next = 52;
               break;
             }
 
@@ -163,10 +160,10 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             // Evaluate the value of the variable.
 
-            _context.next = 49;
+            _context.next = 47;
             return evaluateExpression(valueExpression, variables);
 
-          case 49:
+          case 47:
             value = _context.sent;
 
 
@@ -177,9 +174,9 @@ var evaluateExpression = exports.evaluateExpression = function () {
             variables[_name] = new lib.Variable(value);
             return _context.abrupt('return');
 
-          case 54:
+          case 52:
             if (!(expression[0] === C.VARIABLE_CHANGE)) {
-              _context.next = 64;
+              _context.next = 62;
               break;
             }
 
@@ -191,10 +188,10 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             // Evaluate the new value of the variable.
 
-            _context.next = 59;
+            _context.next = 57;
             return evaluateExpression(_valueExpression, variables);
 
-          case 59:
+          case 57:
             _value = _context.sent;
 
 
@@ -202,9 +199,9 @@ var evaluateExpression = exports.evaluateExpression = function () {
             variables[_name2].value = _value;
             return _context.abrupt('return');
 
-          case 64:
+          case 62:
             if (!(expression[0] === C.FUNCTION_PRIM)) {
-              _context.next = 75;
+              _context.next = 73;
               break;
             }
 
@@ -233,9 +230,9 @@ var evaluateExpression = exports.evaluateExpression = function () {
             // Return the function.
             return _context.abrupt('return', _fn);
 
-          case 75:
+          case 73:
             if (!(expression[0] === C.SHORTHAND_FUNCTION_PRIM)) {
-              _context.next = 85;
+              _context.next = 83;
               break;
             }
 
@@ -248,9 +245,9 @@ var evaluateExpression = exports.evaluateExpression = function () {
             _fn2.setParamaters(_paramaters);
             return _context.abrupt('return', _fn2);
 
-          case 85:
+          case 83:
             if (!(expression[0] === C.STRING_PRIM)) {
-              _context.next = 90;
+              _context.next = 88;
               break;
             }
 
@@ -263,9 +260,9 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             return _context.abrupt('return', lib.toLString(string));
 
-          case 90:
+          case 88:
             if (!(expression[0] === C.BOOLEAN_PRIM)) {
-              _context.next = 95;
+              _context.next = 93;
               break;
             }
 
@@ -278,9 +275,9 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             return _context.abrupt('return', lib.toLBoolean(bool));
 
-          case 95:
+          case 93:
             if (!(expression[0] === C.NUMBER_PRIM)) {
-              _context.next = 100;
+              _context.next = 98;
               break;
             }
 
@@ -293,9 +290,9 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             return _context.abrupt('return', lib.toLNumber(number));
 
-          case 100:
+          case 98:
             if (!(expression[0] === C.SET_PROP_USING_IDENTIFIER)) {
-              _context.next = 114;
+              _context.next = 112;
               break;
             }
 
@@ -309,15 +306,15 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             // Evaluate the object and value expressions.
 
-            _context.next = 106;
+            _context.next = 104;
             return evaluateExpression(objExpression, variables);
 
-          case 106:
+          case 104:
             obj = _context.sent;
-            _context.next = 109;
+            _context.next = 107;
             return evaluateExpression(_valueExpression2, variables);
 
-          case 109:
+          case 107:
             _value2 = _context.sent;
 
 
@@ -325,9 +322,9 @@ var evaluateExpression = exports.evaluateExpression = function () {
             lib.set(obj, key, _value2);
             return _context.abrupt('return');
 
-          case 114:
+          case 112:
             if (!(expression[0] === C.GET_PROP_USING_IDENTIFIER)) {
-              _context.next = 124;
+              _context.next = 122;
               break;
             }
 
@@ -339,10 +336,10 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             // Evaluate the object expression.
 
-            _context.next = 119;
+            _context.next = 117;
             return evaluateExpression(_objExpression, variables);
 
-          case 119:
+          case 117:
             _obj = _context.sent;
 
 
@@ -353,10 +350,10 @@ var evaluateExpression = exports.evaluateExpression = function () {
 
             return _context.abrupt('return', _value3);
 
-          case 124:
+          case 122:
             throw new Error('Invalid expression: ' + chalk.cyan(expression[0]));
 
-          case 125:
+          case 123:
           case 'end':
             return _context.stop();
         }
@@ -486,7 +483,7 @@ var evaluateEachExpression = exports.evaluateEachExpression = function () {
 
 var interp = exports.interp = function () {
   var ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee4(ast, dir) {
-    var variables, result;
+    var environment, result;
     return _regenerator2.default.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
@@ -496,17 +493,17 @@ var interp = exports.interp = function () {
               break;
             }
 
-            variables = {};
+            environment = new lib.LEnvironment();
 
 
-            (0, _assign2.default)(variables, builtins.makeBuiltins(dir));
+            environment.addVars(builtins.makeBuiltins(dir));
 
             _context4.next = 5;
-            return evaluateEachExpression(variables, ast);
+            return evaluateEachExpression(environment, ast);
 
           case 5:
             result = _context4.sent;
-            return _context4.abrupt('return', { result: result, variables: variables });
+            return _context4.abrupt('return', { result: result, environment: environment });
 
           case 9:
             throw new Error('Haha, you didn\'t pass me a tree!');
@@ -529,3 +526,4 @@ var C = require('./constants');
 var lib = require('./lib');
 var chalk = require('chalk');
 var builtins = require('./builtins');
+//# sourceMappingURL=interp.js.map

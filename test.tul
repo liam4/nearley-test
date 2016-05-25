@@ -1,1 +1,1 @@
-print(environment);
+print('Hello, world.');

@@ -848,3 +848,4 @@ LArray['__super__'] = LObject;
 
 LFunction['__prototype__'] = LFunctionPrototype;
 LFunction['__super__'] = LObject;
+//# sourceMappingURL=lib.js.map
