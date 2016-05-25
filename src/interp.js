@@ -14,7 +14,9 @@ export async function evaluateExpression(expression, variables) {
     // console.log('Ba.', ret)
     return ret
   } if (expression[0] === C.VARIABLE_IDENTIFIER && expression[1] === 'environment') {
-    return new lib.LEnvironment(variables)
+    const env = new lib.LEnvironment()
+    env.addVars(variables)
+    return env
   } else if (expression[0] === C.FUNCTION_CALL) {
     // Call a function: "function(arg1, arg2, arg3...)"
 

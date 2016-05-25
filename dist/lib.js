@@ -13,6 +13,10 @@ var _stringify = require('babel-runtime/core-js/json/stringify');
 
 var _stringify2 = _interopRequireDefault(_stringify);
 
+var _getOwnPropertyNames = require('babel-runtime/core-js/object/get-own-property-names');
+
+var _getOwnPropertyNames2 = _interopRequireDefault(_getOwnPropertyNames);
+
 var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
 
 var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
@@ -760,14 +764,42 @@ var LFunction = exports.LFunction = function (_LObject2) {
 }(LObject);
 
 var LEnvironment = exports.LEnvironment = function () {
-  function LEnvironment(variables) {
+  function LEnvironment() {
     (0, _classCallCheck3.default)(this, LEnvironment);
 
     this['__constructor__'] = LEnvironment;
-    this.vars = variables;
+    this.vars = {};
   }
 
   (0, _createClass3.default)(LEnvironment, [{
+    key: 'addVars',
+    value: function addVars(variables) {
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
+
+      try {
+        for (var _iterator4 = (0, _getIterator3.default)((0, _getOwnPropertyNames2.default)(variables)), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var name = _step4.value;
+
+          this.vars[name] = variables[name];
+        }
+      } catch (err) {
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+            _iterator4.return();
+          }
+        } finally {
+          if (_didIteratorError4) {
+            throw _iteratorError4;
+          }
+        }
+      }
+    }
+  }, {
     key: '__set__',
     value: function __set__(variableName, value) {
       this.vars[variableName] = new Variable(value);

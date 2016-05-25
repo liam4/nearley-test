@@ -351,9 +351,15 @@ export class LFunction extends LObject {
 }
 
 export class LEnvironment {
-  constructor(variables) {
+  constructor() {
     this['__constructor__'] = LEnvironment
-    this.vars = variables
+    this.vars = {}
+  }
+
+  addVars(variables) {
+    for (const name of Object.getOwnPropertyNames(variables)) {
+      this.vars[name] = variables[name]
+    }
   }
 
   __set__(variableName, value) {
