@@ -1,1 +1,3 @@
-print('Hello, world.');
+karkar => obj();
+karkar.kazkaz > 'Objects are working';
+print(karkar.kazkaz);

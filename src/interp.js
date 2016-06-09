@@ -9,16 +9,9 @@ export async function evaluateExpression(expression, environment) {
     return
   } else if (expression instanceof Array &&
              expression.every(e => e instanceof Array)) {
-    // console.log('Fo...')
-    const ret = await evaluateEachExpression(variables, expression)
-    // console.log('Ba.', ret)
+    const ret = await evaluateEachExpression(expression, environment)
     return ret
   } if (expression[0] === C.VARIABLE_IDENTIFIER && expression[1] === 'environment') {
-    /*
-    const env = new lib.LEnvironment()
-    env.addVars(variables)
-    return env
-    */
     return environment
   } else if (expression[0] === C.FUNCTION_CALL) {
     // Call a function: "function(arg1, arg2, arg3...)"
@@ -28,20 +21,23 @@ export async function evaluateExpression(expression, environment) {
     const argExpressions = expression[2]
 
     // Evaluate the function expression to get the actual function.
-    const fn = await evaluateExpression(fnExpression, variables)
+    const fn = await evaluateExpression(fnExpression, environment)
     const varName = fnExpression[1]
 
     if (!(fn instanceof lib.LFunction)) {
       throw new Error(`${chalk.cyan(varName)} is not a function`)
     }
 
-    fn.argumentScope = variables
+    fn.argumentScope = environment
     const args = argExpressions
     const takingArgs = fn.paramaterList || []
 
-    if (args.length !== takingArgs.length && !fn.builtin) {
-      throw new Error(`Function ${chalk.cyan(varName)} expects ${chalk.bold(takingArgs.length)} arguments, was called with ${chalk.bold(args.length)}`)
-    }
+    // We need to discuss this... what's fn.builtin? This also should make sure
+    // that the called function is not a JS function, because you can't really
+    // get the number of paramaters from JS functions.
+    // if (args.length !== takingArgs.length && !fn.builtin) {
+    //   throw new Error(`Function ${chalk.cyan(varName)} expects ${chalk.bold(takingArgs.length)} arguments, was called with ${chalk.bold(args.length)}`)
+    // }
 
     // Use lib.call to call the function with the evaluated arguments.
     return await lib.call(fn, args)
@@ -51,17 +47,13 @@ export async function evaluateExpression(expression, environment) {
     // Get the name from the expression list.
     const name = expression[1]
 
-    // console.log(`Getting variable ${name}...`)
-    // console.log(name in variables)
-
     // Return the variable's value, or, if the variable doesn't exist, throw an
     // error.
-    if (name in variables) {
-      // console.log('Return:', variables[name])
-      const ret = variables[name].value
+    if (environment.vars.hasOwnProperty(name)) {
+      const ret = environment.vars[name].value
       return ret
     } else {
-      throw new Error(`${chalk.cyan(name)} is not defined`)
+      throw new Error(`${chalk.cyan(name)} is not defined in ${Object.keys(environment.vars)}`)
     }
   } else if (expression[0] === C.VARIABLE_ASSIGN) {
     // Set a variable to a value: "name => value"
@@ -73,13 +65,13 @@ export async function evaluateExpression(expression, environment) {
     // console.log(`Setting variable ${name}...`)
 
     // Evaluate the value of the variable.
-    const value = await evaluateExpression(valueExpression, variables)
+    const value = await evaluateExpression(valueExpression, environment)
 
     // console.log(`..value is ${value}`)
 
     // Set the variable in the variables object to a new variable with the
     // evaluated value.
-    variables[name] = new lib.Variable(value)
+    environment.vars[name] = new lib.Variable(value)
     return
   } else if (expression[0] === C.VARIABLE_CHANGE) {
     // Change a variable to a new value: "name -> newValue"
@@ -89,10 +81,10 @@ export async function evaluateExpression(expression, environment) {
     const valueExpression = expression[2]
 
     // Evaluate the new value of the variable.
-    const value = await evaluateExpression(valueExpression, variables)
+    const value = await evaluateExpression(valueExpression, environment)
 
     // Change the value of the already defined variable.
-    variables[name].value = value
+    environment.vars[name].value = value
     return
   } else if (expression[0] === C.FUNCTION_PRIM) {
     // A function literal: "[async] [(arg1, arg2, arg3...)] { code }"
@@ -107,7 +99,8 @@ export async function evaluateExpression(expression, environment) {
 
     // Set the scope variables for the function to a copy of the current
     // variables.
-    fn.setScopeVariables(Object.assign({}, variables))
+    fn.environment = new lib.LEnvironment()
+    fn.environment.addVars(environment.vars)
 
     // Set the paramaters for the function to the paramaters taken from the
     // expression list.
@@ -118,11 +111,12 @@ export async function evaluateExpression(expression, environment) {
     // Return the function.
     return fn
   } else if (expression[0] === C.SHORTHAND_FUNCTION_PRIM) {
+    // >> OUTDATED CODE <<
     const paramaters = expression[1]
     const codeExpression = expression[2]
     const fn = new lib.LFunction(codeExpression)
     fn.isShorthand = true
-    fn.setScopeVariables(Object.assign({}, variables))
+    fn.setScopeVariables(Object.assign({}, environment))
     fn.setParamaters(paramaters)
     return fn
   } else if (expression[0] === C.STRING_PRIM) {
@@ -159,11 +153,12 @@ export async function evaluateExpression(expression, environment) {
     const valueExpression = expression[3]
 
     // Evaluate the object and value expressions.
-    const obj = await evaluateExpression(objExpression, variables)
-    const value = await evaluateExpression(valueExpression, variables)
+    const obj = await evaluateExpression(objExpression, environment)
+    const value = await evaluateExpression(valueExpression, environment)
 
     // Use lib.set to set the property of the evaluated object.
     lib.set(obj, key, value)
+
     return
   } else if (expression[0] === C.GET_PROP_USING_IDENTIFIER) {
     // Get a property of an object using an identifier literal: "obj.key"
@@ -173,7 +168,7 @@ export async function evaluateExpression(expression, environment) {
     const key = expression[2]
 
     // Evaluate the object expression.
-    const obj = await evaluateExpression(objExpression, variables)
+    const obj = await evaluateExpression(objExpression, environment)
 
     // Get the value from lib.get.
     const value = lib.get(obj, key)
@@ -190,10 +185,10 @@ export async function evaluateGetPropUsingIdentifier(variables, [_, objExpr, key
   return lib.get(obj, key)
 }
 
-export async function evaluateEachExpression(variables, expressions) {
+export async function evaluateEachExpression(expressions, environment) {
   let results = []
   for (let expression of expressions) {
-    results.push(await evaluateExpression(expression, variables))
+    results.push(await evaluateExpression(expression, environment))
   }
   return results
 }
@@ -204,7 +199,7 @@ export async function interp(ast, dir) {
 
     environment.addVars(builtins.makeBuiltins(dir))
 
-    let result = await evaluateEachExpression(environment, ast)
+    let result = await evaluateEachExpression(ast, environment)
 
     return { result, environment }
   } else {

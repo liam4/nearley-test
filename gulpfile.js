@@ -63,7 +63,7 @@ gulp.task('watch', ['default'], function() {
 })
 
 gulp.task('test', ['default'], function() {
-  setImmediate(function() {
-    require('./dist/tests')
-  })
+  const doTests = require('./dist/tests')
+  return doTests()
+    .then(() => console.log('Done!'))
 })
