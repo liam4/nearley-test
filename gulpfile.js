@@ -62,8 +62,8 @@ gulp.task('watch', ['default'], function() {
   gulp.watch('./*/**/*.tul', ['default'])
 })
 
-gulp.task('test', ['default'], function() {
-  const doTests = require('./dist/tests')
-  return doTests()
-    .then(() => console.log('Done!'))
+gulp.task('test', ['default'], function(cb) {
+  var doTests = require('./dist/tests')
+  doTests()
+    .then(() => cb())
 })
