@@ -9,3 +9,4 @@ var lol = exports.lol = new lib.LFunction(function () {
   console.log('Lololol!');
   return lib.toLNumber(1337);
 });
+//# sourceMappingURL=hello.js.map

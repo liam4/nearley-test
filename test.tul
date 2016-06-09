@@ -1,11 +1,3 @@
-req-args => (required, arguments) {
-  print('req-args');
-};
-
-async-req-args => async (required, arguments) {
-  print('async-req-args');
-  return();
-};
-
-req-args('too little arguments');
-async-req-args('too little arguments');
+karkar => obj();
+karkar.kazkaz > 'Objects are working';
+print(karkar.kazkaz);

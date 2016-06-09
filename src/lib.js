@@ -169,7 +169,7 @@ export async function defaultCall(fnToken, args) {
     // Not asynchronous things
     let returnValue = null
 
-    const scope = Object.assign({}, fnToken.scopeVariables)
+    const scope = Object.assign({}, fnToken.environment.vars)
     scope.return = new Variable(new LFunction(function([val]) {
       if (isAsynchronous) {
         resolve(val)
@@ -191,12 +191,15 @@ export async function defaultCall(fnToken, args) {
       }
     }
 
+    const environment = new LEnvironment()
+    Object.assign(environment.vars, scope)
+
     // Shorthand functions.. these aren't finished! They don't work with the
     // whole async stuff. I think.
     if (fnToken.isShorthand) {
-      return await interp.evaluateExpression(fnToken.fn, scope)
+      return await interp.evaluateExpression(fnToken.fn, environment)
     } else {
-      await interp.evaluateEachExpression(scope, fnToken.fn)
+      await interp.evaluateEachExpression(fnToken.fn, environment)
       if (isAsynchronous) {
         return await donePromise
       } else {
@@ -220,7 +223,7 @@ export function get(obj, key) {
 
 export function defaultGet(obj, key) {
   let keyString = toJString(key)
-  if (keyString in obj.data) {
+  if (obj.data.hasOwnProperty(keyString)) {
     return obj.data[keyString]
   } else {
     let constructor = obj['__constructor__']
@@ -324,7 +327,7 @@ export class LFunction extends LObject {
     super()
     this['__constructor__'] = LFunction
     this.fn = fn
-    this.scopeVariables = null
+    this.environment = null
 
     this.unevaluatedArgs = []
     this.normalArgs = []
@@ -337,10 +340,6 @@ export class LFunction extends LObject {
     return defaultCall(this, args)
   }
 
-  setScopeVariables(scopeVariables) {
-    this.scopeVariables = scopeVariables
-  }
-
   setParamaters(paramaterList) {
     this.paramaterList = paramaterList
   }
@@ -351,9 +350,16 @@ export class LFunction extends LObject {
 }
 
 export class LEnvironment {
-  constructor(variables) {
+  constructor() {
     this['__constructor__'] = LEnvironment
-    this.vars = variables
+    this.vars = {}
+  }
+
+  addVars(variables) {
+    for (const name of Object.getOwnPropertyNames(variables)) {
+      this.vars[name] = variables[name]
+    }
+    // console.log('Des vars addid :)', Object.getOwnPropertyNames(variables))
   }
 
   __set__(variableName, value) {

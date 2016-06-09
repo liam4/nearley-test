@@ -13,6 +13,10 @@ var _stringify = require('babel-runtime/core-js/json/stringify');
 
 var _stringify2 = _interopRequireDefault(_stringify);
 
+var _getOwnPropertyNames = require('babel-runtime/core-js/object/get-own-property-names');
+
+var _getOwnPropertyNames2 = _interopRequireDefault(_getOwnPropertyNames);
+
 var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
 
 var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
@@ -170,7 +174,7 @@ var defaultCall = exports.defaultCall = function () {
 
           case 34:
             return _context5.delegateYield(_regenerator2.default.mark(function _callee3() {
-              var isAsynchronous, resolve, donePromise, returnValue, scope, paramaters, _loop, i;
+              var isAsynchronous, resolve, donePromise, returnValue, scope, paramaters, _loop, i, environment;
 
               return _regenerator2.default.wrap(function _callee3$(_context4) {
                 while (1) {
@@ -201,7 +205,7 @@ var defaultCall = exports.defaultCall = function () {
                       // Not asynchronous things
 
                       returnValue = null;
-                      scope = (0, _assign2.default)({}, fnToken.scopeVariables);
+                      scope = (0, _assign2.default)({}, fnToken.environment.vars);
 
                       scope.return = new Variable(new LFunction(function (_ref) {
                         var _ref2 = (0, _slicedToArray3.default)(_ref, 1);
@@ -284,45 +288,52 @@ var defaultCall = exports.defaultCall = function () {
                       break;
 
                     case 14:
+                      environment = new LEnvironment();
+
+                      (0, _assign2.default)(environment.vars, scope);
+
+                      // Shorthand functions.. these aren't finished! They don't work with the
+                      // whole async stuff. I think.
+
                       if (!fnToken.isShorthand) {
-                        _context4.next = 21;
+                        _context4.next = 23;
                         break;
                       }
 
-                      _context4.next = 17;
-                      return interp.evaluateExpression(fnToken.fn, scope);
+                      _context4.next = 19;
+                      return interp.evaluateExpression(fnToken.fn, environment);
 
-                    case 17:
+                    case 19:
                       _context4.t1 = _context4.sent;
                       return _context4.abrupt('return', {
                         v: _context4.t1
                       });
 
-                    case 21:
-                      _context4.next = 23;
-                      return interp.evaluateEachExpression(scope, fnToken.fn);
-
                     case 23:
+                      _context4.next = 25;
+                      return interp.evaluateEachExpression(fnToken.fn, environment);
+
+                    case 25:
                       if (!isAsynchronous) {
-                        _context4.next = 30;
+                        _context4.next = 32;
                         break;
                       }
 
-                      _context4.next = 26;
+                      _context4.next = 28;
                       return donePromise;
 
-                    case 26:
+                    case 28:
                       _context4.t2 = _context4.sent;
                       return _context4.abrupt('return', {
                         v: _context4.t2
                       });
 
-                    case 30:
+                    case 32:
                       return _context4.abrupt('return', {
                         v: returnValue
                       });
 
-                    case 31:
+                    case 33:
                     case 'end':
                       return _context4.stop();
                   }
@@ -578,7 +589,7 @@ function get(obj, key) {
 
 function defaultGet(obj, key) {
   var keyString = toJString(key);
-  if (keyString in obj.data) {
+  if (obj.data.hasOwnProperty(keyString)) {
     return obj.data[keyString];
   } else {
     var _constructor = obj['__constructor__'];
@@ -725,7 +736,7 @@ var LFunction = exports.LFunction = function (_LObject2) {
 
     _this4['__constructor__'] = LFunction;
     _this4.fn = fn;
-    _this4.scopeVariables = null;
+    _this4.environment = null;
 
     _this4.unevaluatedArgs = [];
     _this4.normalArgs = [];
@@ -739,11 +750,6 @@ var LFunction = exports.LFunction = function (_LObject2) {
       // Call this function. By default uses defaultCall, but can be overriden
       // by subclasses.
       return defaultCall(this, args);
-    }
-  }, {
-    key: 'setScopeVariables',
-    value: function setScopeVariables(scopeVariables) {
-      this.scopeVariables = scopeVariables;
     }
   }, {
     key: 'setParamaters',
@@ -760,14 +766,43 @@ var LFunction = exports.LFunction = function (_LObject2) {
 }(LObject);
 
 var LEnvironment = exports.LEnvironment = function () {
-  function LEnvironment(variables) {
+  function LEnvironment() {
     (0, _classCallCheck3.default)(this, LEnvironment);
 
     this['__constructor__'] = LEnvironment;
-    this.vars = variables;
+    this.vars = {};
   }
 
   (0, _createClass3.default)(LEnvironment, [{
+    key: 'addVars',
+    value: function addVars(variables) {
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
+
+      try {
+        for (var _iterator4 = (0, _getIterator3.default)((0, _getOwnPropertyNames2.default)(variables)), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var name = _step4.value;
+
+          this.vars[name] = variables[name];
+        }
+        // console.log('Des vars addid :)', Object.getOwnPropertyNames(variables))
+      } catch (err) {
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+            _iterator4.return();
+          }
+        } finally {
+          if (_didIteratorError4) {
+            throw _iteratorError4;
+          }
+        }
+      }
+    }
+  }, {
     key: '__set__',
     value: function __set__(variableName, value) {
       this.vars[variableName] = new Variable(value);
@@ -816,3 +851,4 @@ LArray['__super__'] = LObject;
 
 LFunction['__prototype__'] = LFunctionPrototype;
 LFunction['__super__'] = LObject;
+//# sourceMappingURL=lib.js.map
