@@ -65,5 +65,5 @@ gulp.task('watch', ['default'], function() {
 gulp.task('test', ['default'], function(cb) {
   var doTests = require('./dist/tests')
   doTests()
-    .then(() => cb())
+    .then(function() { cb() })
 })
