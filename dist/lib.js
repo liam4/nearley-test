@@ -87,14 +87,14 @@ var defaultCall = exports.defaultCall = function () {
   var ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee4(fnToken, args) {
     var _this = this;
 
-    var argumentValues, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, argument, _ret;
+    var argumentValues, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, argument, ret, _ret;
 
     return _regenerator2.default.wrap(function _callee4$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             if (!(fnToken.fn instanceof Function)) {
-              _context5.next = 34;
+              _context5.next = 41;
               break;
             }
 
@@ -162,9 +162,27 @@ var defaultCall = exports.defaultCall = function () {
             return _context5.finish(23);
 
           case 31:
-            return _context5.abrupt('return', fnToken.fn(argumentValues));
+            ret = fnToken.fn(argumentValues);
 
-          case 34:
+            if (!(ret instanceof _promise2.default)) {
+              _context5.next = 38;
+              break;
+            }
+
+            _context5.next = 35;
+            return ret;
+
+          case 35:
+            return _context5.abrupt('return', _context5.sent);
+
+          case 38:
+            return _context5.abrupt('return', ret);
+
+          case 39:
+            _context5.next = 45;
+            break;
+
+          case 41:
             return _context5.delegateYield(_regenerator2.default.mark(function _callee3() {
               var isAsynchronous, resolve, donePromise, returnValue, scope, paramaters, _loop, i, environment;
 
@@ -333,19 +351,19 @@ var defaultCall = exports.defaultCall = function () {
                   }
                 }
               }, _callee3, _this);
-            })(), 't3', 35);
+            })(), 't3', 42);
 
-          case 35:
+          case 42:
             _ret = _context5.t3;
 
             if (!((typeof _ret === 'undefined' ? 'undefined' : (0, _typeof3.default)(_ret)) === "object")) {
-              _context5.next = 38;
+              _context5.next = 45;
               break;
             }
 
             return _context5.abrupt('return', _ret.v);
 
-          case 38:
+          case 45:
           case 'end':
             return _context5.stop();
         }

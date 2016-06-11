@@ -49,9 +49,9 @@ export function makeBuiltins(fsScope) {
     return lib.toLString(args.map(lib.toJString).join(''))
   }))
 
-  variables['if'] = new lib.Variable(new lib.LFunction(function(args) {
+  variables['if'] = new lib.Variable(new lib.LFunction(async function(args) {
     if (lib.toJBoolean(args[0])) {
-      lib.call(args[1], [])
+      await lib.call(args[1], [])
     } else {
       // optional `else`
       if (args[2]) lib.call(args[2], [])

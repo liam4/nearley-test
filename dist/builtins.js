@@ -8,6 +8,14 @@ var _keys = require('babel-runtime/core-js/object/keys');
 
 var _keys2 = _interopRequireDefault(_keys);
 
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
 var _slicedToArray2 = require('babel-runtime/helpers/slicedToArray');
 
 var _slicedToArray3 = _interopRequireDefault(_slicedToArray2);
@@ -79,14 +87,39 @@ function makeBuiltins(fsScope) {
     return lib.toLString(args.map(lib.toJString).join(''));
   }));
 
-  variables['if'] = new lib.Variable(new lib.LFunction(function (args) {
-    if (lib.toJBoolean(args[0])) {
-      lib.call(args[1], []);
-    } else {
-      // optional `else`
-      if (args[2]) lib.call(args[2], []);
-    }
-  }));
+  variables['if'] = new lib.Variable(new lib.LFunction(function () {
+    var ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(args) {
+      return _regenerator2.default.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (!lib.toJBoolean(args[0])) {
+                _context.next = 5;
+                break;
+              }
+
+              _context.next = 3;
+              return lib.call(args[1], []);
+
+            case 3:
+              _context.next = 6;
+              break;
+
+            case 5:
+              // optional `else`
+              if (args[2]) lib.call(args[2], []);
+
+            case 6:
+            case 'end':
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    }));
+    return function (_x) {
+      return ref.apply(this, arguments);
+    };
+  }()));
 
   variables['ifel'] = new lib.Variable(new lib.LFunction(function (args) {
     if (lib.toJBoolean(args[0])) {
