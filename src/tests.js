@@ -146,7 +146,7 @@ module.exports = function doTests() {
     } catch (error) {
       console.log = oldLog
       console.log('\x1b[31m[Errored!]\x1b[0m Error in JS:')
-      console.error(error)
+      console.error(error.stack)
     }
     console.log('\n');
     console.timeEnd('Total tests time')
