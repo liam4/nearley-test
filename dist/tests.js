@@ -34,6 +34,8 @@ var _templateObject = (0, _taggedTemplateLiteral3.default)(['hello!'], ['hello!'
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+require('string.prototype.repeat');
+
 var equal = require('deep-equal');
 var chalk = require('chalk');
 var run = require('../req.js');

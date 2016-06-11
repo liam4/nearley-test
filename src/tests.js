@@ -1,5 +1,7 @@
 'use strict'
 
+require('string.prototype.repeat')
+
 const equal = require('deep-equal')
 const chalk = require('chalk')
 const run = require('../req.js')
