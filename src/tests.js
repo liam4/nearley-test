@@ -34,7 +34,10 @@ module.exports = function doTests() {
         oldLog(chalk.green(' ✓ ' + (title)))
       }
     })
-    promise.catch((e) => console.error(e))
+    promise.catch((e) => {
+      console.log = oldLog
+      console.error(e)
+    })
     return promise
   }
 

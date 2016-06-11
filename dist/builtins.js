@@ -342,11 +342,33 @@ function makeBuiltins(fsScope) {
 
   variables['Variable'] = new lib.Variable(variableObject);
 
-  variables['set-timeout'] = new lib.Variable(new lib.LFunction(function (_ref43) {
+  var environmentObject = new lib.LObject();
+
+  lib.set(environmentObject, 'break-to', new lib.LFunction(function (_ref43) {
     var _ref44 = (0, _slicedToArray3.default)(_ref43, 2);
 
-    var fn = _ref44[0];
-    var ms = _ref44[1];
+    var toEnv = _ref44[0];
+    var fromEnv = _ref44[1];
+
+    fromEnv.breakToEnvironment = toEnv;
+  }));
+
+  lib.set(environmentObject, 'set-comment', new lib.LFunction(function (_ref45) {
+    var _ref46 = (0, _slicedToArray3.default)(_ref45, 2);
+
+    var env = _ref46[0];
+    var comment = _ref46[1];
+
+    env.comment = lib.toJString(comment);
+  }));
+
+  variables['Environment'] = new lib.Variable(environmentObject);
+
+  variables['set-timeout'] = new lib.Variable(new lib.LFunction(function (_ref47) {
+    var _ref48 = (0, _slicedToArray3.default)(_ref47, 2);
+
+    var fn = _ref48[0];
+    var ms = _ref48[1];
 
     setTimeout(function () {
       lib.call(fn, []);

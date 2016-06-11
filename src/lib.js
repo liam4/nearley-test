@@ -192,6 +192,8 @@ export async function defaultCall(fnToken, args) {
     }
 
     const environment = new LEnvironment()
+    environment.comment = 'Calling environment'
+    environment.parentEnvironment = fnToken.environment.parentEnvironment
     Object.assign(environment.vars, scope)
 
     // Shorthand functions.. these aren't finished! They don't work with the
@@ -349,10 +351,15 @@ export class LFunction extends LObject {
   }
 }
 
+let environmentCount = 0
+
 export class LEnvironment {
   constructor() {
     this['__constructor__'] = LEnvironment
     this.vars = {}
+    this.breakToEnvironment = null
+    this.comment = ''
+    this.environmentNum = (environmentCount++)
   }
 
   addVars(variables) {
@@ -371,7 +378,8 @@ export class LEnvironment {
   }
 
   toString() {
-    return JSON.stringify(Object.keys(this.vars))
+    // return JSON.stringify(Object.keys(this.vars))
+    return `<Environment #${this.environmentNum} "${this.comment}">`
   }
 }
 

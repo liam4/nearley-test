@@ -73,7 +73,8 @@ module.exports = function doTests() {
       }
     });
     promise.catch(function (e) {
-      return console.error(e);
+      console.log = oldLog;
+      console.error(e);
     });
     return promise;
   };

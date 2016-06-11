@@ -5,14 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.LFunctionPrototype = exports.LArrayPrototype = exports.LObjectPrototype = exports.LEnvironment = exports.LFunction = exports.LArray = exports.LObject = exports.Token = exports.Variable = exports.defaultCall = exports.call = exports.NumberPrim = exports.BooleanPrim = exports.StringPrim = undefined;
 
-var _keys = require('babel-runtime/core-js/object/keys');
-
-var _keys2 = _interopRequireDefault(_keys);
-
-var _stringify = require('babel-runtime/core-js/json/stringify');
-
-var _stringify2 = _interopRequireDefault(_stringify);
-
 var _getOwnPropertyNames = require('babel-runtime/core-js/object/get-own-property-names');
 
 var _getOwnPropertyNames2 = _interopRequireDefault(_getOwnPropertyNames);
@@ -290,50 +282,52 @@ var defaultCall = exports.defaultCall = function () {
                     case 14:
                       environment = new LEnvironment();
 
+                      environment.comment = 'Calling environment';
+                      environment.parentEnvironment = fnToken.environment.parentEnvironment;
                       (0, _assign2.default)(environment.vars, scope);
 
                       // Shorthand functions.. these aren't finished! They don't work with the
                       // whole async stuff. I think.
 
                       if (!fnToken.isShorthand) {
-                        _context4.next = 23;
+                        _context4.next = 25;
                         break;
                       }
 
-                      _context4.next = 19;
+                      _context4.next = 21;
                       return interp.evaluateExpression(fnToken.fn, environment);
 
-                    case 19:
+                    case 21:
                       _context4.t1 = _context4.sent;
                       return _context4.abrupt('return', {
                         v: _context4.t1
                       });
 
-                    case 23:
-                      _context4.next = 25;
+                    case 25:
+                      _context4.next = 27;
                       return interp.evaluateEachExpression(fnToken.fn, environment);
 
-                    case 25:
+                    case 27:
                       if (!isAsynchronous) {
-                        _context4.next = 32;
+                        _context4.next = 34;
                         break;
                       }
 
-                      _context4.next = 28;
+                      _context4.next = 30;
                       return donePromise;
 
-                    case 28:
+                    case 30:
                       _context4.t2 = _context4.sent;
                       return _context4.abrupt('return', {
                         v: _context4.t2
                       });
 
-                    case 32:
+                    case 34:
                       return _context4.abrupt('return', {
                         v: returnValue
                       });
 
-                    case 33:
+                    case 35:
                     case 'end':
                       return _context4.stop();
                   }
@@ -765,12 +759,17 @@ var LFunction = exports.LFunction = function (_LObject2) {
   return LFunction;
 }(LObject);
 
+var environmentCount = 0;
+
 var LEnvironment = exports.LEnvironment = function () {
   function LEnvironment() {
     (0, _classCallCheck3.default)(this, LEnvironment);
 
     this['__constructor__'] = LEnvironment;
     this.vars = {};
+    this.breakToEnvironment = null;
+    this.comment = '';
+    this.environmentNum = environmentCount++;
   }
 
   (0, _createClass3.default)(LEnvironment, [{
@@ -815,7 +814,8 @@ var LEnvironment = exports.LEnvironment = function () {
   }, {
     key: 'toString',
     value: function toString() {
-      return (0, _stringify2.default)((0, _keys2.default)(this.vars));
+      // return JSON.stringify(Object.keys(this.vars))
+      return '<Environment #' + this.environmentNum + ' "' + this.comment + '">';
     }
   }]);
   return LEnvironment;
