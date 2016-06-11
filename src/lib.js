@@ -143,7 +143,12 @@ export async function defaultCall(fnToken, args) {
       argumentValues.push(await interp.evaluateExpression(
         argument, fnToken.argumentScope))
     }
-    return fnToken.fn(argumentValues)
+    let ret = fnToken.fn(argumentValues)
+    if (ret instanceof Promise) {
+      return await ret
+    } else {
+      return ret
+    }
   } else {
     // Might this function return anything? We can tell by if the `return`
     // variable is referenced anywhere within the function's code. If so we
@@ -192,6 +197,8 @@ export async function defaultCall(fnToken, args) {
     }
 
     const environment = new LEnvironment()
+    environment.comment = 'Calling environment'
+    environment.parentEnvironment = fnToken.environment.parentEnvironment
     Object.assign(environment.vars, scope)
 
     // Shorthand functions.. these aren't finished! They don't work with the
@@ -349,10 +356,15 @@ export class LFunction extends LObject {
   }
 }
 
+let environmentCount = 0
+
 export class LEnvironment {
   constructor() {
     this['__constructor__'] = LEnvironment
     this.vars = {}
+    this.breakToEnvironment = null
+    this.comment = ''
+    this.environmentNum = (environmentCount++)
   }
 
   addVars(variables) {
@@ -371,7 +383,8 @@ export class LEnvironment {
   }
 
   toString() {
-    return JSON.stringify(Object.keys(this.vars))
+    // return JSON.stringify(Object.keys(this.vars))
+    return `<Environment #${this.environmentNum} "${this.comment}">`
   }
 }
 

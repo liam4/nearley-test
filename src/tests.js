@@ -1,5 +1,7 @@
 'use strict'
 
+require('string.prototype.repeat')
+
 const equal = require('deep-equal')
 const chalk = require('chalk')
 const run = require('../req.js')
@@ -34,7 +36,10 @@ module.exports = function doTests() {
         oldLog(chalk.green(' ✓ ' + (title)))
       }
     })
-    promise.catch((e) => console.error(e))
+    promise.catch((e) => {
+      console.log = oldLog
+      console.error(e)
+    })
     return promise
   }
 
@@ -143,7 +148,8 @@ module.exports = function doTests() {
     } catch (error) {
       console.log = oldLog
       console.log('\x1b[31m[Errored!]\x1b[0m Error in JS:')
-      console.error(error)
+      console.error(error.stack)
+      process.exit(1)
     }
     console.log('\n');
     console.timeEnd('Total tests time')

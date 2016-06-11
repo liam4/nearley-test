@@ -34,6 +34,8 @@ var _templateObject = (0, _taggedTemplateLiteral3.default)(['hello!'], ['hello!'
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+require('string.prototype.repeat');
+
 var equal = require('deep-equal');
 var chalk = require('chalk');
 var run = require('../req.js');
@@ -73,7 +75,8 @@ module.exports = function doTests() {
       }
     });
     promise.catch(function (e) {
-      return console.error(e);
+      console.log = oldLog;
+      console.error(e);
     });
     return promise;
   };
@@ -244,7 +247,7 @@ module.exports = function doTests() {
             return test('foo => \'bar\'; foo -> \'baz\'; print(foo);', checkOut(_templateObject19), 'changing');
 
           case 65:
-            _context.next = 72;
+            _context.next = 73;
             break;
 
           case 67:
@@ -253,16 +256,17 @@ module.exports = function doTests() {
 
             console.log = oldLog;
             console.log('\x1b[31m[Errored!]\x1b[0m Error in JS:');
-            console.error(_context.t0);
+            console.error(_context.t0.stack);
+            process.exit(1);
 
-          case 72:
+          case 73:
             console.log('\n');
             console.timeEnd('Total tests time');
             console.log(chalk.bold(passed + '/' + tests + ' tests passed.'));
 
             if (passed < tests) process.exit(1);
 
-          case 76:
+          case 77:
           case 'end':
             return _context.stop();
         }

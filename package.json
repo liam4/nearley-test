@@ -43,6 +43,7 @@
     "gulp": "^3.9.1",
     "nearley": "^2.4.0",
     "readline-sync": "^1.4.1",
-    "source-map-support": "^0.4.0"
+    "source-map-support": "^0.4.0",
+    "string.prototype.repeat": "^0.2.0"
   }
 }

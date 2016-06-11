@@ -5,14 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.LFunctionPrototype = exports.LArrayPrototype = exports.LObjectPrototype = exports.LEnvironment = exports.LFunction = exports.LArray = exports.LObject = exports.Token = exports.Variable = exports.defaultCall = exports.call = exports.NumberPrim = exports.BooleanPrim = exports.StringPrim = undefined;
 
-var _keys = require('babel-runtime/core-js/object/keys');
-
-var _keys2 = _interopRequireDefault(_keys);
-
-var _stringify = require('babel-runtime/core-js/json/stringify');
-
-var _stringify2 = _interopRequireDefault(_stringify);
-
 var _getOwnPropertyNames = require('babel-runtime/core-js/object/get-own-property-names');
 
 var _getOwnPropertyNames2 = _interopRequireDefault(_getOwnPropertyNames);
@@ -95,14 +87,14 @@ var defaultCall = exports.defaultCall = function () {
   var ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee4(fnToken, args) {
     var _this = this;
 
-    var argumentValues, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, argument, _ret;
+    var argumentValues, _iteratorNormalCompletion3, _didIteratorError3, _iteratorError3, _iterator3, _step3, argument, ret, _ret;
 
     return _regenerator2.default.wrap(function _callee4$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             if (!(fnToken.fn instanceof Function)) {
-              _context5.next = 34;
+              _context5.next = 41;
               break;
             }
 
@@ -170,9 +162,27 @@ var defaultCall = exports.defaultCall = function () {
             return _context5.finish(23);
 
           case 31:
-            return _context5.abrupt('return', fnToken.fn(argumentValues));
+            ret = fnToken.fn(argumentValues);
 
-          case 34:
+            if (!(ret instanceof _promise2.default)) {
+              _context5.next = 38;
+              break;
+            }
+
+            _context5.next = 35;
+            return ret;
+
+          case 35:
+            return _context5.abrupt('return', _context5.sent);
+
+          case 38:
+            return _context5.abrupt('return', ret);
+
+          case 39:
+            _context5.next = 45;
+            break;
+
+          case 41:
             return _context5.delegateYield(_regenerator2.default.mark(function _callee3() {
               var isAsynchronous, resolve, donePromise, returnValue, scope, paramaters, _loop, i, environment;
 
@@ -290,68 +300,70 @@ var defaultCall = exports.defaultCall = function () {
                     case 14:
                       environment = new LEnvironment();
 
+                      environment.comment = 'Calling environment';
+                      environment.parentEnvironment = fnToken.environment.parentEnvironment;
                       (0, _assign2.default)(environment.vars, scope);
 
                       // Shorthand functions.. these aren't finished! They don't work with the
                       // whole async stuff. I think.
 
                       if (!fnToken.isShorthand) {
-                        _context4.next = 23;
+                        _context4.next = 25;
                         break;
                       }
 
-                      _context4.next = 19;
+                      _context4.next = 21;
                       return interp.evaluateExpression(fnToken.fn, environment);
 
-                    case 19:
+                    case 21:
                       _context4.t1 = _context4.sent;
                       return _context4.abrupt('return', {
                         v: _context4.t1
                       });
 
-                    case 23:
-                      _context4.next = 25;
+                    case 25:
+                      _context4.next = 27;
                       return interp.evaluateEachExpression(fnToken.fn, environment);
 
-                    case 25:
+                    case 27:
                       if (!isAsynchronous) {
-                        _context4.next = 32;
+                        _context4.next = 34;
                         break;
                       }
 
-                      _context4.next = 28;
+                      _context4.next = 30;
                       return donePromise;
 
-                    case 28:
+                    case 30:
                       _context4.t2 = _context4.sent;
                       return _context4.abrupt('return', {
                         v: _context4.t2
                       });
 
-                    case 32:
+                    case 34:
                       return _context4.abrupt('return', {
                         v: returnValue
                       });
 
-                    case 33:
+                    case 35:
                     case 'end':
                       return _context4.stop();
                   }
                 }
               }, _callee3, _this);
-            })(), 't3', 35);
+            })(), 't3', 42);
 
-          case 35:
+          case 42:
             _ret = _context5.t3;
 
             if (!((typeof _ret === 'undefined' ? 'undefined' : (0, _typeof3.default)(_ret)) === "object")) {
-              _context5.next = 38;
+              _context5.next = 45;
               break;
             }
 
             return _context5.abrupt('return', _ret.v);
 
-          case 38:
+          case 45:
           case 'end':
             return _context5.stop();
         }
@@ -765,12 +777,17 @@ var LFunction = exports.LFunction = function (_LObject2) {
   return LFunction;
 }(LObject);
 
+var environmentCount = 0;
+
 var LEnvironment = exports.LEnvironment = function () {
   function LEnvironment() {
     (0, _classCallCheck3.default)(this, LEnvironment);
 
     this['__constructor__'] = LEnvironment;
     this.vars = {};
+    this.breakToEnvironment = null;
+    this.comment = '';
+    this.environmentNum = environmentCount++;
   }
 
   (0, _createClass3.default)(LEnvironment, [{
@@ -815,7 +832,8 @@ var LEnvironment = exports.LEnvironment = function () {
   }, {
     key: 'toString',
     value: function toString() {
-      return (0, _stringify2.default)((0, _keys2.default)(this.vars));
+      // return JSON.stringify(Object.keys(this.vars))
+      return '<Environment #' + this.environmentNum + ' "' + this.comment + '">';
     }
   }]);
   return LEnvironment;
