@@ -87,7 +87,7 @@ Here's an example of a program using all the things we showed above. Please excu
 ```python
 # Variable assign.                              #
 #  v--- Variable identifier                     #
-#  v    vvvv--- A boolean literal.              #
+#  |    vvvv--- A boolean literal.              #
    x => true;
 
 #  vv-- Get a variable using identifier "if",   #
