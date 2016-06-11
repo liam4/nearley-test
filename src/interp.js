@@ -1,9 +1,20 @@
-require('console-group').install()
-
 const C = require('./constants')
 const lib = require('./lib')
 const chalk = require('chalk')
 const builtins = require('./builtins')
+
+if (!(console.group)) {
+  try {
+    require('console-group').install()
+  } catch(err) {
+    console.group = function(msg) {
+      console.log(chalk.cyan(`Group: ${msg}`))
+    }
+    console.groupEnd = function() {
+      console.log(chalk.cyan('Group end'))
+    }
+  }
+}
 
 export async function evaluateExpression(expression, environment) {
   // console.group(`Evaluate in environment ${environment}\n`, expression)

@@ -575,10 +575,21 @@ var interp = exports.interp = function () {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-require('console-group').install();
-
 var C = require('./constants');
 var lib = require('./lib');
 var chalk = require('chalk');
 var builtins = require('./builtins');
+
+if (!console.group) {
+  try {
+    require('console-group').install();
+  } catch (err) {
+    console.group = function (msg) {
+      console.log(chalk.cyan('Group: ' + msg));
+    };
+    console.groupEnd = function () {
+      console.log(chalk.cyan('Group end'));
+    };
+  }
+}
 //# sourceMappingURL=interp.js.map
