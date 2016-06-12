@@ -187,7 +187,7 @@ export async function defaultCall(fnToken, args) {
       const value = args[i]
       const paramater = paramaters[i]
       if (paramater.type === 'normal') {
-        const evaluatedValue = await interp.evaluateExpression(value)
+        const evaluatedValue = await interp.evaluateExpression(value, fnToken.argumentScope)
         scope[paramater.name] = new Variable(evaluatedValue)
       } else if (paramater.type === 'unevaluated') {
         scope[paramater.name] = new Variable(new LFunction(async function() {

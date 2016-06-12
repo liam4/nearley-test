@@ -2,6 +2,8 @@
 
 'use strict'
 
+require('source-map-support').install()
+
 const args = process.argv.slice(2)
 const chalk = require('chalk')
 const run = require('./req.js')

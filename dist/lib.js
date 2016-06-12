@@ -244,7 +244,7 @@ var defaultCall = exports.defaultCall = function () {
                                 }
 
                                 _context3.next = 5;
-                                return interp.evaluateExpression(value);
+                                return interp.evaluateExpression(value, fnToken.argumentScope);
 
                               case 5:
                                 evaluatedValue = _context3.sent;

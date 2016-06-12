@@ -1,13 +1,17 @@
-fn => {
-  fn-root-env => environment;
-  ret => return;
-  {
-    if((3 < 4), {
-      ret(15);
-      Environment.break-to(fn-root-env, environment);
-    });
-    ret(80);
-  }();
+bad-call => (arg) {
+  ifel(false, {}, { arg() });
 };
 
-print(fn());
+bad-call({
+  print('A');
+  bad-call({
+    print('B');
+  });
+});
+
+bad-call({
+  print('C');
+  bad-call({
+    print('D');
+  });
+});
