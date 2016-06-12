@@ -2,16 +2,22 @@ bad-call => (arg) {
   ifel(false, {}, { arg() });
 };
 
+print('_A');
 bad-call({
   print('A');
+  print('_B');
   bad-call({
     print('B');
   });
 });
 
+print('_C');
 bad-call({
   print('C');
+  print('_D');
   bad-call({
     print('D');
   });
 });
+
+print('E');

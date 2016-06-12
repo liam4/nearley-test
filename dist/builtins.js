@@ -121,13 +121,39 @@ function makeBuiltins(fsScope) {
     };
   }()));
 
-  variables['ifel'] = new lib.Variable(new lib.LFunction(function (args) {
-    if (lib.toJBoolean(args[0])) {
-      lib.call(args[1], []);
-    } else {
-      lib.call(args[2], []);
-    }
-  }));
+  variables['ifel'] = new lib.Variable(new lib.LFunction(function () {
+    var ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2(args) {
+      return _regenerator2.default.wrap(function _callee2$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              if (!lib.toJBoolean(args[0])) {
+                _context2.next = 5;
+                break;
+              }
+
+              _context2.next = 3;
+              return lib.call(args[1], []);
+
+            case 3:
+              _context2.next = 7;
+              break;
+
+            case 5:
+              _context2.next = 7;
+              return lib.call(args[2], []);
+
+            case 7:
+            case 'end':
+              return _context2.stop();
+          }
+        }
+      }, _callee2, this);
+    }));
+    return function (_x2) {
+      return ref.apply(this, arguments);
+    };
+  }()));
 
   variables['sleep'] = new lib.Variable(new lib.LFunction(function (_ref3) {
     var _ref4 = (0, _slicedToArray3.default)(_ref3, 1);

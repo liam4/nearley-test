@@ -58,11 +58,11 @@ export function makeBuiltins(fsScope) {
     }
   }))
 
-  variables['ifel'] = new lib.Variable(new lib.LFunction(function(args) {
+  variables['ifel'] = new lib.Variable(new lib.LFunction(async function(args) {
     if (lib.toJBoolean(args[0])) {
-      lib.call(args[1], [])
+      await lib.call(args[1], [])
     } else {
-      lib.call(args[2], [])
+      await lib.call(args[2], [])
     }
   }))
 
