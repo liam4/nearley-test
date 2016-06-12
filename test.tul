@@ -1,23 +1,21 @@
-bad-call => (arg) {
-  ifel(false, {}, { arg() });
-};
+yield => { sleep(0); };
+# Again, a macro would be good here - think replacing yield w/ sleep(0); #
 
-print('_A');
-bad-call({
-  print('A');
-  print('_B');
-  bad-call({
-    print('B');
-  });
+print('DEMO 1 (ASYNC) -------');
+print('A');
+launch({
+  yield();
+  print('Hello!')
 });
+sleep(0.5);
+print('B');
 
-print('_C');
-bad-call({
-  print('C');
-  print('_D');
-  bad-call({
-    print('D');
-  });
+sleep(2);
+print('DEMO 2 (SYNC) --------');
+print('A');
+launch({
+  yield();
+  print('Hello!');
 });
-
-print('E');
+sleep-sync(0.5);
+print('B');

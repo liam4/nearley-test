@@ -67,6 +67,12 @@ export function makeBuiltins(fsScope) {
   }))
 
   variables['sleep'] = new lib.Variable(new lib.LFunction(function([time]) {
+    return new Promise(resolve => {
+      setTimeout(resolve, lib.toJNumber(time) * 1000)
+    })
+  }))
+
+  variables['sleep-sync'] = new lib.Variable(new lib.LFunction(function([time]) {
     let e = new Date().getTime() + (lib.toJNumber(time) * 1000)
     while (new Date().getTime() <= e) { /* empty */ }
   }))
@@ -194,6 +200,10 @@ export function makeBuiltins(fsScope) {
       )
       process.exit(1)
     }
+  }))
+
+  variables['launch'] = new lib.Variable(new lib.LFunction(function([fn]) {
+    lib.call(fn) // normally you'd *await* lib.call, but here we aren't
   }))
 
   let variableObject = new lib.LObject()
